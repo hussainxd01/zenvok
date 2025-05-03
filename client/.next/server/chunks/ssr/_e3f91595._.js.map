@@ -1,0 +1,8 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 6, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"","debugId":null}},
+    {"offset": {"line": 24, "column": 0}, "map": {"version":3,"sources":["file://C%3A/Users/User/Desktop/ZENVOK/client/src/components/hero.jsx"],"sourcesContent":["import gsap from \"gsap\";\r\nimport { ScrollTrigger } from \"gsap/ScrollTrigger\";\r\n\r\ngsap.registerPlugin(ScrollTrigger);\r\n\r\nexport default function Hero() {\r\n  return <section className=\"w-full h-screen bg-black\"></section>;\r\n}\r\n"],"names":[],"mappings":";;;;AAAA;AACA;;;;AAEA,6IAAA,CAAA,UAAI,CAAC,cAAc,CAAC,qIAAA,CAAA,gBAAa;AAElB,SAAS;IACtB,qBAAO,8OAAC;QAAQ,WAAU;;;;;;AAC5B","debugId":null}},
+    {"offset": {"line": 49, "column": 0}, "map": {"version":3,"sources":["file://C%3A/Users/User/Desktop/ZENVOK/client/src/app/page.js"],"sourcesContent":["import Image from \"next/image\";\nimport Hero from \"@/components/hero\";\n\nexport default function Home() {\n  return (\n    <>\n      <Hero />\n    </>\n  );\n}\n"],"names":[],"mappings":";;;;AAAA;AACA;;;;AAEe,SAAS;IACtB,qBACE;kBACE,cAAA,8OAAC,0HAAA,CAAA,UAAI;;;;;;AAGX","debugId":null}}]
+}
