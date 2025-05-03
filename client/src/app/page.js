@@ -7,6 +7,8 @@ import Navbar from "@/components/navbar";
 import { useRef } from "react";
 import AnimatedSlider from "@/components/animated-slider";
 import Footer from "@/components/footer";
+import Approach from "@/components/approach";
+import Space from "@/components/space";
 
 export default function Home() {
   const heroRef = useRef(null);
@@ -17,6 +19,8 @@ export default function Home() {
       <Showreel />
       <Statement />
       <AnimatedSlider />
+      <Space />
+      <Approach />
       <Footer />
     </>
   );

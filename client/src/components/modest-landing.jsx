@@ -135,8 +135,8 @@ export default function ModestLanding() {
           <div className="flex gap-5 items-center">
             <div className="circle rounded-full size-10 bg-black"></div>
             <div className="flex flex-col">
-              <p>Skincare</p>
-              <p>Magic</p>
+              <p>Unveil</p>
+              <p>Modesty</p>
             </div>
           </div>
 
@@ -175,17 +175,17 @@ export default function ModestLanding() {
 
         <div className="left-content w-full flex flex-col items-center justify-center gap-5">
           <div ref={subtitleRef} className="overflow-hidden">
-            <div className="subtitle">Natural Magic</div>
+            <div className="subtitle">Modern Modesty</div>
           </div>
           <div ref={titleRef} className="flex items-center flex-col font-light">
             <div className="overflow-hidden">
-              <h1 className="text-5xl">Unlock your inner</h1>
+              <h1 className="text-5xl">Redefining Elegance</h1>
             </div>
             <div className="overflow-hidden">
-              <h1 className="text-5xl">beauty with our self</h1>
+              <h1 className="text-5xl">Explore Our Hijabs & Abayas</h1>
             </div>
             <div className="overflow-hidden">
-              <h1 className="text-5xl">care collection</h1>
+              <h1 className="text-5xl">Collection</h1>
             </div>
           </div>
         </div>
@@ -219,9 +219,9 @@ export default function ModestLanding() {
             className="footer-content flex gap-5 flex-col"
           >
             <div className="flex flex-col items-end">
-              <p>/Say Goodbye to dryness and</p>
-              <p>dulness with our fast-absorbing</p>
-              <p>face oil.</p>
+              <p>Where Modesty Meets Style </p>
+              <p>Soft fabrics. Perfect drape.</p>
+              <p>Everyday comfort.</p>
             </div>
             <div className="flex justify-end gap-2">
               <div className="nav-arrow bg-gray-300 rounded-full size-10 flex items-center justify-center cursor-pointer">
@@ -267,7 +267,7 @@ export default function ModestLanding() {
           className="image-container relative w-full h-full"
         >
           <Image
-            src="/ecom.jpg"
+            src="/hijab.jpg"
             alt="Skincare product"
             fill
             className="object-cover"

@@ -1,173 +1,203 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import gsap from "gsap";
+import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Image from "next/image";
 
-export default function RestLanding() {
-  const titleRef = useRef(null);
-  const descRef = useRef(null);
-  const logoRef = useRef(null);
-  const eventLabelRef = useRef(null);
-  const containerRef = useRef(null);
+const RestaurantLanding = () => {
+  const componentRef = useRef(null);
+  const textRef = useRef(null);
+  const circleRef = useRef(null);
+  const imageRef = useRef(null);
+  const navRef = useRef(null);
+  const featureRefs = useRef([]);
 
+  // Register ScrollTrigger plugin
   useEffect(() => {
-    // Register ScrollTrigger plugin
     gsap.registerPlugin(ScrollTrigger);
 
-    // IntersectionObserver to trigger animations when the component comes into view
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            // Initial animations on load
-            const tl = gsap.timeline();
+    const component = componentRef.current;
 
-            tl.fromTo(
-              logoRef.current,
-              { opacity: 0, y: -20 },
-              { opacity: 1, y: 0, duration: 1, ease: "power3.out" }
-            );
-
-            tl.fromTo(
-              eventLabelRef.current,
-              { opacity: 0, x: -20 },
-              { opacity: 1, x: 0, duration: 0.8, ease: "power3.out" },
-              "-=0.5"
-            );
-
-            // Masked text animation for title
-            tl.fromTo(
-              titleRef.current.querySelectorAll(".line-mask"),
-              { y: "100%" },
-              {
-                y: "0%",
-                duration: 1.2,
-                stagger: 0.2,
-                ease: "power3.out",
-              },
-              "-=0.3"
-            );
-
-            tl.fromTo(
-              descRef.current,
-              { opacity: 0, y: 20 },
-              { opacity: 1, y: 0, duration: 1, ease: "power3.out" },
-              "-=0.5"
-            );
-
-            // Scroll animations for background
-            gsap.fromTo(
-              containerRef.current,
-              { backgroundPosition: "50% 0%" },
-              {
-                backgroundPosition: "50% 20%",
-                ease: "none",
-                scrollTrigger: {
-                  trigger: containerRef.current,
-                  start: "top top",
-                  end: "bottom top",
-                  scrub: true,
-                },
-              }
-            );
-
-            // Stop observing once triggered
-            observer.unobserve(entry.target);
-          }
-        });
+    // Create a timeline for the animations
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: component,
+        start: "top 80%",
+        end: "bottom 20%",
+        toggleActions: "play none none reverse",
       },
-      { threshold: 0.3 } // Trigger when 30% of the component is visible
+    });
+
+    // Animate the navigation
+    tl.fromTo(
+      navRef.current,
+      { y: -50, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.8, ease: "power3.out" }
     );
 
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
-    }
+    // Animate the main heading
+    tl.fromTo(
+      textRef.current,
+      { x: 50, opacity: 0 },
+      { x: 0, opacity: 1, duration: 0.8, ease: "power3.out" },
+      "-=0.4"
+    );
 
-    // Clean up observer on unmount
+    // Animate the circle
+    tl.fromTo(
+      circleRef.current,
+      { scale: 0.8, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 1, ease: "power2.out" },
+      "-=0.6"
+    );
+
+    // Animate the image
+    tl.fromTo(
+      imageRef.current,
+      { x: 100, opacity: 0 },
+      { x: 0, opacity: 1, duration: 1, ease: "power3.out" },
+      "-=0.8"
+    );
+
+    // Animate the feature points
+    featureRefs.current.forEach((feature, index) => {
+      tl.fromTo(
+        feature,
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" },
+        `-=${0.3 + index * 0.1}`
+      );
+    });
+
     return () => {
-      if (containerRef.current) observer.unobserve(containerRef.current);
+      // Clean up ScrollTrigger when component unmounts
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, []);
 
+  // Add feature point to refs
+  const addToFeatureRefs = (el) => {
+    if (el && !featureRefs.current.includes(el)) {
+      featureRefs.current.push(el);
+    }
+  };
+
   return (
     <div
-      ref={containerRef}
-      className="relative w-full h-screen overflow-hidden bg-black"
+      ref={componentRef}
+      className="w-full h-screen overflow-hidden bg-white  text-black"
     >
-      {/* Background image with overlay */}
-      <div className="absolute inset-0 w-full h-full">
-        <Image
-          src="/restaurant.jpg"
-          alt="Alibi lounge atmosphere"
-          fill
-          priority
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-black/60"></div>
-      </div>
-
-      {/* Content container */}
-      <div className="relative z-10 flex flex-col h-full px-6 md:px-16 lg:px-24 justify-center">
-        {/* Logo */}
-        <div
-          ref={logoRef}
-          className="absolute top-8 right-8 md:top-12 md:right-16"
-        >
-          <h2 className="text-2xl md:text-3xl font-serif text-yellow-400">
-            alibi
-          </h2>
+      {/* Navigation */}
+      <nav
+        ref={navRef}
+        className="w-full h-14 bg-black text-white flex justify-between items-center px-6"
+      >
+        <div className="flex space-x-8">
+          <button className="text-sm tracking-wider hover:text-gray-300 transition-colors">
+            MENU
+          </button>
+          <button className="text-sm tracking-wider hover:text-gray-300 transition-colors">
+            RESERVATION
+          </button>
+          <button className="text-sm tracking-wider hover:text-gray-300 transition-colors">
+            ABOUT
+          </button>
+          <button className="text-sm tracking-wider hover:text-gray-300 transition-colors">
+            CONTACT
+          </button>
         </div>
 
-        {/* Main content */}
-        <div className="max-w-3xl">
-          {/* Event label */}
-          <div ref={eventLabelRef} className="mb-6">
-            <span className="inline-block px-3 py-1 text-xs tracking-wider text-yellow-400 border border-yellow-400">
-              EVENTS
-            </span>
-          </div>
+        <div className="text-center">
+          <h1 className="text-xl font-light">
+            Fusion <span className="italic">Bistro</span>
+          </h1>
+        </div>
 
-          {/* Title with masked animation */}
-          <div ref={titleRef} className="mb-8">
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif text-white leading-tight">
-              <div className="overflow-hidden">
-                <div className="line-mask">Every Night</div>
-              </div>
-              <div className="overflow-hidden">
-                <div className="line-mask">Sparkles with</div>
-              </div>
-              <div className="overflow-hidden">
-                <div className="line-mask">Alibi</div>
-              </div>
-            </h1>
-          </div>
+        <div className="flex items-center space-x-4">
+          <span className="text-sm">EN / NO</span>
+          <span className="text-sm">(704) 555-0127</span>
+        </div>
+      </nav>
 
-          {/* Description */}
-          <div ref={descRef}>
-            <p className="text-lg md:text-xl text-gray-300 max-w-xl">
-              Alibi nights shine with excitement! Join us for vibrant events and
-              live entertainment, making every evening sparkle at our lounge.
-            </p>
-          </div>
-
-          {/* CTA Button */}
+      {/* Main Content */}
+      <div className="flex h-[calc(100vh-3.5rem)]">
+        {/* Left Section */}
+        <div className="w-1/2 bg-[#f3f5e6] relative overflow-hidden">
           <div
-            className="mt-10 opacity-0 animate-fadeIn"
-            style={{ animationDelay: "1.8s", animationFillMode: "forwards" }}
+            ref={circleRef}
+            className="absolute w-[120%] h-[120%] border border-black/20 rounded-full left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
           >
-            <Link
-              href="/reservations"
-              className="px-8 py-3 text-sm uppercase tracking-wider border border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-black transition-colors duration-300"
+            {/* Feature Points */}
+            <div
+              ref={addToFeatureRefs}
+              className="absolute top-[15%] left-[15%]"
             >
-              Reserve a Table
-            </Link>
+              <div className="text-xs text-black/70">[01]</div>
+              <div className="mt-2 text-sm uppercase leading-tight max-w-[150px]">
+                A thoughtful and unique concept
+              </div>
+            </div>
+
+            <div
+              ref={addToFeatureRefs}
+              className="absolute top-[15%] right-[25%]"
+            >
+              <div className="text-xs text-black/70">[02]</div>
+              <div className="mt-2 text-sm uppercase leading-tight max-w-[150px]">
+                Gourmet cuisine from the chef
+              </div>
+            </div>
+
+            <div
+              ref={addToFeatureRefs}
+              className="absolute bottom-[15%] left-[15%]"
+            >
+              <div className="text-xs text-black/70">[03]</div>
+              <div className="mt-2 text-sm uppercase leading-tight max-w-[150px]">
+                Incredible cocktails from our bartender
+              </div>
+            </div>
+
+            <div
+              ref={addToFeatureRefs}
+              className="absolute bottom-[15%] right-[25%]"
+            >
+              <div className="text-xs text-black/70">[04]</div>
+              <div className="mt-2 text-sm uppercase leading-tight max-w-[150px]">
+                The freshest ingredients for dishes
+              </div>
+            </div>
+
+            {/* Center Content */}
+            <div
+              ref={textRef}
+              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center w-full max-w-xs font-serif"
+            >
+              <h2 className="text-5xl font-bold mb-1">Unlock a new</h2>
+              <p className="text-5xl italic font-light mb-6">experience</p>
+              <button className="uppercase text-xs tracking-wider border-b border-black pb-1 hover:pb-2 transition-all">
+                Get Started
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Section - Image */}
+        <div ref={imageRef} className="w-1/2 bg-[#1a3a32] overflow-hidden">
+          <div className="h-full w-full relative">
+            <Image
+              src="/restaurant.jpg"
+              fill
+              alt="Elegant cocktails"
+              className="h-full w-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-br from-[#1a3a32]/30 to-transparent mix-blend-multiply"></div>
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default RestaurantLanding;

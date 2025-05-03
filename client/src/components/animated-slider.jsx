@@ -150,7 +150,11 @@ const AnimatedSlider = () => {
               {index === 3 && <RestLanding />}
               {index === 4 && (
                 <div className="h-full w-full bg-white text-black flex items-end justify-end px-10">
-                  <MaskedText text="Every detail earns its place. Landing pages that feel right — and work even better." />
+                  <MaskedText
+                    text="Every detail earns its place. Landing pages that feel right — and work even better."
+                    className="text-7xl leading-16"
+                    indent="false"
+                  />
                 </div>
               )}
             </div>
