@@ -33,8 +33,8 @@ export default function LoadingScreen() {
   return (
     <div className="loading-screen fixed inset-0 bg-white z-50 flex items-center justify-center">
       <div className="loading-content text-center">
-        <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
-          Tomorrow&apos;s Brands, Today.™
+        <h1 className="text-2xl  tracking-tight">
+          Tomorrow&apos;s World, Designed.™
         </h1>
       </div>
     </div>

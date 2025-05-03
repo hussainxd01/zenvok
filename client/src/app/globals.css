@@ -5,9 +5,25 @@
   --background: #000000;
 }
 
+@font-face {
+  font-family: "Suisse Intl";
+  src: url("/font/Suisse_Intl_Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Suisse Intl Light";
+  src: url("/font/Suiss_Light.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: "Inter", sans-serif;
+  font-family: "Suisse Intl Light", sans-serif;
   overflow-x: hidden;
 }

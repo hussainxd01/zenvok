@@ -84,8 +84,15 @@ const AnimatedSlider = () => {
       duration: totalSlides - 1, // Duration based on number of slides
     });
 
-    // Animate content inside each slide with better timing
+    // Make the first slide immediately visible (no fade animation)
+    const firstSlideContent = sections[0].querySelector(".slide-content");
+    gsap.set(firstSlideContent, { opacity: 1, y: 0 });
+
+    // Animate content inside each slide with better timing (starting from the second slide)
     sections.forEach((slide, index) => {
+      // Skip the first slide - it's already set to be visible
+      if (index === 0) return;
+
       const content = slide.querySelector(".slide-content");
 
       // Create a separate timeline for each slide's content
@@ -132,7 +139,11 @@ const AnimatedSlider = () => {
             ref={(el) => (slidesRef.current[index] = el)}
             className="w-screen h-screen flex items-center justify-center"
           >
-            <div className="slide-content text-white w-full h-full opacity-0">
+            <div
+              className={`slide-content text-white w-full h-full ${
+                index === 0 ? "opacity-100" : "opacity-0"
+              }`}
+            >
               {index === 0 && <SkincareLanding />}
               {index === 1 && <ModestLanding />}
               {index === 2 && <Ecomlanding />}

@@ -113,7 +113,7 @@ const Statement = () => {
       textContainersRef.current.forEach(({ wordSpan }, index) => {
         gsap.to(wordSpan, {
           y: 0,
-          duration: 0.5,
+          duration: 0.3,
           ease: "power2.out",
           delay: index * 0.05,
           scrollTrigger: {
