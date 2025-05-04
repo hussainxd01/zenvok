@@ -135,7 +135,7 @@ const MaskedText = ({ text, className = "", indent = true }) => {
     <div ref={containerRef}>
       <h1
         ref={textRef}
-        className={` text-black font-extralight tracking-tighter mb-12 ${className}`}
+        className={` text-black font-extralight tracking-tight mb-12 ${className}`}
       >
         {text}
       </h1>

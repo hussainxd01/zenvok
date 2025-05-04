@@ -4433,6 +4433,238 @@ if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelper
     __turbopack_context__.k.registerExports(module, globalThis.$RefreshHelpers$);
 }
 }}),
+"[project]/src/components/infinite-carousel.jsx [app-client] (ecmascript)": ((__turbopack_context__) => {
+"use strict";
+
+var { g: global, __dirname, k: __turbopack_refresh__, m: module } = __turbopack_context__;
+{
+__turbopack_context__.s({
+    "default": (()=>InfiniteCarousel)
+});
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/node_modules/gsap/index.js [app-client] (ecmascript) <locals>");
+;
+var _s = __turbopack_context__.k.signature();
+;
+;
+function InfiniteCarousel() {
+    _s();
+    const [isDragging, setIsDragging] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [startX, setStartX] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(0);
+    const [scrollLeft, setScrollLeft] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(0);
+    const carouselRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
+    const sliderRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
+    const animationRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
+    // Sample slides - replace with your own content
+    const slides = [
+        {
+            id: 1,
+            color: "bg-blue-500",
+            text: "Slide 1"
+        },
+        {
+            id: 2,
+            color: "bg-red-500",
+            text: "Slide 2"
+        },
+        {
+            id: 3,
+            color: "bg-green-500",
+            text: "Slide 3"
+        },
+        {
+            id: 4,
+            color: "bg-yellow-500",
+            text: "Slide 4"
+        },
+        {
+            id: 5,
+            color: "bg-purple-500",
+            text: "Slide 5"
+        }
+    ];
+    // Setup automatic infinite scrolling
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "InfiniteCarousel.useEffect": ()=>{
+            const carousel = carouselRef.current;
+            const slider = sliderRef.current;
+            // Create duplicated slides for infinite effect
+            const duplicateSlides = {
+                "InfiniteCarousel.useEffect.duplicateSlides": ()=>{
+                    // First duplicate all slides for the beginning
+                    const originalSlides = Array.from(slider.children);
+                    originalSlides.forEach({
+                        "InfiniteCarousel.useEffect.duplicateSlides": (slide)=>{
+                            const clone = slide.cloneNode(true);
+                            slider.appendChild(clone);
+                        }
+                    }["InfiniteCarousel.useEffect.duplicateSlides"]);
+                    // Then duplicate again for the end
+                    originalSlides.forEach({
+                        "InfiniteCarousel.useEffect.duplicateSlides": (slide)=>{
+                            const clone = slide.cloneNode(true);
+                            slider.prepend(clone);
+                        }
+                    }["InfiniteCarousel.useEffect.duplicateSlides"]);
+                    // Position in the middle
+                    const slideWidth = slider.children[0].offsetWidth;
+                    carousel.scrollLeft = slideWidth * originalSlides.length;
+                }
+            }["InfiniteCarousel.useEffect.duplicateSlides"];
+            duplicateSlides();
+            // Setup automatic animation
+            const autoScroll = {
+                "InfiniteCarousel.useEffect.autoScroll": ()=>{
+                    const carousel = carouselRef.current;
+                    if (!carousel || isDragging) return;
+                    const scrollAmount = 1; // Pixels to scroll per frame
+                    carousel.scrollLeft += scrollAmount;
+                    // Check if we need to loop back
+                    const totalWidth = slider.scrollWidth;
+                    const visibleWidth = carousel.offsetWidth;
+                    const maxScrollLeft = totalWidth - visibleWidth;
+                    if (carousel.scrollLeft >= maxScrollLeft - 5) {
+                        // Reset to one-third point (after first set of duplicates)
+                        carousel.scrollLeft = visibleWidth;
+                    } else if (carousel.scrollLeft <= 5) {
+                        // Reset to two-thirds point (before last set of duplicates)
+                        carousel.scrollLeft = maxScrollLeft - visibleWidth;
+                    }
+                    animationRef.current = requestAnimationFrame(autoScroll);
+                }
+            }["InfiniteCarousel.useEffect.autoScroll"];
+            // Start the animation
+            animationRef.current = requestAnimationFrame(autoScroll);
+            // Cleanup
+            return ({
+                "InfiniteCarousel.useEffect": ()=>{
+                    if (animationRef.current) {
+                        cancelAnimationFrame(animationRef.current);
+                    }
+                }
+            })["InfiniteCarousel.useEffect"];
+        }
+    }["InfiniteCarousel.useEffect"], [
+        isDragging
+    ]);
+    // Mouse and touch event handlers for manual sliding
+    const handleMouseDown = (e)=>{
+        setIsDragging(true);
+        setStartX(e.pageX - carouselRef.current.offsetLeft);
+        setScrollLeft(carouselRef.current.scrollLeft);
+        // Pause the automatic animation
+        if (animationRef.current) {
+            cancelAnimationFrame(animationRef.current);
+        }
+    };
+    const handleMouseUp = ()=>{
+        setIsDragging(false);
+        // Resume the automatic animation
+        if (!animationRef.current) {
+            animationRef.current = requestAnimationFrame(()=>{
+                const autoScroll = ()=>{
+                    const carousel = carouselRef.current;
+                    if (!carousel || isDragging) return;
+                    carousel.scrollLeft += 1;
+                    // Check if we need to loop back
+                    const totalWidth = sliderRef.current.scrollWidth;
+                    const visibleWidth = carousel.offsetWidth;
+                    const maxScrollLeft = totalWidth - visibleWidth;
+                    if (carousel.scrollLeft >= maxScrollLeft - 5) {
+                        carousel.scrollLeft = visibleWidth;
+                    } else if (carousel.scrollLeft <= 5) {
+                        carousel.scrollLeft = maxScrollLeft - visibleWidth;
+                    }
+                    animationRef.current = requestAnimationFrame(autoScroll);
+                };
+                autoScroll();
+            });
+        }
+    };
+    const handleMouseMove = (e)=>{
+        if (!isDragging) return;
+        const x = e.pageX - carouselRef.current.offsetLeft;
+        const walk = (x - startX) * 2; // Adjust speed
+        carouselRef.current.scrollLeft = scrollLeft - walk;
+        e.preventDefault();
+    };
+    const handleTouchStart = (e)=>{
+        setIsDragging(true);
+        setStartX(e.touches[0].pageX - carouselRef.current.offsetLeft);
+        setScrollLeft(carouselRef.current.scrollLeft);
+        // Pause the automatic animation
+        if (animationRef.current) {
+            cancelAnimationFrame(animationRef.current);
+        }
+    };
+    const handleTouchMove = (e)=>{
+        if (!isDragging) return;
+        const x = e.touches[0].pageX - carouselRef.current.offsetLeft;
+        const walk = (x - startX) * 2;
+        carouselRef.current.scrollLeft = scrollLeft - walk;
+        e.preventDefault();
+    };
+    // Apply smooth animation when dragging ends
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "InfiniteCarousel.useEffect": ()=>{
+            if (!isDragging && carouselRef.current) {
+                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].to(carouselRef.current, {
+                    duration: 0.5,
+                    ease: "power2.out"
+                });
+            }
+        }
+    }["InfiniteCarousel.useEffect"], [
+        isDragging
+    ]);
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        className: "w-full bg-white py-10",
+        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            ref: carouselRef,
+            className: "overflow-hidden cursor-grab relative",
+            onMouseDown: handleMouseDown,
+            onMouseUp: handleMouseUp,
+            onMouseLeave: handleMouseUp,
+            onMouseMove: handleMouseMove,
+            onTouchStart: handleTouchStart,
+            onTouchEnd: handleMouseUp,
+            onTouchMove: handleTouchMove,
+            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                ref: sliderRef,
+                className: "flex transition-transform whitespace-nowrap gap-10 ",
+                children: slides.map((slide)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: `flex-shrink-0 w-full md:w-1/2 lg:w-1/3 p-4 ${slide.color} h-64 flex items-center justify-center text-white text-2xl font-bold`,
+                        children: slide.text
+                    }, slide.id, false, {
+                        fileName: "[project]/src/components/infinite-carousel.jsx",
+                        lineNumber: 184,
+                        columnNumber: 13
+                    }, this))
+            }, void 0, false, {
+                fileName: "[project]/src/components/infinite-carousel.jsx",
+                lineNumber: 179,
+                columnNumber: 9
+            }, this)
+        }, void 0, false, {
+            fileName: "[project]/src/components/infinite-carousel.jsx",
+            lineNumber: 168,
+            columnNumber: 7
+        }, this)
+    }, void 0, false, {
+        fileName: "[project]/src/components/infinite-carousel.jsx",
+        lineNumber: 167,
+        columnNumber: 5
+    }, this);
+}
+_s(InfiniteCarousel, "JVRJ4uEm2+u5cBbTXP0WOQEZMu4=");
+_c = InfiniteCarousel;
+var _c;
+__turbopack_context__.k.register(_c, "InfiniteCarousel");
+if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
+    __turbopack_context__.k.registerExports(module, globalThis.$RefreshHelpers$);
+}
+}}),
 "[project]/src/app/page.js [app-client] (ecmascript)": ((__turbopack_context__) => {
 "use strict";
 
@@ -4451,9 +4683,11 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$animate
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$footer$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/footer.jsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$approach$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/approach.jsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$space$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/space.jsx [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$infinite$2d$carousel$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/infinite-carousel.jsx [app-client] (ecmascript)");
 ;
 var _s = __turbopack_context__.k.signature();
 "use client";
+;
 ;
 ;
 ;
@@ -4472,44 +4706,49 @@ function Home() {
                 heroRef: heroRef
             }, void 0, false, {
                 fileName: "[project]/src/app/page.js",
-                lineNumber: 17,
+                lineNumber: 18,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$hero$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                 heroRef: heroRef
             }, void 0, false, {
                 fileName: "[project]/src/app/page.js",
-                lineNumber: 18,
+                lineNumber: 19,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$showreel$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/src/app/page.js",
-                lineNumber: 19,
+                lineNumber: 20,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$statement$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/src/app/page.js",
-                lineNumber: 20,
+                lineNumber: 21,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$animated$2d$slider$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/src/app/page.js",
-                lineNumber: 21,
+                lineNumber: 22,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$space$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/src/app/page.js",
-                lineNumber: 22,
+                lineNumber: 23,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$approach$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/src/app/page.js",
-                lineNumber: 23,
+                lineNumber: 24,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$infinite$2d$carousel$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
+                fileName: "[project]/src/app/page.js",
+                lineNumber: 25,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$footer$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/src/app/page.js",
-                lineNumber: 24,
+                lineNumber: 26,
                 columnNumber: 7
             }, this)
         ]
@@ -4525,4 +4764,4 @@ if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelper
 }}),
 }]);
 
-//# sourceMappingURL=src_a48e8480._.js.map
+//# sourceMappingURL=src_db5cb2ee._.js.map

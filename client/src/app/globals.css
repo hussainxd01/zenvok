@@ -15,7 +15,7 @@
 
 @font-face {
   font-family: "Suisse Intl Light";
-  src: url("/font/Suiss_Light.woff") format("woff");
+  src: url("/fonts/Suiss_Light.woff") format("woff");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
