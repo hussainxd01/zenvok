@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { gsap } from "gsap";
 
 export default function InfiniteCarousel() {
@@ -9,13 +10,43 @@ export default function InfiniteCarousel() {
   const sliderRef = useRef(null);
   const animationRef = useRef(null);
 
-  // Sample slides - replace with your own content
+  // Sample slides with images - replace with your own content
   const slides = [
-    { id: 1, color: "bg-blue-500", text: "Slide 1" },
-    { id: 2, color: "bg-red-500", text: "Slide 2" },
-    { id: 3, color: "bg-green-500", text: "Slide 3" },
-    { id: 4, color: "bg-yellow-500", text: "Slide 4" },
-    { id: 5, color: "bg-purple-500", text: "Slide 5" },
+    {
+      id: 1,
+      color: "bg-blue-500",
+      text: "Slide 1",
+      imageSrc: "/api/placeholder/800/500",
+      alt: "Slide 1 Image",
+    },
+    {
+      id: 2,
+      color: "bg-red-500",
+      text: "Slide 2",
+      imageSrc: "/api/placeholder/800/500",
+      alt: "Slide 2 Image",
+    },
+    {
+      id: 3,
+      color: "bg-green-500",
+      text: "Slide 3",
+      imageSrc: "/api/placeholder/800/500",
+      alt: "Slide 3 Image",
+    },
+    {
+      id: 4,
+      color: "bg-yellow-500",
+      text: "Slide 4",
+      imageSrc: "/api/placeholder/800/500",
+      alt: "Slide 4 Image",
+    },
+    {
+      id: 5,
+      color: "bg-purple-500",
+      text: "Slide 5",
+      imageSrc: "/api/placeholder/800/500",
+      alt: "Slide 5 Image",
+    },
   ];
 
   // Setup automatic infinite scrolling
@@ -178,14 +209,23 @@ export default function InfiniteCarousel() {
       >
         <div
           ref={sliderRef}
-          className="flex transition-transform whitespace-nowrap gap-10 "
+          className="flex transition-transform whitespace-nowrap gap-10"
         >
           {slides.map((slide) => (
             <div
               key={slide.id}
-              className={`flex-shrink-0 w-full md:w-1/2 lg:w-1/3 p-4 ${slide.color} h-64 flex items-center justify-center text-white text-2xl font-bold`}
+              className={`flex-shrink-0 w-full md:w-1/2 lg:w-1/3 p-4 ${slide.color} h-96 flex flex-col items-center justify-center text-white rounded-lg overflow-hidden`}
             >
-              {slide.text}
+              <div className="relative w-full h-52 mb-4">
+                <Image
+                  src={slide.imageSrc}
+                  alt={slide.alt}
+                  fill
+                  className="object-cover rounded-lg"
+                  priority
+                />
+              </div>
+              <div className="absolute inset-0">{slide.text}</div>
             </div>
           ))}
         </div>

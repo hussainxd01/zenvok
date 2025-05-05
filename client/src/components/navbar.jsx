@@ -1,15 +1,20 @@
 "use client";
 import gsap from "gsap";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
 
-export default function Navbar({ heroRef }) {
+export default function Navbar({
+  heroRef = null,
+  triggerStart = "bottom top",
+  triggerEnd = "bottom top-=100",
+}) {
   gsap.registerPlugin(ScrollTrigger);
   const navbarRef = useRef(null);
   const textRef = useRef(null);
   const svgNavRef = useRef(null);
   const logoContainerRef = useRef(null);
+  const [scrollTriggers, setScrollTriggers] = useState([]);
 
   useEffect(() => {
     // Navbar slide in when page loads
@@ -37,12 +42,26 @@ export default function Navbar({ heroRef }) {
       top: 0,
     });
 
+    return () => {
+      // Clean up scroll triggers when component unmounts
+      scrollTriggers.forEach((trigger) => {
+        if (trigger) trigger.kill();
+      });
+    };
+  }, [scrollTriggers]);
+
+  // Set up scroll animations only when heroRef is provided
+  useEffect(() => {
+    if (!heroRef || !heroRef.current) return;
+
+    const newScrollTriggers = [];
+
     // Text and SVG scroll animation
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: heroRef.current,
-        start: "bottom top", // when hero bottom hits top of viewport
-        end: "bottom top-=100",
+        start: triggerStart, // when hero bottom hits top of viewport
+        end: triggerEnd,
         scrub: 0.5, // smoother scrub for more precise animation
         toggleActions: "play reverse play reverse",
       },
@@ -64,8 +83,10 @@ export default function Navbar({ heroRef }) {
       "-=0.35" // Increased overlap for smoother transition
     );
 
+    newScrollTriggers.push(tl.scrollTrigger);
+
     // Create reverse animation when scrolling back up
-    ScrollTrigger.create({
+    const reverseTrigger = ScrollTrigger.create({
       trigger: heroRef.current,
       start: "bottom top+=200",
       onLeaveBack: () => {
@@ -83,7 +104,17 @@ export default function Navbar({ heroRef }) {
         });
       },
     });
-  }, [heroRef]);
+
+    newScrollTriggers.push(reverseTrigger);
+    setScrollTriggers(newScrollTriggers);
+
+    return () => {
+      // Clean up these specific scroll triggers when heroRef changes
+      newScrollTriggers.forEach((trigger) => {
+        if (trigger) trigger.kill();
+      });
+    };
+  }, [heroRef, triggerStart, triggerEnd]);
 
   return (
     <section

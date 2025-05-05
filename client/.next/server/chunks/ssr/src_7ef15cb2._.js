@@ -4211,7 +4211,9 @@ __turbopack_context__.s({
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react-jsx-dev-runtime.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react.js [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/image.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/node_modules/gsap/index.js [app-ssr] (ecmascript) <locals>");
+;
 ;
 ;
 ;
@@ -4222,32 +4224,42 @@ function InfiniteCarousel() {
     const carouselRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
     const sliderRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
     const animationRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
-    // Sample slides - replace with your own content
+    // Sample slides with images - replace with your own content
     const slides = [
         {
             id: 1,
             color: "bg-blue-500",
-            text: "Slide 1"
+            text: "Slide 1",
+            imageSrc: "/api/placeholder/800/500",
+            alt: "Slide 1 Image"
         },
         {
             id: 2,
             color: "bg-red-500",
-            text: "Slide 2"
+            text: "Slide 2",
+            imageSrc: "/api/placeholder/800/500",
+            alt: "Slide 2 Image"
         },
         {
             id: 3,
             color: "bg-green-500",
-            text: "Slide 3"
+            text: "Slide 3",
+            imageSrc: "/api/placeholder/800/500",
+            alt: "Slide 3 Image"
         },
         {
             id: 4,
             color: "bg-yellow-500",
-            text: "Slide 4"
+            text: "Slide 4",
+            imageSrc: "/api/placeholder/800/500",
+            alt: "Slide 4 Image"
         },
         {
             id: 5,
             color: "bg-purple-500",
-            text: "Slide 5"
+            text: "Slide 5",
+            imageSrc: "/api/placeholder/800/500",
+            alt: "Slide 5 Image"
         }
     ];
     // Setup automatic infinite scrolling
@@ -4384,28 +4396,55 @@ function InfiniteCarousel() {
             onTouchMove: handleTouchMove,
             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 ref: sliderRef,
-                className: "flex transition-transform whitespace-nowrap gap-10 ",
+                className: "flex transition-transform whitespace-nowrap gap-10",
                 children: slides.map((slide)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: `flex-shrink-0 w-full md:w-1/2 lg:w-1/3 p-4 ${slide.color} h-64 flex items-center justify-center text-white text-2xl font-bold`,
-                        children: slide.text
-                    }, slide.id, false, {
+                        className: `flex-shrink-0 w-full md:w-1/2 lg:w-1/3 p-4 ${slide.color} h-96 flex flex-col items-center justify-center text-white rounded-lg overflow-hidden`,
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "relative w-full h-52 mb-4",
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
+                                    src: slide.imageSrc,
+                                    alt: slide.alt,
+                                    fill: true,
+                                    className: "object-cover rounded-lg",
+                                    priority: true
+                                }, void 0, false, {
+                                    fileName: "[project]/src/components/infinite-carousel.jsx",
+                                    lineNumber: 220,
+                                    columnNumber: 17
+                                }, this)
+                            }, void 0, false, {
+                                fileName: "[project]/src/components/infinite-carousel.jsx",
+                                lineNumber: 219,
+                                columnNumber: 15
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "absolute inset-0",
+                                children: slide.text
+                            }, void 0, false, {
+                                fileName: "[project]/src/components/infinite-carousel.jsx",
+                                lineNumber: 228,
+                                columnNumber: 15
+                            }, this)
+                        ]
+                    }, slide.id, true, {
                         fileName: "[project]/src/components/infinite-carousel.jsx",
-                        lineNumber: 184,
+                        lineNumber: 215,
                         columnNumber: 13
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/src/components/infinite-carousel.jsx",
-                lineNumber: 179,
+                lineNumber: 210,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/src/components/infinite-carousel.jsx",
-            lineNumber: 168,
+            lineNumber: 199,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/components/infinite-carousel.jsx",
-        lineNumber: 167,
+        lineNumber: 198,
         columnNumber: 5
     }, this);
 }

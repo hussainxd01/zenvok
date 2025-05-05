@@ -144,12 +144,12 @@ const AnimatedSlider = () => {
                 index === 0 ? "opacity-100" : "opacity-0"
               }`}
             >
-              {index === 0 && <SkincareLanding />}
+              {index === 4 && <SkincareLanding />}
               {index === 1 && <ModestLanding />}
               {index === 2 && <Ecomlanding />}
               {index === 3 && <RestLanding />}
-              {index === 4 && (
-                <div className="h-full w-full bg-white text-black flex items-end justify-end px-10">
+              {index === 0 && (
+                <div className="h-full w-full bg-white text-black flex items-center justify-center px-10">
                   <MaskedText
                     text="Every detail earns its place. Landing pages that feel right — and work even better."
                     className="text-7xl leading-16"

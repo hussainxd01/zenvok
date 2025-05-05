@@ -40,7 +40,7 @@ const MaskedText = ({ text, className = "", indent = true }) => {
       container.style.overflow = "hidden";
       container.style.position = "relative";
       container.style.verticalAlign = "top";
-      container.style.height = "auto"; // Allow height to adjust based on content
+      container.style.paddingBottom = "5px"; // Add padding to prevent clipping
 
       // Create word span that will be animated
       const wordSpan = document.createElement("span");
@@ -69,7 +69,8 @@ const MaskedText = ({ text, className = "", indent = true }) => {
     // Force layout calculation to ensure proper sizing
     wordContainersRef.current.forEach((container, i) => {
       const wordHeight = wordRefs.current[i].offsetHeight;
-      container.style.height = `${wordHeight}px`;
+      // Set container height slightly larger than word height to prevent clipping
+      container.style.height = `${wordHeight + 2}px`;
     });
   };
 
@@ -125,6 +126,12 @@ const MaskedText = ({ text, className = "", indent = true }) => {
           stagger: 0.05,
           onComplete: () => {
             animationExecuted.current = true;
+
+            // Update container heights after animation completes
+            wordContainersRef.current.forEach((container, i) => {
+              const wordHeight = wordRefs.current[i].offsetHeight;
+              container.style.height = `${wordHeight + 6}px`;
+            });
           },
         });
       }, 100);
@@ -135,7 +142,7 @@ const MaskedText = ({ text, className = "", indent = true }) => {
     <div ref={containerRef}>
       <h1
         ref={textRef}
-        className={` text-black font-extralight tracking-tight mb-12 ${className}`}
+        className={`text-black font-extralight tracking-tight mb-12 ${className}`}
       >
         {text}
       </h1>
