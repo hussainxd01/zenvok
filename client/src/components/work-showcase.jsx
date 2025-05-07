@@ -120,7 +120,10 @@ const WorkShowcase = () => {
   return (
     <>
       <Navbar />
-      <div className="h-[80vh] w-full bg-white z-[999] relative flex items-end justify-between px-10">
+      <div
+        className="h-[80vh] w-full bg-white z-40 relative flex items-end justify-between px-10"
+        data-theme="light"
+      >
         <MaskedText
           text={
             "Working to shape the future of your industry? We create brands that bring that ambition to life."
@@ -132,6 +135,7 @@ const WorkShowcase = () => {
       <div
         ref={containerRef}
         className="relative w-full overflow-hidden bg-black"
+        data-theme="dark"
       >
         {/* Custom full-viewport background div to ensure no gaps */}
         <div className="fixed inset-0 w-full h-full bg-black z-0"></div>
@@ -149,6 +153,7 @@ const WorkShowcase = () => {
               willChange: "transform",
               backfaceVisibility: "hidden",
             }}
+            data-theme="dark"
           >
             <Link
               href={project.url}

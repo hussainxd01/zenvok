@@ -3,8 +3,13 @@ import { useEffect } from "react";
 import Lenis from "lenis";
 import "./globals.css";
 import LoadingScreen from "@/components/loading-screen";
+import { usePathname } from "next/navigation";
 
 export default function RootLayout({ children }) {
+  const pathname = usePathname();
+  const isHomePage = pathname === "/";
+
+  // Initialize smooth scrolling with Lenis
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.2,
@@ -24,10 +29,12 @@ export default function RootLayout({ children }) {
       lenis.destroy();
     };
   }, []);
+
   return (
     <html lang="en">
-      <body className={` antialiased`}>
-        <LoadingScreen />
+      <body className="antialiased">
+        {/* Only show loading screen on homepage */}
+        {isHomePage && <LoadingScreen />}
         {children}
       </body>
     </html>
