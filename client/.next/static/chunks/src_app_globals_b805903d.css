@@ -94,6 +94,7 @@
     --color-amber-700: oklch(55.5% .163 48.998);
     --color-amber-800: oklch(47.3% .137 46.201);
     --color-amber-900: oklch(41.4% .112 45.904);
+    --color-amber-950: oklch(27.9% .077 45.635);
     --color-yellow-400: oklch(85.2% .199 91.936);
     --color-yellow-500: oklch(79.5% .184 86.047);
     --color-green-100: oklch(96.2% .044 156.743);
@@ -540,6 +541,10 @@
     left: 15%;
   }
 
+  .-z-10 {
+    z-index: calc(10 * -1);
+  }
+
   .z-0 {
     z-index: 0;
   }
@@ -562,6 +567,10 @@
 
   .z-50 {
     z-index: 50;
+  }
+
+  .z-\[999\] {
+    z-index: 999;
   }
 
   .z-\[9999\] {
@@ -857,16 +866,16 @@
     height: 80px;
   }
 
+  .h-\[80vh\] {
+    height: 80vh;
+  }
+
   .h-\[120\%\] {
     height: 120%;
   }
 
   .h-\[350px\] {
     height: 350px;
-  }
-
-  .h-\[500px\] {
-    height: 500px;
   }
 
   .h-\[700px\] {
@@ -1319,6 +1328,10 @@
     background-color: #f3f5e6;
   }
 
+  .bg-amber-950 {
+    background-color: var(--color-amber-950);
+  }
+
   .bg-black {
     background-color: var(--color-black);
   }
@@ -1349,6 +1362,10 @@
 
   .bg-blue-500 {
     background-color: var(--color-blue-500);
+  }
+
+  .bg-blue-600 {
+    background-color: var(--color-blue-600);
   }
 
   .bg-blue-900 {
@@ -2022,6 +2039,12 @@
   }
 
   @media (hover: hover) {
+    .hover\:border-white:hover {
+      border-color: var(--color-white);
+    }
+  }
+
+  @media (hover: hover) {
     .hover\:bg-gray-800:hover {
       background-color: var(--color-gray-800);
     }
@@ -2330,6 +2353,23 @@ body {
   color: var(--foreground);
   font-family: Suisse Intl Light, sans-serif;
   overflow-x: hidden;
+}
+
+.slide {
+  will-change: transform, opacity;
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+}
+
+.media-wrapper {
+  will-change: transform;
+  width: 100%;
+  height: 100%;
+  position: relative;
 }
 
 @property --tw-translate-x {

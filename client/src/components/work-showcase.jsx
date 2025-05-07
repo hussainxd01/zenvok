@@ -1,35 +1,38 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import MaskedText from "./masked-text";
+import Navbar from "./navbar";
 
 const WorkShowcase = () => {
   const containerRef = useRef(null);
-  const sectionsRef = useRef([]);
+  const slidesRef = useRef([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   // Sample projects data
   const projects = [
     {
       id: 1,
       name: "Rivian",
-      image: "/fashion.jpg",
+      image: "/van.jpg",
       url: "/work/rivian",
       number: "01",
     },
     {
       id: 2,
       name: "Du Chateau",
-      image: "/fashion.jpg",
+      image: "/furniture.jpg",
       url: "/work/du-chateau",
       number: "02",
     },
     {
       id: 3,
       name: "Oura Ring",
-      image: "/fashion.jpg",
+      image: "/ring.png",
       url: "/work/oura-ring",
       number: "03",
     },
@@ -46,162 +49,155 @@ const WorkShowcase = () => {
     // Register ScrollTrigger plugin
     gsap.registerPlugin(ScrollTrigger);
 
-    // Calculate total scroll height based on number of projects
+    // Set container height to allow for scrolling
     const totalHeight = projects.length * 100; // 100vh per project
-
-    // Set container height to allow scrolling
     gsap.set(containerRef.current, { height: `${totalHeight}vh` });
 
-    // Initialize all sections at full height
-    gsap.set(sectionsRef.current, {
-      height: "100vh",
-      position: "fixed",
-      top: 0,
-      left: 0,
-      width: "100%",
-    });
+    // Force browser to respect the stacking and prevent repaints
+    document.body.style.overflowX = "hidden";
+    document.body.style.background = "#000";
 
-    // Create the scroll-driven animation
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: "top top",
-        end: `bottom bottom`,
-        scrub: 1,
+    // Instead of animating each slide separately, we'll use ScrollTrigger
+    // to track the progress and update the current index
+    const scrollTrigger = ScrollTrigger.create({
+      trigger: containerRef.current,
+      start: "top top",
+      end: `bottom bottom`,
+      scrub: 1.2,
+      onUpdate: (self) => {
+        // Calculate current index based on scroll progress
+        const progress = self.progress;
+        const totalSections = projects.length;
+        const rawIndex = progress * totalSections;
+        const newIndex = Math.min(Math.floor(rawIndex), totalSections - 1);
+
+        if (newIndex !== currentIndex) {
+          setCurrentIndex(newIndex);
+        }
+
+        // Get current and next slide
+        const currentSlide = slidesRef.current[newIndex];
+        const nextSlide =
+          slidesRef.current[Math.min(newIndex + 1, totalSections - 1)];
+
+        if (!currentSlide || !nextSlide || newIndex >= totalSections - 1)
+          return;
+
+        // Calculate progress within this section (0 to 1)
+        const sectionProgress = rawIndex - newIndex;
+
+        // Apply parallax effect to current slide
+        const currentMediaWrapper =
+          currentSlide.querySelector(".media-wrapper");
+        gsap.set(currentMediaWrapper, {
+          y: `${sectionProgress * 30}%`,
+        });
+
+        // Move current slide up
+        gsap.set(currentSlide, {
+          y: `${sectionProgress * -100}%`,
+        });
+
+        // Move next slide up from the bottom
+        const nextMediaWrapper = nextSlide.querySelector(".media-wrapper");
+        gsap.set(nextSlide, {
+          y: `${100 - sectionProgress * 100}%`,
+        });
+        gsap.set(nextMediaWrapper, {
+          y: `${-30 + sectionProgress * 30}%`,
+        });
       },
     });
 
-    // Add animations for each section
-    sectionsRef.current.forEach((section, i) => {
-      // For each section, we want to:
-      // 1. Keep it at full height until its "turn" to shrink
-      // 2. Shrink it to minimum height (20vh) as we scroll through the next section
-      // 3. Keep it at minimum height for all subsequent scrolling
-
-      const minHeight = 20; // Minimum height in vh
-      const maxHeight = 100; // Maximum height in vh
-
-      // Calculate when this section should start shrinking
-      const startShrink = i * maxHeight; // Start shrinking when we reach the next section
-      const endShrink = startShrink + maxHeight; // Finish shrinking after scrolling through one full section
-
-      // Add to timeline
-      tl.fromTo(
-        section,
-        { height: `${maxHeight}vh` },
-        {
-          height: `${minHeight}vh`,
-          ease: "none",
-        },
-        startShrink / totalHeight // Normalize to 0-1 range for timeline positioning
-      );
-
-      // Set z-index to ensure proper stacking (earlier sections on top)
-      gsap.set(section, { zIndex: projects.length - i });
-    });
-
-    // Clean up ScrollTrigger on component unmount
     return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      // Clean up
+      scrollTrigger.kill();
+      document.body.style.overflowX = "";
+      document.body.style.background = "";
     };
-  }, [projects.length]);
+  }, [projects.length, currentIndex]);
 
   return (
-    <div ref={containerRef} className="relative w-full bg-black">
-      {/* Header */}
-      <header className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-10 py-8 pointer-events-none">
-        <div className="pointer-events-auto">
-          <Link
-            href="/"
-            className="text-white/80 hover:text-white transition-colors"
-          >
-            <span className="font-light">re/</span>jouice
-          </Link>
-        </div>
-        <nav className="flex gap-8 pointer-events-auto">
-          <Link
-            href="/"
-            className="text-white/60 hover:text-white transition-colors"
-          >
-            Home
-          </Link>
-          <Link
-            href="/work"
-            className="text-white hover:text-white transition-colors"
-          >
-            Work
-          </Link>
-          <Link
-            href="/about"
-            className="text-white/60 hover:text-white transition-colors"
-          >
-            About
-          </Link>
-          <Link
-            href="/services"
-            className="text-white/60 hover:text-white transition-colors"
-          >
-            Services
-          </Link>
-          <Link
-            href="/contact"
-            className="text-white/60 hover:text-white transition-colors"
-          >
-            Contact
-          </Link>
-        </nav>
-        <div className="pointer-events-auto">
-          <Link
-            href="/contact"
-            className="flex items-center gap-2 text-white/80 hover:text-white transition-colors"
-          >
-            Let's talk{" "}
-            <span className="inline-block transform rotate-45">↗</span>
-          </Link>
-        </div>
-      </header>
+    <>
+      <Navbar />
+      <div className="h-[80vh] w-full bg-white z-[999] relative flex items-end justify-between px-10">
+        <MaskedText
+          text={
+            "Working to shape the future of your industry? We create brands that bring that ambition to life."
+          }
+          className="text-7xl leading-16"
+          indent="false"
+        />
+      </div>
+      <div
+        ref={containerRef}
+        className="relative w-full overflow-hidden bg-black"
+      >
+        {/* Custom full-viewport background div to ensure no gaps */}
+        <div className="fixed inset-0 w-full h-full bg-black z-0"></div>
 
-      {/* Project Sections */}
-      {projects.map((project, index) => (
-        <section
-          key={project.id}
-          ref={(el) => (sectionsRef.current[index] = el)}
-          className="w-full h-screen overflow-hidden text-white"
-        >
-          <div className="absolute inset-0 w-full h-full">
-            <Image
-              src={project.image || "/placeholder.svg"}
-              alt={project.name}
-              fill
-              priority={index === 0}
-              className="object-cover"
-            />
-            <div className="absolute inset-0 bg-black/30" />
-          </div>
+        {/* Project Slides */}
+        {projects.map((project, index) => (
+          <div
+            key={project.id}
+            ref={(el) => (slidesRef.current[index] = el)}
+            className="slide w-full h-screen fixed top-0 left-0"
+            style={{
+              zIndex: projects.length - index,
+              visibility: index <= currentIndex + 1 ? "visible" : "hidden",
+              transform: "translate3d(0,0,0)",
+              willChange: "transform",
+              backfaceVisibility: "hidden",
+            }}
+          >
+            <Link
+              href={project.url}
+              className="block w-full h-full"
+              aria-label={project.name}
+            >
+              <div
+                className="media-wrapper w-full h-full overflow-hidden"
+                style={{
+                  willChange: "transform",
+                  backfaceVisibility: "hidden",
+                }}
+              >
+                <div className="relative w-full h-full bg-black">
+                  <Image
+                    src={project.image || "/placeholder.svg"}
+                    alt={project.name}
+                    fill
+                    priority={true}
+                    className="object-cover"
+                    sizes="100vw"
+                  />
+                  <div className="absolute inset-0 bg-black/30" />
+                </div>
 
-          <div className="absolute inset-0 flex items-center justify-center">
-            <Link href={project.url} className="group">
-              <h2 className="text-6xl md:text-7xl lg:text-8xl font-light tracking-tight border-b border-white/30 pb-2 transition-all duration-300 group-hover:border-white">
-                {project.name}
-              </h2>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <h2 className="text-6xl md:text-7xl lg:text-8xl font-light tracking-tight border-b border-white/30 pb-2 transition-all duration-300 hover:border-white text-white">
+                    {project.name}
+                  </h2>
+                </div>
+
+                <div className="absolute bottom-8 right-10 text-xl font-light text-white">
+                  {project.number}
+                </div>
+
+                {index === 0 && (
+                  <button className="absolute bottom-8 left-10 z-50 flex items-center gap-2 text-white/80 hover:text-white transition-colors">
+                    <span className="w-6 h-6 flex items-center justify-center border border-white/30 rounded-full">
+                      :
+                    </span>
+                    <span>List view</span>
+                  </button>
+                )}
+              </div>
             </Link>
           </div>
-
-          <div className="absolute bottom-8 right-10 text-xl font-light">
-            {project.number}
-          </div>
-
-          {index === 0 && (
-            <button className="absolute bottom-8 left-10 z-50 flex items-center gap-2 text-white/80 hover:text-white transition-colors">
-              <span className="w-6 h-6 flex items-center justify-center border border-white/30 rounded-full">
-                :
-              </span>
-              <span>List view</span>
-            </button>
-          )}
-        </section>
-      ))}
-    </div>
+        ))}
+      </div>
+    </>
   );
 };
 
