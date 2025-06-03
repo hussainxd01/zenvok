@@ -741,6 +741,10 @@
     margin-left: calc(var(--spacing) * 20);
   }
 
+  .ml-40 {
+    margin-left: calc(var(--spacing) * 40);
+  }
+
   .block {
     display: block;
   }
@@ -1264,6 +1268,10 @@
     .border-black\/20 {
       border-color: color-mix(in oklab, var(--color-black) 20%, transparent);
     }
+  }
+
+  .border-current {
+    border-color: currentColor;
   }
 
   .border-gray-50 {
@@ -2049,6 +2057,12 @@
   }
 
   @media (hover: hover) {
+    .hover\:bg-current:hover {
+      background-color: currentColor;
+    }
+  }
+
+  @media (hover: hover) {
     .hover\:bg-gray-800:hover {
       background-color: var(--color-gray-800);
     }
@@ -2335,6 +2349,7 @@
 :root {
   --background: #000;
   --foreground: #fff;
+  --transition-speed: .3s;
 }
 
 [data-theme="light"] {
@@ -2382,12 +2397,19 @@ body {
 
 section[data-theme], div[data-theme] {
   color: var(--foreground);
+  transition: color var(--transition-speed) ease;
 }
 
-section[data-theme].navbar {
+section[data-theme] {
   color: var(--foreground);
+  transition: color var(--transition-speed) ease;
   background-color: #0000;
-  transition: color .3s;
+}
+
+* {
+  transition-property: color, background-color, border-color;
+  transition-duration: var(--transition-speed);
+  transition-timing-function: ease;
 }
 
 .slide {
@@ -2405,6 +2427,38 @@ section[data-theme].navbar {
   width: 100%;
   height: 100%;
   position: relative;
+}
+
+.navigation-wrapper a {
+  padding-bottom: 2px;
+  position: relative;
+}
+
+.navigation-wrapper a:after {
+  content: "";
+  background-color: var(--foreground);
+  width: 0;
+  height: 1px;
+  transition: width .3s;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.navigation-wrapper a:hover:after {
+  width: 100%;
+}
+
+.contact-button {
+  border: 1px solid var(--foreground);
+  border-radius: 4px;
+  padding: .5rem 1rem;
+  transition: all .3s;
+}
+
+.contact-button:hover {
+  background-color: var(--foreground);
+  color: var(--background);
 }
 
 @property --tw-translate-x {

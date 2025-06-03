@@ -4,6 +4,7 @@
 :root {
   --background: #000000;
   --foreground: #ffffff;
+  --transition-speed: 0.3s;
 }
 
 /* Theme variables for different sections */
@@ -52,17 +53,25 @@ body {
   overflow-x: hidden;
 }
 
-/* Apply theme colors to sections */
+/* Apply theme colors to sections with smooth transitions */
 section[data-theme],
 div[data-theme] {
   color: var(--foreground);
+  transition: color var(--transition-speed) ease;
 }
 
 /* For navbar specifically */
-section[data-theme].navbar {
+section[data-theme] {
   background-color: transparent;
   color: var(--foreground);
-  transition: color 0.3s ease;
+  transition: color var(--transition-speed) ease;
+}
+
+/* Add smooth transitions to all color-changing elements */
+* {
+  transition-property: color, background-color, border-color;
+  transition-duration: var(--transition-speed);
+  transition-timing-function: ease;
 }
 
 .slide {
@@ -80,4 +89,38 @@ section[data-theme].navbar {
   width: 100%;
   height: 100%;
   will-change: transform;
+}
+
+/* Navigation link styling */
+.navigation-wrapper a {
+  position: relative;
+  padding-bottom: 2px;
+}
+
+.navigation-wrapper a::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 1px;
+  bottom: 0;
+  left: 0;
+  background-color: var(--foreground);
+  transition: width 0.3s ease;
+}
+
+.navigation-wrapper a:hover::after {
+  width: 100%;
+}
+
+/* Contact button styling */
+.contact-button {
+  border: 1px solid var(--foreground);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.contact-button:hover {
+  background-color: var(--foreground);
+  color: var(--background);
 }

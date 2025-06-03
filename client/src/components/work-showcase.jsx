@@ -11,6 +11,7 @@ import Navbar from "./navbar";
 const WorkShowcase = () => {
   const containerRef = useRef(null);
   const slidesRef = useRef([]);
+  const heroRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(0);
 
   // Sample projects data
@@ -119,8 +120,11 @@ const WorkShowcase = () => {
 
   return (
     <>
-      <Navbar />
+      {/* Pass heroRef to Navbar to improve its awareness of sections */}
+      <Navbar heroRef={heroRef} />
+
       <div
+        ref={heroRef}
         className="h-[80vh] w-full bg-white z-40 relative flex items-end justify-between px-10"
         data-theme="light"
       >
@@ -132,6 +136,7 @@ const WorkShowcase = () => {
           indent="false"
         />
       </div>
+
       <div
         ref={containerRef}
         className="relative w-full overflow-hidden bg-black"
@@ -172,7 +177,7 @@ const WorkShowcase = () => {
                     src={project.image || "/placeholder.svg"}
                     alt={project.name}
                     fill
-                    priority={true}
+                    priority={index === 0}
                     className="object-cover"
                     sizes="100vw"
                   />
