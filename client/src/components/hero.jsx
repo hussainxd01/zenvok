@@ -15,7 +15,7 @@ export default function HeroComponent({ heroRef }) {
 
   useEffect(() => {
     const tl = gsap.timeline({
-      delay: 3,
+      delay: 1,
     });
 
     // Animation...

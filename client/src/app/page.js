@@ -1,7 +1,7 @@
 "use client";
 
 import Hero from "@/components/hero";
-import Showreel from "@/components/showreel";
+import MediaShowcase from "@/components/media-showcase";
 import Statement from "@/components/statement";
 import Navbar from "@/components/navbar";
 import { useRef } from "react";
@@ -17,7 +17,7 @@ export default function Home() {
     <>
       <Navbar heroRef={heroRef} />
       <Hero heroRef={heroRef} />
-      <Showreel />
+      <MediaShowcase enableScaleAnimation={false} />
       <Statement />
       <AnimatedSlider />
       <Space />

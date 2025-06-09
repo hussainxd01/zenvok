@@ -304,6 +304,8 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$volume$2d$x$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__VolumeX$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/volume-x.js [app-ssr] (ecmascript) <export default as VolumeX>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$play$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Play$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/play.js [app-ssr] (ecmascript) <export default as Play>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$pause$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Pause$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/pause.js [app-ssr] (ecmascript) <export default as Pause>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$left$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronLeft$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/chevron-left.js [app-ssr] (ecmascript) <export default as ChevronLeft>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$right$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronRight$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/chevron-right.js [app-ssr] (ecmascript) <export default as ChevronRight>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/node_modules/gsap/index.js [app-ssr] (ecmascript) <locals>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$ScrollTrigger$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/gsap/ScrollTrigger.js [app-ssr] (ecmascript)");
 "use client";
@@ -312,20 +314,27 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$Scro
 ;
 ;
 ;
-const Showreel = ()=>{
+const MediaShowcase = ({ // Media configuration
+type = "video", src = "/reel.mp4", sources = [], // Display configuration
+title = "Show Reel", height = "800px", backgroundColor = "black", titleColor = "white", titleSize = "text-7xl", // Video specific options
+autoPlay = true, muted = true, loop = true, preload = "none", // Interaction text
+playText = "Play Reel", closeText = "Close Reel", // Custom styling
+containerClassName = "", titleClassName = "", // Callbacks
+onOpen = ()=>{}, onClose = ()=>{}, onPlay = ()=>{}, onPause = ()=>{} })=>{
     __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].registerPlugin(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$ScrollTrigger$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ScrollTrigger"]);
     // State variables
     const [isOpen, setIsOpen] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
-    const [isMuted, setIsMuted] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(true);
+    const [isMuted, setIsMuted] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(muted);
     const [isPlaying, setIsPlaying] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     const [isHovering, setIsHovering] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [currentSlide, setCurrentSlide] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(0);
     // Refs
     const sectionRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
-    const videoContainerRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
+    const mediaContainerRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
     const showreelCursorRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
     const modalCursorRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
     const modalRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
-    const videoRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
+    const mediaRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
     const overlayRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
     const timelineRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
     // Cursor position tracking
@@ -335,46 +344,78 @@ const Showreel = ()=>{
         targetX: 0,
         targetY: 0
     });
+    // Get current media source
+    const getCurrentSrc = ()=>{
+        if (type === "slideshow" && sources.length > 0) {
+            return sources[currentSlide]?.src || "";
+        }
+        return src;
+    };
     // Video playback functions
     const playVideo = ()=>{
-        if (videoRef.current) {
-            videoRef.current.play().then(()=>setIsPlaying(true)).catch((error)=>{
+        if (type === "video" && mediaRef.current) {
+            mediaRef.current.play().then(()=>{
+                setIsPlaying(true);
+                onPlay();
+            }).catch((error)=>{
                 console.error("Playback error:", error);
                 if (!isMuted) {
                     setIsMuted(true);
-                    videoRef.current.muted = true;
-                    videoRef.current.play().then(()=>setIsPlaying(true));
+                    mediaRef.current.muted = true;
+                    mediaRef.current.play().then(()=>{
+                        setIsPlaying(true);
+                        onPlay();
+                    });
                 }
             });
         }
     };
-    const openModal = ()=>setIsOpen(true);
+    // Slideshow navigation
+    const nextSlide = (e)=>{
+        e.stopPropagation();
+        if (type === "slideshow" && sources.length > 0) {
+            setCurrentSlide((prev)=>(prev + 1) % sources.length);
+        }
+    };
+    const prevSlide = (e)=>{
+        e.stopPropagation();
+        if (type === "slideshow" && sources.length > 0) {
+            setCurrentSlide((prev)=>(prev - 1 + sources.length) % sources.length);
+        }
+    };
+    const openModal = ()=>{
+        setIsOpen(true);
+        onOpen();
+    };
     const closeModal = ()=>{
         if (timelineRef.current) {
             timelineRef.current.reverse().then(()=>{
                 setIsOpen(false);
-                if (videoRef.current) {
-                    videoRef.current.pause();
+                if (type === "video" && mediaRef.current) {
+                    mediaRef.current.pause();
                     setIsPlaying(false);
+                    onPause();
                 }
+                onClose();
             });
         }
     };
     const toggleMute = (e)=>{
-        e.stopPropagation(); // Prevent closing the modal
-        if (videoRef.current) {
+        e.stopPropagation();
+        if (type === "video" && mediaRef.current) {
             const newMuted = !isMuted;
-            videoRef.current.muted = newMuted;
+            mediaRef.current.muted = newMuted;
             setIsMuted(newMuted);
             if (!newMuted && !isPlaying) playVideo();
         }
     };
     const togglePlayPause = (e)=>{
-        e.stopPropagation(); // Prevent closing the modal
-        if (videoRef.current) {
+        e.stopPropagation();
+        if (type === "video" && mediaRef.current) {
             if (isPlaying) {
-                videoRef.current.pause();
+                mediaRef.current.pause();
                 setIsPlaying(false);
+                onPause();
             } else {
                 playVideo();
             }
@@ -382,7 +423,7 @@ const Showreel = ()=>{
     };
     // Initialize scroll animation and cursor followers
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
-        // Scroll Animation for showreel
+        // Scroll Animation
         const tl = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].timeline({
             scrollTrigger: {
                 trigger: sectionRef.current,
@@ -391,11 +432,11 @@ const Showreel = ()=>{
                 scrub: 1
             }
         });
-        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].set(videoContainerRef.current, {
+        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].set(mediaContainerRef.current, {
             scale: 0.8,
             opacity: 0
         });
-        tl.to(videoContainerRef.current, {
+        tl.to(mediaContainerRef.current, {
             scale: 1,
             opacity: 1,
             ease: "power2.out"
@@ -470,8 +511,8 @@ const Showreel = ()=>{
                 duration: 0.6,
                 ease: "power3.out"
             }, "-=0.2").call(()=>{
-                if (videoRef.current) {
-                    videoRef.current.style.visibility = "visible";
+                if (type === "video" && mediaRef.current) {
+                    mediaRef.current.style.visibility = "visible";
                     playVideo();
                 }
             });
@@ -495,10 +536,11 @@ const Showreel = ()=>{
             }
         }
     }, [
-        isOpen
+        isOpen,
+        type
     ]);
-    // Showreel hover state management
-    const handleShowreelMouseEnter = ()=>{
+    // Hover state management
+    const handleMouseEnter = ()=>{
         if (!isOpen) {
             setIsHovering(true);
             __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].to(showreelCursorRef.current, {
@@ -509,7 +551,7 @@ const Showreel = ()=>{
             });
         }
     };
-    const handleShowreelMouseLeave = ()=>{
+    const handleMouseLeave = ()=>{
         setIsHovering(false);
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].to(showreelCursorRef.current, {
             opacity: 0,
@@ -517,6 +559,76 @@ const Showreel = ()=>{
             duration: 0.3,
             ease: "power3.out"
         });
+    };
+    // Render preview media
+    const renderPreviewMedia = ()=>{
+        const currentSrc = getCurrentSrc();
+        if (type === "video") {
+            return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("video", {
+                src: currentSrc,
+                draggable: false,
+                autoPlay: autoPlay,
+                preload: preload,
+                playsInline: true,
+                muted: true,
+                loop: loop,
+                className: "w-full h-full object-cover"
+            }, void 0, false, {
+                fileName: "[project]/src/components/showreel.jsx",
+                lineNumber: 315,
+                columnNumber: 9
+            }, this);
+        } else {
+            return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
+                src: currentSrc,
+                alt: type === "slideshow" ? sources[currentSlide]?.alt || "" : "Preview",
+                draggable: false,
+                className: "w-full h-full object-cover"
+            }, void 0, false, {
+                fileName: "[project]/src/components/showreel.jsx",
+                lineNumber: 328,
+                columnNumber: 9
+            }, this);
+        }
+    };
+    // Render modal media
+    const renderModalMedia = ()=>{
+        const currentSrc = getCurrentSrc();
+        if (type === "video") {
+            return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("video", {
+                ref: mediaRef,
+                className: "w-full h-full object-cover",
+                playsInline: true,
+                loop: loop,
+                muted: isMuted,
+                style: {
+                    visibility: "hidden"
+                },
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("source", {
+                    src: currentSrc,
+                    type: "video/mp4"
+                }, void 0, false, {
+                    fileName: "[project]/src/components/showreel.jsx",
+                    lineNumber: 354,
+                    columnNumber: 11
+                }, this)
+            }, void 0, false, {
+                fileName: "[project]/src/components/showreel.jsx",
+                lineNumber: 346,
+                columnNumber: 9
+            }, this);
+        } else {
+            return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
+                ref: mediaRef,
+                src: currentSrc,
+                alt: type === "slideshow" ? sources[currentSlide]?.alt || "" : "Modal",
+                className: "w-full h-full object-cover"
+            }, void 0, false, {
+                fileName: "[project]/src/components/showreel.jsx",
+                lineNumber: 359,
+                columnNumber: 9
+            }, this);
+        }
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
         children: [
@@ -539,31 +651,31 @@ const Showreel = ()=>{
                                 d: "M8 5v14l11-7z"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/showreel.jsx",
-                                lineNumber: 251,
+                                lineNumber: 389,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/components/showreel.jsx",
-                            lineNumber: 245,
+                            lineNumber: 383,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/showreel.jsx",
-                        lineNumber: 244,
+                        lineNumber: 382,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                         className: "text-white",
-                        children: "Play Reel"
+                        children: playText
                     }, void 0, false, {
                         fileName: "[project]/src/components/showreel.jsx",
-                        lineNumber: 254,
+                        lineNumber: 392,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/showreel.jsx",
-                lineNumber: 236,
+                lineNumber: 374,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -581,75 +693,66 @@ const Showreel = ()=>{
                             color: "white"
                         }, void 0, false, {
                             fileName: "[project]/src/components/showreel.jsx",
-                            lineNumber: 267,
+                            lineNumber: 405,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/showreel.jsx",
-                        lineNumber: 266,
+                        lineNumber: 404,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                         className: "text-white",
-                        children: "Close Reel"
+                        children: closeText
                     }, void 0, false, {
                         fileName: "[project]/src/components/showreel.jsx",
-                        lineNumber: 269,
+                        lineNumber: 407,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/showreel.jsx",
-                lineNumber: 258,
+                lineNumber: 396,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
                 ref: sectionRef,
-                className: "w-full h-[800px] flex items-center justify-center relative overflow-hidden bg-black",
+                className: `w-full flex items-center justify-center relative overflow-hidden ${backgroundColor} ${containerClassName}`,
+                style: {
+                    height
+                },
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    ref: videoContainerRef,
-                    onMouseEnter: handleShowreelMouseEnter,
-                    onMouseLeave: handleShowreelMouseLeave,
+                    ref: mediaContainerRef,
+                    onMouseEnter: handleMouseEnter,
+                    onMouseLeave: handleMouseLeave,
                     onClick: openModal,
                     className: "w-full h-full flex items-center justify-center cursor-pointer relative",
                     children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("video", {
-                            src: "/reel.mp4",
-                            draggable: false,
-                            autoPlay: true,
-                            preload: "none",
-                            playsInline: true,
-                            muted: true,
-                            className: "w-full h-full object-cover"
-                        }, void 0, false, {
-                            fileName: "[project]/src/components/showreel.jsx",
-                            lineNumber: 285,
-                            columnNumber: 11
-                        }, this),
+                        renderPreviewMedia(),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "absolute inset-0 flex items-center justify-center",
                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
-                                className: "text-7xl text-white",
-                                children: "Show Reel"
+                                className: `${titleSize} ${titleColor} ${titleClassName}`,
+                                children: title
                             }, void 0, false, {
                                 fileName: "[project]/src/components/showreel.jsx",
-                                lineNumber: 295,
+                                lineNumber: 426,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/components/showreel.jsx",
-                            lineNumber: 294,
+                            lineNumber: 425,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/showreel.jsx",
-                    lineNumber: 278,
+                    lineNumber: 417,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/showreel.jsx",
-                lineNumber: 273,
+                lineNumber: 411,
                 columnNumber: 7
             }, this),
             isOpen && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -660,94 +763,123 @@ const Showreel = ()=>{
                     ref: modalRef,
                     className: "relative w-full max-w-5xl aspect-video bg-black overflow-hidden rounded shadow-xl",
                     children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("video", {
-                            ref: videoRef,
-                            className: "w-full h-full object-cover",
-                            playsInline: true,
-                            loop: true,
-                            muted: isMuted,
-                            style: {
-                                visibility: "hidden"
-                            },
-                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("source", {
-                                src: "/reel.mp4",
-                                type: "video/mp4"
-                            }, void 0, false, {
-                                fileName: "[project]/src/components/showreel.jsx",
-                                lineNumber: 321,
-                                columnNumber: 15
-                            }, this)
-                        }, void 0, false, {
-                            fileName: "[project]/src/components/showreel.jsx",
-                            lineNumber: 311,
-                            columnNumber: 13
-                        }, this),
+                        renderModalMedia(),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "absolute bottom-4 left-4 flex gap-2",
                             children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                    onClick: toggleMute,
-                                    className: "bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full p-2 text-white transition-all",
-                                    children: isMuted ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$volume$2d$x$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__VolumeX$3e$__["VolumeX"], {
-                                        size: 20
-                                    }, void 0, false, {
-                                        fileName: "[project]/src/components/showreel.jsx",
-                                        lineNumber: 329,
-                                        columnNumber: 28
-                                    }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$volume$2d$2$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Volume2$3e$__["Volume2"], {
-                                        size: 20
-                                    }, void 0, false, {
-                                        fileName: "[project]/src/components/showreel.jsx",
-                                        lineNumber: 329,
-                                        columnNumber: 52
-                                    }, this)
-                                }, void 0, false, {
-                                    fileName: "[project]/src/components/showreel.jsx",
-                                    lineNumber: 325,
-                                    columnNumber: 15
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                    onClick: togglePlayPause,
-                                    className: "bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full p-2 text-white transition-all",
-                                    children: isPlaying ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$pause$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Pause$3e$__["Pause"], {
-                                        size: 20
-                                    }, void 0, false, {
-                                        fileName: "[project]/src/components/showreel.jsx",
-                                        lineNumber: 336,
-                                        columnNumber: 30
-                                    }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$play$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Play$3e$__["Play"], {
-                                        size: 20
-                                    }, void 0, false, {
-                                        fileName: "[project]/src/components/showreel.jsx",
-                                        lineNumber: 336,
-                                        columnNumber: 52
-                                    }, this)
-                                }, void 0, false, {
-                                    fileName: "[project]/src/components/showreel.jsx",
-                                    lineNumber: 332,
-                                    columnNumber: 15
-                                }, this)
+                                type === "video" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                            onClick: toggleMute,
+                                            className: "bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full p-2 text-white transition-all",
+                                            children: isMuted ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$volume$2d$x$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__VolumeX$3e$__["VolumeX"], {
+                                                size: 20
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/components/showreel.jsx",
+                                                lineNumber: 455,
+                                                columnNumber: 32
+                                            }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$volume$2d$2$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Volume2$3e$__["Volume2"], {
+                                                size: 20
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/components/showreel.jsx",
+                                                lineNumber: 455,
+                                                columnNumber: 56
+                                            }, this)
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/components/showreel.jsx",
+                                            lineNumber: 451,
+                                            columnNumber: 19
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                            onClick: togglePlayPause,
+                                            className: "bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full p-2 text-white transition-all",
+                                            children: isPlaying ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$pause$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Pause$3e$__["Pause"], {
+                                                size: 20
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/components/showreel.jsx",
+                                                lineNumber: 462,
+                                                columnNumber: 34
+                                            }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$play$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Play$3e$__["Play"], {
+                                                size: 20
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/components/showreel.jsx",
+                                                lineNumber: 462,
+                                                columnNumber: 56
+                                            }, this)
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/components/showreel.jsx",
+                                            lineNumber: 458,
+                                            columnNumber: 19
+                                        }, this)
+                                    ]
+                                }, void 0, true),
+                                type === "slideshow" && sources.length > 1 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                            onClick: prevSlide,
+                                            className: "bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full p-2 text-white transition-all",
+                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$left$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronLeft$3e$__["ChevronLeft"], {
+                                                size: 20
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/components/showreel.jsx",
+                                                lineNumber: 474,
+                                                columnNumber: 21
+                                            }, this)
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/components/showreel.jsx",
+                                            lineNumber: 470,
+                                            columnNumber: 19
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "bg-white bg-opacity-20 rounded-full px-3 py-2 text-white text-sm flex items-center",
+                                            children: [
+                                                currentSlide + 1,
+                                                " / ",
+                                                sources.length
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/src/components/showreel.jsx",
+                                            lineNumber: 477,
+                                            columnNumber: 19
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                            onClick: nextSlide,
+                                            className: "bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full p-2 text-white transition-all",
+                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$right$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronRight$3e$__["ChevronRight"], {
+                                                size: 20
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/components/showreel.jsx",
+                                                lineNumber: 485,
+                                                columnNumber: 21
+                                            }, this)
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/components/showreel.jsx",
+                                            lineNumber: 481,
+                                            columnNumber: 19
+                                        }, this)
+                                    ]
+                                }, void 0, true)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/showreel.jsx",
-                            lineNumber: 324,
+                            lineNumber: 447,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/showreel.jsx",
-                    lineNumber: 307,
+                    lineNumber: 440,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/showreel.jsx",
-                lineNumber: 302,
+                lineNumber: 435,
                 columnNumber: 9
             }, this)
         ]
     }, void 0, true);
 };
-const __TURBOPACK__default__export__ = Showreel;
+const __TURBOPACK__default__export__ = MediaShowcase;
 }}),
 "[project]/src/components/statement.jsx [app-ssr] (ecmascript)": ((__turbopack_context__) => {
 "use strict";
@@ -1051,8 +1183,7 @@ function Navbar({ heroRef = null }) {
             y: -50,
             opacity: 0,
             duration: 1,
-            ease: "power2.out",
-            delay: 1
+            ease: "power2.out"
         });
         // Set initial styles for logo container and SVG
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].set(logoContainerRef.current, {
@@ -3198,7 +3329,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$inde
 ;
 ;
 ;
-const MaskedText = ({ text, className = "", indent = true })=>{
+const MaskedText = ({ text, className = "", indent = true, positioning = "" })=>{
     const containerRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
     const textRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
     const wordContainersRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])([]);
@@ -3217,6 +3348,7 @@ const MaskedText = ({ text, className = "", indent = true })=>{
         wrapper.style.flexWrap = "wrap";
         wrapper.style.alignItems = "flex-start";
         wrapper.style.justifyContent = "flex-start";
+        wrapper.style.lineHeight = "1.1"; // Tighter line height for better control
         if (indent) {
             const indentDiv = document.createElement("div");
             indentDiv.style.width = "3em";
@@ -3231,30 +3363,24 @@ const MaskedText = ({ text, className = "", indent = true })=>{
             container.style.overflow = "hidden";
             container.style.position = "relative";
             container.style.verticalAlign = "top";
-            container.style.paddingBottom = "5px"; // Add padding to prevent clipping
+            container.style.paddingBottom = "5px";
+            container.style.marginRight = index < words.length - 1 ? "0.35em" : "0"; // Better word spacing
             // Create word span that will be animated
             const wordSpan = document.createElement("span");
             wordSpan.textContent = word;
             wordSpan.style.display = "inline-block";
-            wordSpan.style.transform = "translateY(100%)"; // Start below - will slide up
-            wordSpan.style.willChange = "transform"; // Optimize for animation
+            wordSpan.style.transform = "translateY(100%)";
+            wordSpan.style.willChange = "transform";
             container.appendChild(wordSpan);
             wrapper.appendChild(container);
             // Store references for animation
             wordContainersRef.current.push(container);
             wordRefs.current.push(wordSpan);
-            // Add space between words
-            if (index < words.length - 1) {
-                const space = document.createElement("span");
-                space.innerHTML = "\u00A0";
-                wrapper.appendChild(space);
-            }
         });
         element.appendChild(wrapper);
         // Force layout calculation to ensure proper sizing
         wordContainersRef.current.forEach((container, i)=>{
             const wordHeight = wordRefs.current[i].offsetHeight;
-            // Set container height slightly larger than word height to prevent clipping
             container.style.height = `${wordHeight + 2}px`;
         });
     };
@@ -3269,7 +3395,6 @@ const MaskedText = ({ text, className = "", indent = true })=>{
             entries.forEach((entry)=>{
                 if (entry.isIntersecting) {
                     setIsInView(true);
-                    // Once we've observed it coming into view, we can disconnect
                     observer.disconnect();
                 }
             });
@@ -3286,7 +3411,6 @@ const MaskedText = ({ text, className = "", indent = true })=>{
     // Handle creating masked words
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useLayoutEffect"])(()=>{
         createMaskedWords();
-        // Set initial position - explicitly position words outside their containers
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].set(wordRefs.current, {
             y: "100%",
             immediateRender: true
@@ -3297,7 +3421,6 @@ const MaskedText = ({ text, className = "", indent = true })=>{
     // Handle animation when in view
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
         if (isInView && !animationExecuted.current && wordRefs.current.length > 0) {
-            // Add a small delay to ensure everything is properly set
             setTimeout(()=>{
                 __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].to(wordRefs.current, {
                     y: "0%",
@@ -3306,7 +3429,6 @@ const MaskedText = ({ text, className = "", indent = true })=>{
                     stagger: 0.05,
                     onComplete: ()=>{
                         animationExecuted.current = true;
-                        // Update container heights after animation completes
                         wordContainersRef.current.forEach((container, i)=>{
                             const wordHeight = wordRefs.current[i].offsetHeight;
                             container.style.height = `${wordHeight + 6}px`;
@@ -3320,18 +3442,19 @@ const MaskedText = ({ text, className = "", indent = true })=>{
     ]);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         ref: containerRef,
+        className: positioning,
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
             ref: textRef,
-            className: `text-black font-extralight tracking-tight mb-12 ${className}`,
+            className: `text-black font-light tracking-tight ${className}`,
             children: text
         }, void 0, false, {
             fileName: "[project]/src/components/masked-text.jsx",
-            lineNumber: 143,
+            lineNumber: 138,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/components/masked-text.jsx",
-        lineNumber: 142,
+        lineNumber: 137,
         columnNumber: 5
     }, this);
 };

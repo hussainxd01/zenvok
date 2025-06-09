@@ -2,7 +2,12 @@
 import { useLayoutEffect, useRef, useEffect, useState } from "react";
 import { gsap } from "gsap";
 
-const MaskedText = ({ text, className = "", indent = true }) => {
+const MaskedText = ({
+  text,
+  className = "",
+  indent = true,
+  positioning = "",
+}) => {
   const containerRef = useRef(null);
   const textRef = useRef(null);
   const wordContainersRef = useRef([]);
@@ -24,6 +29,7 @@ const MaskedText = ({ text, className = "", indent = true }) => {
     wrapper.style.flexWrap = "wrap";
     wrapper.style.alignItems = "flex-start";
     wrapper.style.justifyContent = "flex-start";
+    wrapper.style.lineHeight = "1.1"; // Tighter line height for better control
 
     if (indent) {
       const indentDiv = document.createElement("div");
@@ -40,14 +46,15 @@ const MaskedText = ({ text, className = "", indent = true }) => {
       container.style.overflow = "hidden";
       container.style.position = "relative";
       container.style.verticalAlign = "top";
-      container.style.paddingBottom = "5px"; // Add padding to prevent clipping
+      container.style.paddingBottom = "5px";
+      container.style.marginRight = index < words.length - 1 ? "0.35em" : "0"; // Better word spacing
 
       // Create word span that will be animated
       const wordSpan = document.createElement("span");
       wordSpan.textContent = word;
       wordSpan.style.display = "inline-block";
-      wordSpan.style.transform = "translateY(100%)"; // Start below - will slide up
-      wordSpan.style.willChange = "transform"; // Optimize for animation
+      wordSpan.style.transform = "translateY(100%)";
+      wordSpan.style.willChange = "transform";
 
       container.appendChild(wordSpan);
       wrapper.appendChild(container);
@@ -55,13 +62,6 @@ const MaskedText = ({ text, className = "", indent = true }) => {
       // Store references for animation
       wordContainersRef.current.push(container);
       wordRefs.current.push(wordSpan);
-
-      // Add space between words
-      if (index < words.length - 1) {
-        const space = document.createElement("span");
-        space.innerHTML = "\u00A0";
-        wrapper.appendChild(space);
-      }
     });
 
     element.appendChild(wrapper);
@@ -69,7 +69,6 @@ const MaskedText = ({ text, className = "", indent = true }) => {
     // Force layout calculation to ensure proper sizing
     wordContainersRef.current.forEach((container, i) => {
       const wordHeight = wordRefs.current[i].offsetHeight;
-      // Set container height slightly larger than word height to prevent clipping
       container.style.height = `${wordHeight + 2}px`;
     });
   };
@@ -77,16 +76,15 @@ const MaskedText = ({ text, className = "", indent = true }) => {
   // Setup Intersection Observer
   useEffect(() => {
     const options = {
-      root: null, // viewport
+      root: null,
       rootMargin: "0px",
-      threshold: 0.1, // Trigger when at least 10% of the element is visible
+      threshold: 0.1,
     };
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           setIsInView(true);
-          // Once we've observed it coming into view, we can disconnect
           observer.disconnect();
         }
       });
@@ -107,7 +105,6 @@ const MaskedText = ({ text, className = "", indent = true }) => {
   useLayoutEffect(() => {
     createMaskedWords();
 
-    // Set initial position - explicitly position words outside their containers
     gsap.set(wordRefs.current, {
       y: "100%",
       immediateRender: true,
@@ -117,7 +114,6 @@ const MaskedText = ({ text, className = "", indent = true }) => {
   // Handle animation when in view
   useEffect(() => {
     if (isInView && !animationExecuted.current && wordRefs.current.length > 0) {
-      // Add a small delay to ensure everything is properly set
       setTimeout(() => {
         gsap.to(wordRefs.current, {
           y: "0%",
@@ -127,7 +123,6 @@ const MaskedText = ({ text, className = "", indent = true }) => {
           onComplete: () => {
             animationExecuted.current = true;
 
-            // Update container heights after animation completes
             wordContainersRef.current.forEach((container, i) => {
               const wordHeight = wordRefs.current[i].offsetHeight;
               container.style.height = `${wordHeight + 6}px`;
@@ -139,10 +134,10 @@ const MaskedText = ({ text, className = "", indent = true }) => {
   }, [isInView]);
 
   return (
-    <div ref={containerRef}>
+    <div ref={containerRef} className={positioning}>
       <h1
         ref={textRef}
-        className={`text-black font-extralight tracking-tight mb-12 ${className}`}
+        className={`text-black font-light tracking-tight ${className}`}
       >
         {text}
       </h1>
