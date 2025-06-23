@@ -4,16 +4,19 @@ import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-export default function Navbar({ heroRef = null }) {
+export default function Navbar() {
   gsap.registerPlugin(ScrollTrigger);
   const navbarRef = useRef(null);
   const textRef = useRef(null);
   const svgNavRef = useRef(null);
   const logoContainerRef = useRef(null);
+  const scrollTriggersRef = useRef([]); // Track ScrollTriggers
 
   useEffect(() => {
+    if (!navbarRef.current) return;
+
     // Navbar slide-in animation on page load
-    gsap.from(navbarRef.current, {
+    const navAnimation = gsap.from(navbarRef.current, {
       y: -50,
       opacity: 0,
       duration: 1,
@@ -22,71 +25,79 @@ export default function Navbar({ heroRef = null }) {
     });
 
     // Set initial styles for logo container and SVG
-    gsap.set(logoContainerRef.current, {
-      overflow: "hidden",
-      height: textRef.current?.offsetHeight || "auto",
-      position: "relative",
-    });
+    if (logoContainerRef.current && textRef.current) {
+      gsap.set(logoContainerRef.current, {
+        overflow: "hidden",
+        height: textRef.current.offsetHeight || "auto",
+        position: "relative",
+      });
+    }
 
-    gsap.set(svgNavRef.current, {
-      opacity: 0,
-      y: "100%",
-      position: "absolute",
-      left: 0,
-      top: 0,
-    });
+    if (svgNavRef.current) {
+      gsap.set(svgNavRef.current, {
+        opacity: 0,
+        y: "100%",
+        position: "absolute",
+        left: 0,
+        top: 0,
+      });
+    }
+
+    return () => {
+      // Clean up the navbar animation
+      if (navAnimation) {
+        navAnimation.kill();
+      }
+    };
   }, []);
 
   useEffect(() => {
-    if (!heroRef || !heroRef.current) return;
+    if (!textRef.current || !svgNavRef.current) return;
 
-    // Text and SVG scroll animation
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: heroRef.current,
-        start: "bottom top",
-        end: "bottom top-=100",
-        scrub: 0.5,
-        toggleActions: "play reverse play reverse",
-      },
+    const ctx = gsap.context(() => {
+      const trigger = ScrollTrigger.create({
+        start: "top -100", // when scrolled 100px
+        onEnter: () => {
+          gsap.to(textRef.current, {
+            y: "-100%",
+            opacity: 0.3,
+            duration: 0.4,
+            ease: "power2.inOut",
+          });
+          gsap.to(svgNavRef.current, {
+            opacity: 1,
+            y: 0,
+            duration: 0.4,
+            ease: "power2.inOut",
+          });
+        },
+        onLeaveBack: () => {
+          gsap.to(textRef.current, {
+            y: 0,
+            opacity: 1,
+            duration: 0.4,
+            ease: "power2.inOut",
+          });
+          gsap.to(svgNavRef.current, {
+            opacity: 0,
+            y: "100%",
+            duration: 0.4,
+            ease: "power2.inOut",
+          });
+        },
+      });
+
+      scrollTriggersRef.current.push(trigger);
     });
 
-    tl.to(textRef.current, {
-      y: "-100%",
-      opacity: 0.3,
-      duration: 0.4,
-      ease: "power2.inOut",
-    }).to(
-      svgNavRef.current,
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.4,
-        ease: "power2.inOut",
-      },
-      "-=0.35"
-    );
-
-    // Reverse animation when scrolling back up
-    ScrollTrigger.create({
-      trigger: heroRef.current,
-      start: "bottom top+=200",
-      onLeaveBack: () => {
-        gsap.to(textRef.current, {
-          y: 0,
-          opacity: 1,
-          duration: 0.4,
-          ease: "power2.inOut",
-        });
-        gsap.to(svgNavRef.current, {
-          opacity: 0,
-          y: "100%",
-          duration: 0.4,
-          ease: "power2.inOut",
-        });
-      },
-    });
-  }, [heroRef]);
+    return () => {
+      scrollTriggersRef.current.forEach((trigger) => {
+        if (trigger && trigger.kill) trigger.kill();
+      });
+      scrollTriggersRef.current = [];
+      ctx.revert();
+    };
+  }, []);
 
   return (
     <section

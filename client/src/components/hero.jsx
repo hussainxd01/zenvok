@@ -5,13 +5,14 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin"; // Added import for ScrollToPlugin
 
-export default function HeroComponent({ heroRef }) {
+export default function HeroComponent() {
   gsap.registerPlugin(ScrollTrigger, ScrollToPlugin); // Register ScrollToPlugin
 
   const svgRef = useRef(null);
   const letterRefs = useRef([]);
   const arrowRef = useRef(null);
   const outerDivRef = useRef(null);
+  const heroRef = useRef(null);
 
   useEffect(() => {
     const tl = gsap.timeline({

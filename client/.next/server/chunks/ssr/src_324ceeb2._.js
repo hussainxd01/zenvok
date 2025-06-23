@@ -917,6 +917,8 @@ const Statement = ()=>{
     const columnTwoParaRefs = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])([]);
     const columnOneContainersRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])([]);
     const columnTwoContainersRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])([]);
+    const scrollTriggersRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])([]); // Track ScrollTriggers
+    const createdElementsRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])([]); // Track created DOM elements
     // Function to create masked text animation
     const createMaskedTextAnimation = (element, text, containersRef, indent = false)=>{
         if (!element) return;
@@ -928,12 +930,15 @@ const Statement = ()=>{
         textWrapper.style.flexWrap = "wrap";
         textWrapper.style.alignItems = "flex-start";
         textWrapper.style.justifyContent = "flex-start";
+        // Track created elements for cleanup
+        createdElementsRef.current.push(textWrapper);
         if (indent) {
             const indentDiv = document.createElement("div");
             indentDiv.style.width = "3em";
             indentDiv.style.display = "inline-block";
             indentDiv.style.height = "1px";
             textWrapper.appendChild(indentDiv);
+            createdElementsRef.current.push(indentDiv);
         }
         words.forEach((word, index)=>{
             const container = document.createElement("div");
@@ -951,24 +956,35 @@ const Statement = ()=>{
                 wordSpan
             });
             textWrapper.appendChild(container);
+            // Track created elements
+            createdElementsRef.current.push(container);
+            createdElementsRef.current.push(wordSpan);
             if (index < words.length - 1) {
                 const space = document.createElement("span");
                 space.innerHTML = "\u00A0";
                 textWrapper.appendChild(space);
+                createdElementsRef.current.push(space);
             }
         });
         element.appendChild(textWrapper);
     };
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useLayoutEffect"])(()=>{
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].registerPlugin(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$ScrollTrigger$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ScrollTrigger"]);
+        // Clear previous references
         textContainersRef.current = [];
         columnOneContainersRef.current = [];
         columnTwoContainersRef.current = [];
+        scrollTriggersRef.current = [];
+        createdElementsRef.current = [];
         const ctx = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].context(()=>{
+            // Check if elements exist before manipulating
+            if (!statementRef.current || !statementSectionRef.current) return;
             // Main statement animation
             createMaskedTextAnimation(statementRef.current, statementRef.current.textContent, textContainersRef, true);
             // Column one animation
-            createMaskedTextAnimation(columnOneRef.current, columnOneRef.current.textContent, columnOneContainersRef, false);
+            if (columnOneRef.current) {
+                createMaskedTextAnimation(columnOneRef.current, columnOneRef.current.textContent, columnOneContainersRef, false);
+            }
             // Column two paragraphs
             const columnTwoWordSpans = [];
             columnTwoParaRefs.current.forEach((paraRef)=>{
@@ -983,31 +999,37 @@ const Statement = ()=>{
             });
             // Animate statement headline
             textContainersRef.current.forEach(({ wordSpan }, index)=>{
-                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].to(wordSpan, {
-                    y: 0,
-                    duration: 0.3,
-                    ease: "power2.out",
-                    delay: index * 0.05,
-                    scrollTrigger: {
+                if (wordSpan) {
+                    const trigger = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$ScrollTrigger$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ScrollTrigger"].create({
                         trigger: statementSectionRef.current,
                         start: "top 80%",
-                        end: "bottom 90%"
-                    }
-                });
-            });
-            // Animate the HR
-            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].fromTo(hrRef.current, {
-                width: "0%"
-            }, {
-                width: "100%",
-                duration: 1,
-                ease: "power2.out",
-                scrollTrigger: {
-                    trigger: hrRef.current,
-                    start: "top 90%",
-                    end: "bottom 90%"
+                        end: "bottom 90%",
+                        animation: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].to(wordSpan, {
+                            y: 0,
+                            duration: 0.3,
+                            ease: "power2.out",
+                            delay: index * 0.05
+                        })
+                    });
+                    scrollTriggersRef.current.push(trigger);
                 }
             });
+            // Animate the HR
+            if (hrRef.current) {
+                const hrTrigger = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$ScrollTrigger$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ScrollTrigger"].create({
+                    trigger: hrRef.current,
+                    start: "top 90%",
+                    end: "bottom 90%",
+                    animation: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].fromTo(hrRef.current, {
+                        width: "0%"
+                    }, {
+                        width: "100%",
+                        duration: 1,
+                        ease: "power2.out"
+                    })
+                });
+                scrollTriggersRef.current.push(hrTrigger);
+            }
             // Timeline for column one → then column two
             const timeline = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].timeline({
                 scrollTrigger: {
@@ -1016,23 +1038,53 @@ const Statement = ()=>{
                     end: "bottom 20%"
                 }
             });
+            // Store the timeline's ScrollTrigger
+            if (timeline.scrollTrigger) {
+                scrollTriggersRef.current.push(timeline.scrollTrigger);
+            }
             // Column one animation
             columnOneContainersRef.current.forEach(({ wordSpan }, index)=>{
-                timeline.to(wordSpan, {
-                    y: 0,
-                    duration: 0.4,
-                    ease: "power2.out"
-                }, index * 0.05);
+                if (wordSpan) {
+                    timeline.to(wordSpan, {
+                        y: 0,
+                        duration: 0.4,
+                        ease: "power2.out"
+                    }, index * 0.05);
+                }
             });
             // Column two animation (starts after column one)
-            timeline.to(columnTwoWordSpans, {
-                y: 0,
-                duration: 0.3,
-                ease: "power2.out",
-                stagger: 0.03
-            }, "+=0.2");
+            if (columnTwoWordSpans.length > 0) {
+                timeline.to(columnTwoWordSpans, {
+                    y: 0,
+                    duration: 0.3,
+                    ease: "power2.out",
+                    stagger: 0.03
+                }, "+=0.2");
+            }
         }, statementSectionRef);
-        return ()=>ctx.revert();
+        return ()=>{
+            // Clean up ScrollTriggers
+            scrollTriggersRef.current.forEach((trigger)=>{
+                if (trigger && trigger.kill) {
+                    trigger.kill();
+                }
+            });
+            scrollTriggersRef.current = [];
+            // Clean up created DOM elements safely
+            createdElementsRef.current.forEach((element)=>{
+                if (element && element.parentNode) {
+                    try {
+                        element.parentNode.removeChild(element);
+                    } catch (error) {
+                        // Silently handle cases where element is already removed
+                        console.warn("Element already removed from DOM");
+                    }
+                }
+            });
+            createdElementsRef.current = [];
+            // Revert GSAP context
+            ctx.revert();
+        };
     }, []);
     const addParaRef = (el)=>{
         if (el && !columnTwoParaRefs.current.includes(el)) {
@@ -1060,19 +1112,19 @@ const Statement = ()=>{
                             children: "our services"
                         }, void 0, false, {
                             fileName: "[project]/src/components/statement.jsx",
-                            lineNumber: 203,
+                            lineNumber: 262,
                             columnNumber: 11
                         }, this),
                         "."
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/statement.jsx",
-                    lineNumber: 197,
+                    lineNumber: 256,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/statement.jsx",
-                lineNumber: 196,
+                lineNumber: 255,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1080,7 +1132,7 @@ const Statement = ()=>{
                 className: "w-0 border-gray-50/30 border-b h-[0.5px] max-w-7xl mx-auto"
             }, void 0, false, {
                 fileName: "[project]/src/components/statement.jsx",
-                lineNumber: 210,
+                lineNumber: 269,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1094,12 +1146,12 @@ const Statement = ()=>{
                             children: "Design that converts."
                         }, void 0, false, {
                             fileName: "[project]/src/components/statement.jsx",
-                            lineNumber: 217,
+                            lineNumber: 276,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/statement.jsx",
-                        lineNumber: 216,
+                        lineNumber: 275,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1111,7 +1163,7 @@ const Statement = ()=>{
                                 children: "We are the brand catalyst."
                             }, void 0, false, {
                                 fileName: "[project]/src/components/statement.jsx",
-                                lineNumber: 222,
+                                lineNumber: 281,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1120,7 +1172,7 @@ const Statement = ()=>{
                                 children: "Since day one, Zenvok has helped businesses launch, scale, and stay sharp — through strategy, design, and clean engineering."
                             }, void 0, false, {
                                 fileName: "[project]/src/components/statement.jsx",
-                                lineNumber: 225,
+                                lineNumber: 284,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1129,7 +1181,7 @@ const Statement = ()=>{
                                 children: "In 2025, we introduced our selective model — partnering with a few bold teams at a time to go deep, not wide."
                             }, void 0, false, {
                                 fileName: "[project]/src/components/statement.jsx",
-                                lineNumber: 229,
+                                lineNumber: 288,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1138,25 +1190,25 @@ const Statement = ()=>{
                                 children: "No noise. Just focus, precision, and digital built to perform."
                             }, void 0, false, {
                                 fileName: "[project]/src/components/statement.jsx",
-                                lineNumber: 233,
+                                lineNumber: 292,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/statement.jsx",
-                        lineNumber: 221,
+                        lineNumber: 280,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/statement.jsx",
-                lineNumber: 215,
+                lineNumber: 274,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/statement.jsx",
-        lineNumber: 192,
+        lineNumber: 251,
         columnNumber: 5
     }, this);
 };
@@ -1187,9 +1239,11 @@ function Navbar({ heroRef = null }) {
     const textRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
     const svgNavRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
     const logoContainerRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
+    const scrollTriggersRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])([]); // Track ScrollTriggers
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        if (!navbarRef.current) return;
         // Navbar slide-in animation on page load
-        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].from(navbarRef.current, {
+        const navAnimation = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].from(navbarRef.current, {
             y: -50,
             opacity: 0,
             duration: 1,
@@ -1197,61 +1251,89 @@ function Navbar({ heroRef = null }) {
             delay: 1
         });
         // Set initial styles for logo container and SVG
-        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].set(logoContainerRef.current, {
-            overflow: "hidden",
-            height: textRef.current?.offsetHeight || "auto",
-            position: "relative"
-        });
-        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].set(svgNavRef.current, {
-            opacity: 0,
-            y: "100%",
-            position: "absolute",
-            left: 0,
-            top: 0
-        });
+        if (logoContainerRef.current && textRef.current) {
+            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].set(logoContainerRef.current, {
+                overflow: "hidden",
+                height: textRef.current.offsetHeight || "auto",
+                position: "relative"
+            });
+        }
+        if (svgNavRef.current) {
+            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].set(svgNavRef.current, {
+                opacity: 0,
+                y: "100%",
+                position: "absolute",
+                left: 0,
+                top: 0
+            });
+        }
+        return ()=>{
+            // Clean up the navbar animation
+            if (navAnimation) {
+                navAnimation.kill();
+            }
+        };
     }, []);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
-        if (!heroRef || !heroRef.current) return;
-        // Text and SVG scroll animation
-        const tl = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].timeline({
-            scrollTrigger: {
+        if (!heroRef || !heroRef.current || !textRef.current || !svgNavRef.current) return;
+        // Create ScrollTrigger context
+        const ctx = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].context(()=>{
+            // Text and SVG scroll animation
+            const tl = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].timeline({
+                scrollTrigger: {
+                    trigger: heroRef.current,
+                    start: "bottom top",
+                    end: "bottom top-=100",
+                    scrub: 0.5,
+                    toggleActions: "play reverse play reverse"
+                }
+            });
+            // Store the ScrollTrigger
+            scrollTriggersRef.current.push(tl.scrollTrigger);
+            tl.to(textRef.current, {
+                y: "-100%",
+                opacity: 0.3,
+                duration: 0.4,
+                ease: "power2.inOut"
+            }).to(svgNavRef.current, {
+                opacity: 1,
+                y: 0,
+                duration: 0.4,
+                ease: "power2.inOut"
+            }, "-=0.35");
+            // Reverse animation when scrolling back up
+            const reverseScrollTrigger = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$ScrollTrigger$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ScrollTrigger"].create({
                 trigger: heroRef.current,
-                start: "bottom top",
-                end: "bottom top-=100",
-                scrub: 0.5,
-                toggleActions: "play reverse play reverse"
-            }
+                start: "bottom top+=200",
+                onLeaveBack: ()=>{
+                    __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].to(textRef.current, {
+                        y: 0,
+                        opacity: 1,
+                        duration: 0.4,
+                        ease: "power2.inOut"
+                    });
+                    __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].to(svgNavRef.current, {
+                        opacity: 0,
+                        y: "100%",
+                        duration: 0.4,
+                        ease: "power2.inOut"
+                    });
+                }
+            });
+            // Store the reverse ScrollTrigger
+            scrollTriggersRef.current.push(reverseScrollTrigger);
         });
-        tl.to(textRef.current, {
-            y: "-100%",
-            opacity: 0.3,
-            duration: 0.4,
-            ease: "power2.inOut"
-        }).to(svgNavRef.current, {
-            opacity: 1,
-            y: 0,
-            duration: 0.4,
-            ease: "power2.inOut"
-        }, "-=0.35");
-        // Reverse animation when scrolling back up
-        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$ScrollTrigger$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ScrollTrigger"].create({
-            trigger: heroRef.current,
-            start: "bottom top+=200",
-            onLeaveBack: ()=>{
-                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].to(textRef.current, {
-                    y: 0,
-                    opacity: 1,
-                    duration: 0.4,
-                    ease: "power2.inOut"
-                });
-                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].to(svgNavRef.current, {
-                    opacity: 0,
-                    y: "100%",
-                    duration: 0.4,
-                    ease: "power2.inOut"
-                });
-            }
-        });
+        return ()=>{
+            // Clean up ScrollTriggers created by this component
+            scrollTriggersRef.current.forEach((trigger)=>{
+                if (trigger && trigger.kill) {
+                    trigger.kill();
+                }
+            });
+            scrollTriggersRef.current = [];
+            // Revert the context
+            ctx.revert();
+        };
     }, [
         heroRef
     ]);
@@ -1275,7 +1357,7 @@ function Navbar({ heroRef = null }) {
                             children: "The Brand Catalyst"
                         }, void 0, false, {
                             fileName: "[project]/src/components/navbar.jsx",
-                            lineNumber: 102,
+                            lineNumber: 139,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
@@ -1292,7 +1374,7 @@ function Navbar({ heroRef = null }) {
                                     fill: "white"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/navbar.jsx",
-                                    lineNumber: 114,
+                                    lineNumber: 151,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
@@ -1300,7 +1382,7 @@ function Navbar({ heroRef = null }) {
                                     fill: "white"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/navbar.jsx",
-                                    lineNumber: 118,
+                                    lineNumber: 155,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
@@ -1308,7 +1390,7 @@ function Navbar({ heroRef = null }) {
                                     fill: "white"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/navbar.jsx",
-                                    lineNumber: 122,
+                                    lineNumber: 159,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
@@ -1316,7 +1398,7 @@ function Navbar({ heroRef = null }) {
                                     fill: "white"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/navbar.jsx",
-                                    lineNumber: 126,
+                                    lineNumber: 163,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
@@ -1324,7 +1406,7 @@ function Navbar({ heroRef = null }) {
                                     fill: "white"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/navbar.jsx",
-                                    lineNumber: 130,
+                                    lineNumber: 167,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
@@ -1332,24 +1414,24 @@ function Navbar({ heroRef = null }) {
                                     fill: "white"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/navbar.jsx",
-                                    lineNumber: 134,
+                                    lineNumber: 171,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/navbar.jsx",
-                            lineNumber: 105,
+                            lineNumber: 142,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/navbar.jsx",
-                    lineNumber: 101,
+                    lineNumber: 138,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/navbar.jsx",
-                lineNumber: 100,
+                lineNumber: 137,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1361,7 +1443,7 @@ function Navbar({ heroRef = null }) {
                         children: "Home"
                     }, void 0, false, {
                         fileName: "[project]/src/components/navbar.jsx",
-                        lineNumber: 143,
+                        lineNumber: 180,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -1370,7 +1452,7 @@ function Navbar({ heroRef = null }) {
                         children: "About"
                     }, void 0, false, {
                         fileName: "[project]/src/components/navbar.jsx",
-                        lineNumber: 146,
+                        lineNumber: 183,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -1379,7 +1461,7 @@ function Navbar({ heroRef = null }) {
                         children: "Works"
                     }, void 0, false, {
                         fileName: "[project]/src/components/navbar.jsx",
-                        lineNumber: 149,
+                        lineNumber: 186,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -1388,7 +1470,7 @@ function Navbar({ heroRef = null }) {
                         children: "Service"
                     }, void 0, false, {
                         fileName: "[project]/src/components/navbar.jsx",
-                        lineNumber: 152,
+                        lineNumber: 189,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -1397,13 +1479,13 @@ function Navbar({ heroRef = null }) {
                         children: "Contact"
                     }, void 0, false, {
                         fileName: "[project]/src/components/navbar.jsx",
-                        lineNumber: 155,
+                        lineNumber: 192,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/navbar.jsx",
-                lineNumber: 142,
+                lineNumber: 179,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1419,13 +1501,13 @@ function Navbar({ heroRef = null }) {
                 children: "Let's Talk"
             }, void 0, false, {
                 fileName: "[project]/src/components/navbar.jsx",
-                lineNumber: 160,
+                lineNumber: 197,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/navbar.jsx",
-        lineNumber: 92,
+        lineNumber: 129,
         columnNumber: 5
     }, this);
 }
@@ -1457,150 +1539,119 @@ const SkincareLanding = ()=>{
     const ratingRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
     const svgTextRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
     const productImageRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
-    // Animation has been set up but not triggered yet
-    const setupAnimations = ()=>{
-        // Set initial states - everything hidden or in starting positions
-        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].set([
-            headingRef.current,
-            descriptionRef.current,
-            buttonRef.current,
-            circleImageRef.current,
-            speechBubbleRef.current,
-            ratingRef.current,
-            productImageRef.current
-        ], {
-            autoAlpha: 0,
-            y: 20
-        });
-        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].set(svgTextRef.current, {
-            autoAlpha: 0,
-            y: 50
-        });
-    };
-    // Function to trigger animations
-    const playAnimations = ()=>{
-        const tl = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].timeline({
-            defaults: {
-                ease: "power3.out"
-            }
-        });
-        tl.to(headingRef.current, {
-            autoAlpha: 1,
-            y: 0,
-            duration: 0.8
-        }).to(descriptionRef.current, {
-            autoAlpha: 1,
-            y: 0,
-            duration: 0.8
-        }, "-=0.6").to(buttonRef.current, {
-            autoAlpha: 1,
-            y: 0,
-            duration: 0.8
-        }, "-=0.6").to(circleImageRef.current, {
-            autoAlpha: 1,
-            y: 0,
-            duration: 0.8
-        }, "-=0.7").to(speechBubbleRef.current, {
-            autoAlpha: 1,
-            y: 0,
-            duration: 0.8
-        }, "-=0.5").to(ratingRef.current, {
-            autoAlpha: 1,
-            y: 0,
-            duration: 0.8
-        }, "-=0.7").to(productImageRef.current, {
-            autoAlpha: 1,
-            y: 0,
-            duration: 0.8
-        }, "-=0.7").to(svgTextRef.current, {
-            autoAlpha: 1,
-            y: 0,
-            duration: 1
-        }, "-=0.6");
-        // Add subtle floating animation to the circle image
-        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].to(circleImageRef.current, {
-            y: -10,
-            duration: 2.5,
-            repeat: -1,
-            yoyo: true,
-            ease: "sine.inOut",
-            delay: 1
-        });
-    };
+    const contextRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
-        // Set initial state
-        setupAnimations();
-        const ctx = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].context(()=>{
-            const tl = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].timeline({
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: "top 90%",
-                    end: "bottom center",
-                    scrub: true
-                },
-                defaults: {
-                    ease: "power3.out"
-                }
+        if (!sectionRef.current) return;
+        // Create GSAP context to manage all animations
+        contextRef.current = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].context(()=>{
+            // Set initial states - everything hidden or in starting positions
+            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].set([
+                headingRef.current,
+                descriptionRef.current,
+                buttonRef.current,
+                circleImageRef.current,
+                speechBubbleRef.current,
+                ratingRef.current,
+                productImageRef.current
+            ], {
+                autoAlpha: 0,
+                y: 20
             });
-            tl.to(headingRef.current, {
-                autoAlpha: 1,
-                y: 0,
-                duration: 0.8
-            }).to(descriptionRef.current, {
-                autoAlpha: 1,
-                y: 0,
-                duration: 0.8
-            }, "-=0.6").to(buttonRef.current, {
-                autoAlpha: 1,
-                y: 0,
-                duration: 0.8
-            }, "-=0.6").to(circleImageRef.current, {
-                autoAlpha: 1,
-                y: 0,
-                duration: 0.8
-            }, "-=0.7").to(speechBubbleRef.current, {
-                autoAlpha: 1,
-                y: 0,
-                duration: 0.8
-            }, "-=0.5").to(ratingRef.current, {
-                autoAlpha: 1,
-                y: 0,
-                duration: 0.8
-            }, "-=0.7").to(productImageRef.current, {
-                autoAlpha: 1,
-                y: 0,
-                duration: 0.8
-            }, "-=0.7").to(svgTextRef.current, {
-                autoAlpha: 1,
-                y: 0,
-                duration: 1
-            }, "-=0.6");
-            // Floating animation
-            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].to(circleImageRef.current, {
-                y: -10,
-                duration: 2.5,
-                repeat: -1,
-                yoyo: true,
-                ease: "sine.inOut",
-                delay: 1
+            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].set(svgTextRef.current, {
+                autoAlpha: 0,
+                y: 50
             });
+            // Create intersection observer instead of ScrollTrigger to avoid conflicts
+            const observer = new IntersectionObserver((entries)=>{
+                entries.forEach((entry)=>{
+                    if (entry.isIntersecting) {
+                        playAnimations();
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.3
+            });
+            observer.observe(sectionRef.current);
+            // Function to trigger animations
+            const playAnimations = ()=>{
+                const tl = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].timeline({
+                    defaults: {
+                        ease: "power3.out"
+                    }
+                });
+                tl.to(headingRef.current, {
+                    autoAlpha: 1,
+                    y: 0,
+                    duration: 0.8
+                }).to(descriptionRef.current, {
+                    autoAlpha: 1,
+                    y: 0,
+                    duration: 0.8
+                }, "-=0.6").to(buttonRef.current, {
+                    autoAlpha: 1,
+                    y: 0,
+                    duration: 0.8
+                }, "-=0.6").to(circleImageRef.current, {
+                    autoAlpha: 1,
+                    y: 0,
+                    duration: 0.8
+                }, "-=0.7").to(speechBubbleRef.current, {
+                    autoAlpha: 1,
+                    y: 0,
+                    duration: 0.8
+                }, "-=0.5").to(ratingRef.current, {
+                    autoAlpha: 1,
+                    y: 0,
+                    duration: 0.8
+                }, "-=0.7").to(productImageRef.current, {
+                    autoAlpha: 1,
+                    y: 0,
+                    duration: 0.8
+                }, "-=0.7").to(svgTextRef.current, {
+                    autoAlpha: 1,
+                    y: 0,
+                    duration: 1
+                }, "-=0.6");
+                // Add subtle floating animation to the circle image
+                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].to(circleImageRef.current, {
+                    y: -10,
+                    duration: 2.5,
+                    repeat: -1,
+                    yoyo: true,
+                    ease: "sine.inOut",
+                    delay: 1
+                });
+            };
+            // Button hover effect
+            const btn = buttonRef.current;
+            if (btn) {
+                const enter = ()=>__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].to(btn, {
+                        scale: 1.05,
+                        duration: 0.3
+                    });
+                const leave = ()=>__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].to(btn, {
+                        scale: 1,
+                        duration: 0.3
+                    });
+                btn.addEventListener("mouseenter", enter);
+                btn.addEventListener("mouseleave", leave);
+                // Store cleanup functions
+                return ()=>{
+                    btn.removeEventListener("mouseenter", enter);
+                    btn.removeEventListener("mouseleave", leave);
+                    observer.disconnect();
+                };
+            }
+            return ()=>{
+                observer.disconnect();
+            };
         }, sectionRef);
-        // Button hover effect
-        const btn = buttonRef.current;
-        const enter = ()=>__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].to(btn, {
-                scale: 1.05,
-                duration: 0.3
-            });
-        const leave = ()=>__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].to(btn, {
-                scale: 1,
-                duration: 0.3
-            });
-        btn?.addEventListener("mouseenter", enter);
-        btn?.addEventListener("mouseleave", leave);
         return ()=>{
-            ctx.revert();
-            btn?.removeEventListener("mouseenter", enter);
-            btn?.removeEventListener("mouseleave", leave);
+            if (contextRef.current) {
+                contextRef.current.revert();
+                contextRef.current = null;
+            }
         };
     }, []);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
@@ -1621,7 +1672,7 @@ const SkincareLanding = ()=>{
                                 children: "GLOW"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/skincare-landing.jsx",
-                                lineNumber: 157,
+                                lineNumber: 139,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1629,18 +1680,18 @@ const SkincareLanding = ()=>{
                                 children: "NATURALLY"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/skincare-landing.jsx",
-                                lineNumber: 158,
+                                lineNumber: 140,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/skincare-landing.jsx",
-                        lineNumber: 156,
+                        lineNumber: 138,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/components/skincare-landing.jsx",
-                    lineNumber: 152,
+                    lineNumber: 134,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1651,12 +1702,12 @@ const SkincareLanding = ()=>{
                         children: "Transform your skincare routine with premium products that restore, protect, and enhance your natural glow every day."
                     }, void 0, false, {
                         fileName: "[project]/src/components/skincare-landing.jsx",
-                        lineNumber: 167,
+                        lineNumber: 148,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/components/skincare-landing.jsx",
-                    lineNumber: 163,
+                    lineNumber: 144,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1665,7 +1716,7 @@ const SkincareLanding = ()=>{
                     children: "Shop Now"
                 }, void 0, false, {
                     fileName: "[project]/src/components/skincare-landing.jsx",
-                    lineNumber: 173,
+                    lineNumber: 154,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1683,12 +1734,12 @@ const SkincareLanding = ()=>{
                                 priority: true
                             }, void 0, false, {
                                 fileName: "[project]/src/components/skincare-landing.jsx",
-                                lineNumber: 187,
+                                lineNumber: 168,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/components/skincare-landing.jsx",
-                            lineNumber: 186,
+                            lineNumber: 167,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1710,17 +1761,17 @@ const SkincareLanding = ()=>{
                                                 clipRule: "evenodd"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/skincare-landing.jsx",
-                                                lineNumber: 211,
+                                                lineNumber: 192,
                                                 columnNumber: 19
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/skincare-landing.jsx",
-                                            lineNumber: 205,
+                                            lineNumber: 186,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/skincare-landing.jsx",
-                                        lineNumber: 204,
+                                        lineNumber: 185,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1728,24 +1779,24 @@ const SkincareLanding = ()=>{
                                         children: "While giving you an invigorating cleansing experience"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/skincare-landing.jsx",
-                                        lineNumber: 218,
+                                        lineNumber: 199,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/skincare-landing.jsx",
-                                lineNumber: 203,
+                                lineNumber: 184,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/components/skincare-landing.jsx",
-                            lineNumber: 198,
+                            lineNumber: 179,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/skincare-landing.jsx",
-                    lineNumber: 182,
+                    lineNumber: 163,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1759,12 +1810,12 @@ const SkincareLanding = ()=>{
                         className: "object-cover rounded-md"
                     }, void 0, false, {
                         fileName: "[project]/src/components/skincare-landing.jsx",
-                        lineNumber: 230,
+                        lineNumber: 211,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/components/skincare-landing.jsx",
-                    lineNumber: 226,
+                    lineNumber: 207,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1776,7 +1827,7 @@ const SkincareLanding = ()=>{
                             children: "4.8/5"
                         }, void 0, false, {
                             fileName: "[project]/src/components/skincare-landing.jsx",
-                            lineNumber: 244,
+                            lineNumber: 225,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1787,26 +1838,26 @@ const SkincareLanding = ()=>{
                                     children: "★★★★★"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/skincare-landing.jsx",
-                                    lineNumber: 246,
+                                    lineNumber: 227,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                     children: "23,910"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/skincare-landing.jsx",
-                                    lineNumber: 247,
+                                    lineNumber: 228,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/skincare-landing.jsx",
-                            lineNumber: 245,
+                            lineNumber: 226,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/skincare-landing.jsx",
-                    lineNumber: 240,
+                    lineNumber: 221,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1825,28 +1876,28 @@ const SkincareLanding = ()=>{
                             children: "SKINCARE"
                         }, void 0, false, {
                             fileName: "[project]/src/components/skincare-landing.jsx",
-                            lineNumber: 257,
+                            lineNumber: 238,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/skincare-landing.jsx",
-                        lineNumber: 256,
+                        lineNumber: 237,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/components/skincare-landing.jsx",
-                    lineNumber: 252,
+                    lineNumber: 233,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/skincare-landing.jsx",
-            lineNumber: 150,
+            lineNumber: 132,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/components/skincare-landing.jsx",
-        lineNumber: 144,
+        lineNumber: 126,
         columnNumber: 5
     }, this);
 };
@@ -1869,7 +1920,6 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$inde
 ;
 ;
 ;
-;
 function ModestLanding() {
     // Refs for animation targets
     const containerRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
@@ -1880,79 +1930,115 @@ function ModestLanding() {
     const footerContentRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
     const imageContainerRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
     const navIconsRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
-    // Register ScrollTrigger plugin
+    const observerRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
+    const hasAnimatedRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(false);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        // Clean up any existing observer
+        if (observerRef.current) {
+            observerRef.current.disconnect();
+        }
         const observer = new IntersectionObserver((entries)=>{
             entries.forEach((entry)=>{
-                if (entry.isIntersecting) {
+                if (entry.isIntersecting && !hasAnimatedRef.current) {
+                    hasAnimatedRef.current = true;
+                    // Kill any existing animations
+                    __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].killTweensOf([
+                        headerRef.current,
+                        titleRef.current?.querySelectorAll("h1"),
+                        subtitleRef.current,
+                        ctaButtonRef.current,
+                        footerContentRef.current,
+                        imageContainerRef.current,
+                        navIconsRef.current
+                    ]);
                     // Animate only when the component is in view
                     const tl = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].timeline();
                     // Header animation
-                    tl.from(headerRef.current, {
-                        y: -50,
-                        opacity: 0,
-                        duration: 0.8,
-                        ease: "power3.out"
-                    });
+                    if (headerRef.current) {
+                        tl.from(headerRef.current, {
+                            y: -50,
+                            opacity: 0,
+                            duration: 0.8,
+                            ease: "power3.out"
+                        });
+                    }
                     // Title animation with masked reveal effect
-                    const titleLines = titleRef.current.querySelectorAll("h1");
-                    tl.from(titleLines, {
-                        y: 100,
-                        opacity: 0,
-                        stagger: 0.15,
-                        duration: 0.8,
-                        ease: "power3.out"
-                    }, "-=0.4");
+                    if (titleRef.current) {
+                        const titleLines = titleRef.current.querySelectorAll("h1");
+                        if (titleLines.length > 0) {
+                            tl.from(titleLines, {
+                                y: 100,
+                                opacity: 0,
+                                stagger: 0.15,
+                                duration: 0.8,
+                                ease: "power3.out"
+                            }, "-=0.4");
+                        }
+                    }
                     // Subtitle animation
-                    tl.from(subtitleRef.current, {
-                        y: 30,
-                        opacity: 0,
-                        duration: 0.6,
-                        ease: "power2.out"
-                    }, "-=0.6");
+                    if (subtitleRef.current) {
+                        tl.from(subtitleRef.current, {
+                            y: 30,
+                            opacity: 0,
+                            duration: 0.6,
+                            ease: "power2.out"
+                        }, "-=0.6");
+                    }
                     // CTA button animation
-                    tl.from(ctaButtonRef.current, {
-                        scale: 0.8,
-                        opacity: 0,
-                        duration: 0.5,
-                        ease: "back.out(1.7)"
-                    }, "-=0.3");
+                    if (ctaButtonRef.current) {
+                        tl.from(ctaButtonRef.current, {
+                            scale: 0.8,
+                            opacity: 0,
+                            duration: 0.5,
+                            ease: "back.out(1.7)"
+                        }, "-=0.3");
+                    }
                     // Footer content animation
-                    tl.from(footerContentRef.current, {
-                        y: 30,
-                        opacity: 0,
-                        duration: 0.6,
-                        ease: "power2.out"
-                    }, "-=0.4");
+                    if (footerContentRef.current) {
+                        tl.from(footerContentRef.current, {
+                            y: 30,
+                            opacity: 0,
+                            duration: 0.6,
+                            ease: "power2.out"
+                        }, "-=0.4");
+                    }
                     // Image container animation
-                    tl.from(imageContainerRef.current, {
-                        x: 100,
-                        opacity: 0,
-                        duration: 1,
-                        ease: "power2.out"
-                    }, "-=1");
+                    if (imageContainerRef.current) {
+                        tl.from(imageContainerRef.current, {
+                            x: 100,
+                            opacity: 0,
+                            duration: 1,
+                            ease: "power2.out"
+                        }, "-=1");
+                    }
                     // Right nav icons animation
-                    tl.from(navIconsRef.current, {
-                        y: -30,
-                        opacity: 0,
-                        duration: 0.5,
-                        ease: "power2.out"
-                    }, "-=0.8");
-                    observer.unobserve(entry.target); // Trigger only once
+                    if (navIconsRef.current) {
+                        tl.from(navIconsRef.current, {
+                            y: -30,
+                            opacity: 0,
+                            duration: 0.5,
+                            ease: "power2.out"
+                        }, "-=0.8");
+                    }
+                    // Disconnect observer after animation
+                    observer.disconnect();
                 }
             });
         }, {
             threshold: 0.3
-        } // Trigger when 30% of the component is visible
-        );
+        });
+        observerRef.current = observer;
         if (containerRef.current) {
             observer.observe(containerRef.current);
         }
         return ()=>{
-            if (containerRef.current) observer.unobserve(containerRef.current);
+            if (observerRef.current) {
+                observerRef.current.disconnect();
+            }
+            // Kill all GSAP animations on cleanup
+            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].killTweensOf("*");
         };
     }, []);
-    // Navigation arrow buttons hover effect
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         ref: containerRef,
         className: "h-full w-full flex",
@@ -1971,7 +2057,7 @@ function ModestLanding() {
                                         className: "circle rounded-full size-10 bg-black"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/modest-landing.jsx",
-                                        lineNumber: 136,
+                                        lineNumber: 175,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1981,26 +2067,26 @@ function ModestLanding() {
                                                 children: "Unveil"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/modest-landing.jsx",
-                                                lineNumber: 138,
+                                                lineNumber: 177,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                 children: "Modesty"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/modest-landing.jsx",
-                                                lineNumber: 139,
+                                                lineNumber: 178,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/modest-landing.jsx",
-                                        lineNumber: 137,
+                                        lineNumber: 176,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/modest-landing.jsx",
-                                lineNumber: 135,
+                                lineNumber: 174,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2019,17 +2105,17 @@ function ModestLanding() {
                                                 clipRule: "evenodd"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/modest-landing.jsx",
-                                                lineNumber: 152,
+                                                lineNumber: 191,
                                                 columnNumber: 17
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/modest-landing.jsx",
-                                            lineNumber: 146,
+                                            lineNumber: 185,
                                             columnNumber: 15
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/modest-landing.jsx",
-                                        lineNumber: 145,
+                                        lineNumber: 184,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2045,29 +2131,29 @@ function ModestLanding() {
                                                 clipRule: "evenodd"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/modest-landing.jsx",
-                                                lineNumber: 166,
+                                                lineNumber: 205,
                                                 columnNumber: 17
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/modest-landing.jsx",
-                                            lineNumber: 160,
+                                            lineNumber: 199,
                                             columnNumber: 15
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/modest-landing.jsx",
-                                        lineNumber: 159,
+                                        lineNumber: 198,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/modest-landing.jsx",
-                                lineNumber: 144,
+                                lineNumber: 183,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/modest-landing.jsx",
-                        lineNumber: 131,
+                        lineNumber: 170,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2081,12 +2167,12 @@ function ModestLanding() {
                                     children: "Modern Modesty"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/modest-landing.jsx",
-                                    lineNumber: 178,
+                                    lineNumber: 217,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/components/modest-landing.jsx",
-                                lineNumber: 177,
+                                lineNumber: 216,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2100,12 +2186,12 @@ function ModestLanding() {
                                             children: "Redefining Elegance"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/modest-landing.jsx",
-                                            lineNumber: 182,
+                                            lineNumber: 221,
                                             columnNumber: 15
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/modest-landing.jsx",
-                                        lineNumber: 181,
+                                        lineNumber: 220,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2115,12 +2201,12 @@ function ModestLanding() {
                                             children: "Explore Our Hijabs & Abayas"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/modest-landing.jsx",
-                                            lineNumber: 185,
+                                            lineNumber: 224,
                                             columnNumber: 15
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/modest-landing.jsx",
-                                        lineNumber: 184,
+                                        lineNumber: 223,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2130,24 +2216,24 @@ function ModestLanding() {
                                             children: "Collection"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/modest-landing.jsx",
-                                            lineNumber: 188,
+                                            lineNumber: 227,
                                             columnNumber: 15
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/modest-landing.jsx",
-                                        lineNumber: 187,
+                                        lineNumber: 226,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/modest-landing.jsx",
-                                lineNumber: 180,
+                                lineNumber: 219,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/modest-landing.jsx",
-                        lineNumber: 176,
+                        lineNumber: 215,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2162,7 +2248,7 @@ function ModestLanding() {
                                         children: "Start shopping"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/modest-landing.jsx",
-                                        lineNumber: 198,
+                                        lineNumber: 237,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2180,23 +2266,23 @@ function ModestLanding() {
                                                 d: "M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/modest-landing.jsx",
-                                                lineNumber: 208,
+                                                lineNumber: 247,
                                                 columnNumber: 17
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/modest-landing.jsx",
-                                            lineNumber: 200,
+                                            lineNumber: 239,
                                             columnNumber: 15
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/modest-landing.jsx",
-                                        lineNumber: 199,
+                                        lineNumber: 238,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/modest-landing.jsx",
-                                lineNumber: 194,
+                                lineNumber: 233,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2210,27 +2296,27 @@ function ModestLanding() {
                                                 children: "Where Modesty Meets Style "
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/modest-landing.jsx",
-                                                lineNumber: 222,
+                                                lineNumber: 261,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                 children: "Soft fabrics. Perfect drape."
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/modest-landing.jsx",
-                                                lineNumber: 223,
+                                                lineNumber: 262,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                 children: "Everyday comfort."
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/modest-landing.jsx",
-                                                lineNumber: 224,
+                                                lineNumber: 263,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/modest-landing.jsx",
-                                        lineNumber: 221,
+                                        lineNumber: 260,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2251,17 +2337,17 @@ function ModestLanding() {
                                                         d: "M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modest-landing.jsx",
-                                                        lineNumber: 236,
+                                                        lineNumber: 275,
                                                         columnNumber: 19
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/modest-landing.jsx",
-                                                    lineNumber: 228,
+                                                    lineNumber: 267,
                                                     columnNumber: 17
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/modest-landing.jsx",
-                                                lineNumber: 227,
+                                                lineNumber: 266,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2279,41 +2365,41 @@ function ModestLanding() {
                                                         d: "M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modest-landing.jsx",
-                                                        lineNumber: 252,
+                                                        lineNumber: 291,
                                                         columnNumber: 19
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/modest-landing.jsx",
-                                                    lineNumber: 244,
+                                                    lineNumber: 283,
                                                     columnNumber: 17
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/modest-landing.jsx",
-                                                lineNumber: 243,
+                                                lineNumber: 282,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/modest-landing.jsx",
-                                        lineNumber: 226,
+                                        lineNumber: 265,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/modest-landing.jsx",
-                                lineNumber: 217,
+                                lineNumber: 256,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/modest-landing.jsx",
-                        lineNumber: 193,
+                        lineNumber: 232,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/modest-landing.jsx",
-                lineNumber: 130,
+                lineNumber: 169,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2329,12 +2415,12 @@ function ModestLanding() {
                             className: "object-cover"
                         }, void 0, false, {
                             fileName: "[project]/src/components/modest-landing.jsx",
-                            lineNumber: 269,
+                            lineNumber: 308,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/modest-landing.jsx",
-                        lineNumber: 265,
+                        lineNumber: 304,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2356,17 +2442,17 @@ function ModestLanding() {
                                                 d: "m9.653 16.915-.005-.003-.019-.01a20.759 20.759 0 0 1-1.162-.682 22.045 22.045 0 0 1-2.582-1.9C4.045 12.733 2 10.352 2 7.5a4.5 4.5 0 0 1 8-2.828A4.5 4.5 0 0 1 18 7.5c0 2.852-2.044 5.233-3.885 6.82a22.049 22.049 0 0 1-3.744 2.582l-.019.01-.005.003h-.002a.739.739 0 0 1-.69.001l-.002-.001Z"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/modest-landing.jsx",
-                                                lineNumber: 292,
+                                                lineNumber: 331,
                                                 columnNumber: 19
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/modest-landing.jsx",
-                                            lineNumber: 286,
+                                            lineNumber: 325,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/modest-landing.jsx",
-                                        lineNumber: 282,
+                                        lineNumber: 321,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2382,45 +2468,45 @@ function ModestLanding() {
                                                 clipRule: "evenodd"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/modest-landing.jsx",
-                                                lineNumber: 302,
+                                                lineNumber: 341,
                                                 columnNumber: 19
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/modest-landing.jsx",
-                                            lineNumber: 296,
+                                            lineNumber: 335,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/modest-landing.jsx",
-                                        lineNumber: 295,
+                                        lineNumber: 334,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/modest-landing.jsx",
-                                lineNumber: 281,
+                                lineNumber: 320,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/components/modest-landing.jsx",
-                            lineNumber: 277,
+                            lineNumber: 316,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/modest-landing.jsx",
-                        lineNumber: 276,
+                        lineNumber: 315,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/modest-landing.jsx",
-                lineNumber: 264,
+                lineNumber: 303,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/modest-landing.jsx",
-        lineNumber: 129,
+        lineNumber: 168,
         columnNumber: 5
     }, this);
 }
@@ -2438,8 +2524,6 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/image.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/client/app-dir/link.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/node_modules/gsap/index.js [app-ssr] (ecmascript) <locals>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$dist$2f$ScrollTrigger$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/gsap/dist/ScrollTrigger.js [app-ssr] (ecmascript)");
-;
 ;
 ;
 ;
@@ -2452,74 +2536,90 @@ const EcomLanding = ()=>{
     const searchRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
     const buttonRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
     const iconRefs = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])([]);
+    const observerRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
+    const hasAnimatedRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(false);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
-        // Register ScrollTrigger plugin
-        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].registerPlugin(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$dist$2f$ScrollTrigger$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ScrollTrigger"]);
-        // Initial animations when page loads
-        const tl = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].timeline({
-            defaults: {
-                ease: "power3.out"
+        // Clean up any existing observer
+        if (observerRef.current) {
+            observerRef.current.disconnect();
+        }
+        // Initial animations when page loads - only run once
+        if (!hasAnimatedRef.current) {
+            hasAnimatedRef.current = true;
+            const tl = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].timeline({
+                defaults: {
+                    ease: "power3.out"
+                }
+            });
+            // Navbar animation - fade in from top
+            if (navbarRef.current) {
+                tl.fromTo(navbarRef.current, {
+                    y: -50,
+                    opacity: 0
+                }, {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.8
+                });
             }
-        });
-        // Navbar animation - fade in from top
-        tl.fromTo(navbarRef.current, {
-            y: -50,
-            opacity: 0
-        }, {
-            y: 0,
-            opacity: 1,
-            duration: 0.8
-        });
-        // Search input slide in from right
-        tl.fromTo(searchRef.current, {
-            x: 50,
-            opacity: 0
-        }, {
-            x: 0,
-            opacity: 1,
-            duration: 0.6
-        }, "-=0.4");
-        // Title text mask reveal animation
-        const titleElements = titleRef.current.querySelectorAll("h1");
-        titleElements.forEach((element)=>{
-            tl.fromTo(element, {
-                y: 100,
-                opacity: 0
-            }, {
-                y: 0,
-                opacity: 1,
-                duration: 0.8,
-                stagger: 0.2
-            }, "-=0.4");
-        });
-        // Button animation - scale and shadow
-        tl.fromTo(buttonRef.current, {
-            scale: 0.8,
-            opacity: 0
-        }, {
-            scale: 1,
-            opacity: 1,
-            duration: 0.5
-        }, "-=0.2");
-        // Icons fade in one by one
-        iconRefs.current.forEach((icon, index)=>{
-            if (icon) {
-                tl.fromTo(icon, {
-                    scale: 0,
+            // Search input slide in from right
+            if (searchRef.current) {
+                tl.fromTo(searchRef.current, {
+                    x: 50,
+                    opacity: 0
+                }, {
+                    x: 0,
+                    opacity: 1,
+                    duration: 0.6
+                }, "-=0.4");
+            }
+            // Title text mask reveal animation
+            if (titleRef.current) {
+                const titleElements = titleRef.current.querySelectorAll("h1");
+                titleElements.forEach((element)=>{
+                    tl.fromTo(element, {
+                        y: 100,
+                        opacity: 0
+                    }, {
+                        y: 0,
+                        opacity: 1,
+                        duration: 0.8,
+                        stagger: 0.2
+                    }, "-=0.4");
+                });
+            }
+            // Button animation - scale and shadow
+            if (buttonRef.current) {
+                tl.fromTo(buttonRef.current, {
+                    scale: 0.8,
                     opacity: 0
                 }, {
                     scale: 1,
                     opacity: 1,
-                    duration: 0.3
-                }, "-=0.1");
+                    duration: 0.5
+                }, "-=0.2");
             }
-        });
+            // Icons fade in one by one
+            iconRefs.current.forEach((icon, index)=>{
+                if (icon) {
+                    tl.fromTo(icon, {
+                        scale: 0,
+                        opacity: 0
+                    }, {
+                        scale: 1,
+                        opacity: 1,
+                        duration: 0.3
+                    }, "-=0.1");
+                }
+            });
+        }
         // Create intersection observer for scrolling elements
-        const sections = document.querySelectorAll(".animate-on-scroll");
         const observer = new IntersectionObserver((entries)=>{
             entries.forEach((entry)=>{
                 if (entry.isIntersecting) {
                     const elem = entry.target;
+                    // Kill any existing animations on this element
+                    __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].killTweensOf(elem);
                     // Different animations based on data attribute
                     const animationType = elem.dataset.animation;
                     if (animationType === "fade-in") {
@@ -2559,18 +2659,20 @@ const EcomLanding = ()=>{
             });
         }, {
             threshold: 0.1
-        } // Trigger when at least 10% of the element is visible
-        );
-        // Observe all sections
+        });
+        observerRef.current = observer;
+        // Observe all sections with animation class
+        const sections = document.querySelectorAll(".animate-on-scroll");
         sections.forEach((section)=>{
             observer.observe(section);
         });
         // Cleanup
         return ()=>{
-            observer.disconnect();
-            if (__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$dist$2f$ScrollTrigger$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ScrollTrigger"]) {
-                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$dist$2f$ScrollTrigger$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ScrollTrigger"].getAll().forEach((t)=>t.kill());
+            if (observerRef.current) {
+                observerRef.current.disconnect();
             }
+            // Kill all GSAP animations on cleanup
+            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].killTweensOf("*");
         };
     }, []);
     // Function to add icons to ref array
@@ -2592,12 +2694,12 @@ const EcomLanding = ()=>{
                         alt: "background"
                     }, void 0, false, {
                         fileName: "[project]/src/components/ecommerce-landin.jsx",
-                        lineNumber: 137,
+                        lineNumber: 157,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/components/ecommerce-landin.jsx",
-                    lineNumber: 136,
+                    lineNumber: 156,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2613,7 +2715,7 @@ const EcomLanding = ()=>{
                                     children: "LOGO"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/ecommerce-landin.jsx",
-                                    lineNumber: 150,
+                                    lineNumber: 170,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2625,7 +2727,7 @@ const EcomLanding = ()=>{
                                             children: "HOME"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/ecommerce-landin.jsx",
-                                            lineNumber: 154,
+                                            lineNumber: 174,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -2634,7 +2736,7 @@ const EcomLanding = ()=>{
                                             children: "HER"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/ecommerce-landin.jsx",
-                                            lineNumber: 160,
+                                            lineNumber: 180,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -2643,7 +2745,7 @@ const EcomLanding = ()=>{
                                             children: "HIS"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/ecommerce-landin.jsx",
-                                            lineNumber: 166,
+                                            lineNumber: 186,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -2652,7 +2754,7 @@ const EcomLanding = ()=>{
                                             children: "OUTLET"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/ecommerce-landin.jsx",
-                                            lineNumber: 172,
+                                            lineNumber: 192,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -2661,13 +2763,13 @@ const EcomLanding = ()=>{
                                             children: "BLOG"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/ecommerce-landin.jsx",
-                                            lineNumber: 178,
+                                            lineNumber: 198,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/ecommerce-landin.jsx",
-                                    lineNumber: 153,
+                                    lineNumber: 173,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2687,12 +2789,12 @@ const EcomLanding = ()=>{
                                                 d: "M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/ecommerce-landin.jsx",
-                                                lineNumber: 195,
+                                                lineNumber: 215,
                                                 columnNumber: 17
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/ecommerce-landin.jsx",
-                                            lineNumber: 186,
+                                            lineNumber: 206,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
@@ -2709,12 +2811,12 @@ const EcomLanding = ()=>{
                                                 d: "M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/ecommerce-landin.jsx",
-                                                lineNumber: 210,
+                                                lineNumber: 230,
                                                 columnNumber: 17
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/ecommerce-landin.jsx",
-                                            lineNumber: 201,
+                                            lineNumber: 221,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
@@ -2731,24 +2833,24 @@ const EcomLanding = ()=>{
                                                 d: "M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/ecommerce-landin.jsx",
-                                                lineNumber: 225,
+                                                lineNumber: 245,
                                                 columnNumber: 17
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/ecommerce-landin.jsx",
-                                            lineNumber: 216,
+                                            lineNumber: 236,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/ecommerce-landin.jsx",
-                                    lineNumber: 185,
+                                    lineNumber: 205,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/ecommerce-landin.jsx",
-                            lineNumber: 146,
+                            lineNumber: 166,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2765,12 +2867,12 @@ const EcomLanding = ()=>{
                                             placeholder: "Search"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/ecommerce-landin.jsx",
-                                            lineNumber: 241,
+                                            lineNumber: 261,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/ecommerce-landin.jsx",
-                                        lineNumber: 240,
+                                        lineNumber: 260,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2788,28 +2890,28 @@ const EcomLanding = ()=>{
                                                 d: "m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/ecommerce-landin.jsx",
-                                                lineNumber: 256,
+                                                lineNumber: 276,
                                                 columnNumber: 19
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/ecommerce-landin.jsx",
-                                            lineNumber: 248,
+                                            lineNumber: 268,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/ecommerce-landin.jsx",
-                                        lineNumber: 247,
+                                        lineNumber: 267,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/ecommerce-landin.jsx",
-                                lineNumber: 239,
+                                lineNumber: 259,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/components/ecommerce-landin.jsx",
-                            lineNumber: 235,
+                            lineNumber: 255,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2826,12 +2928,12 @@ const EcomLanding = ()=>{
                                             children: "STREET STYLE"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/ecommerce-landin.jsx",
-                                            lineNumber: 277,
+                                            lineNumber: 297,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/ecommerce-landin.jsx",
-                                        lineNumber: 273,
+                                        lineNumber: 293,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2842,23 +2944,23 @@ const EcomLanding = ()=>{
                                             children: "UNLEASHED"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/ecommerce-landin.jsx",
-                                            lineNumber: 285,
+                                            lineNumber: 305,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/ecommerce-landin.jsx",
-                                        lineNumber: 281,
+                                        lineNumber: 301,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/ecommerce-landin.jsx",
-                                lineNumber: 271,
+                                lineNumber: 291,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/components/ecommerce-landin.jsx",
-                            lineNumber: 267,
+                            lineNumber: 287,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2869,7 +2971,7 @@ const EcomLanding = ()=>{
                                     "data-animation": "fade-in"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/ecommerce-landin.jsx",
-                                    lineNumber: 294,
+                                    lineNumber: 314,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2881,30 +2983,30 @@ const EcomLanding = ()=>{
                                         children: "SHOP NOW"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/ecommerce-landin.jsx",
-                                        lineNumber: 305,
+                                        lineNumber: 325,
                                         columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/ecommerce-landin.jsx",
-                                    lineNumber: 300,
+                                    lineNumber: 320,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/ecommerce-landin.jsx",
-                            lineNumber: 293,
+                            lineNumber: 313,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/ecommerce-landin.jsx",
-                    lineNumber: 144,
+                    lineNumber: 164,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/ecommerce-landin.jsx",
-            lineNumber: 135,
+            lineNumber: 155,
             columnNumber: 7
         }, this)
     }, void 0, false);
@@ -2922,10 +3024,8 @@ __turbopack_context__.s({
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react-jsx-dev-runtime.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/node_modules/gsap/index.js [app-ssr] (ecmascript) <locals>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$ScrollTrigger$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/gsap/ScrollTrigger.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/image.js [app-ssr] (ecmascript)");
 "use client";
-;
 ;
 ;
 ;
@@ -2937,74 +3037,91 @@ const RestaurantLanding = ()=>{
     const imageRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
     const navRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
     const featureRefs = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])([]);
-    // Register ScrollTrigger plugin
+    const contextRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
-        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].registerPlugin(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$ScrollTrigger$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ScrollTrigger"]);
-        const component = componentRef.current;
-        // Create a timeline for the animations
-        const tl = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].timeline({
-            scrollTrigger: {
-                trigger: component,
-                start: "top 80%",
-                end: "bottom 20%",
-                toggleActions: "play none none reverse"
-            }
-        });
-        // Animate the navigation
-        tl.fromTo(navRef.current, {
-            y: -50,
-            opacity: 0
-        }, {
-            y: 0,
-            opacity: 1,
-            duration: 0.8,
-            ease: "power3.out"
-        });
-        // Animate the main heading
-        tl.fromTo(textRef.current, {
-            x: 50,
-            opacity: 0
-        }, {
-            x: 0,
-            opacity: 1,
-            duration: 0.8,
-            ease: "power3.out"
-        }, "-=0.4");
-        // Animate the circle
-        tl.fromTo(circleRef.current, {
-            scale: 0.8,
-            opacity: 0
-        }, {
-            scale: 1,
-            opacity: 1,
-            duration: 1,
-            ease: "power2.out"
-        }, "-=0.6");
-        // Animate the image
-        tl.fromTo(imageRef.current, {
-            x: 100,
-            opacity: 0
-        }, {
-            x: 0,
-            opacity: 1,
-            duration: 1,
-            ease: "power3.out"
-        }, "-=0.8");
-        // Animate the feature points
-        featureRefs.current.forEach((feature, index)=>{
-            tl.fromTo(feature, {
-                y: 30,
-                opacity: 0
+        if (!componentRef.current) return;
+        // Create GSAP context to manage all animations
+        contextRef.current = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].context(()=>{
+            // Use Intersection Observer instead of ScrollTrigger
+            const observer = new IntersectionObserver((entries)=>{
+                entries.forEach((entry)=>{
+                    if (entry.isIntersecting) {
+                        playAnimations();
+                        observer.unobserve(entry.target);
+                    }
+                });
             }, {
-                y: 0,
-                opacity: 1,
-                duration: 0.5,
-                ease: "power2.out"
-            }, `-=${0.3 + index * 0.1}`);
-        });
+                threshold: 0.3
+            });
+            observer.observe(componentRef.current);
+            const playAnimations = ()=>{
+                // Create a timeline for the animations
+                const tl = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].timeline({
+                    defaults: {
+                        ease: "power3.out"
+                    }
+                });
+                // Animate the navigation
+                tl.fromTo(navRef.current, {
+                    y: -50,
+                    opacity: 0
+                }, {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.8
+                });
+                // Animate the main heading
+                tl.fromTo(textRef.current, {
+                    x: 50,
+                    opacity: 0
+                }, {
+                    x: 0,
+                    opacity: 1,
+                    duration: 0.8
+                }, "-=0.4");
+                // Animate the circle
+                tl.fromTo(circleRef.current, {
+                    scale: 0.8,
+                    opacity: 0
+                }, {
+                    scale: 1,
+                    opacity: 1,
+                    duration: 1,
+                    ease: "power2.out"
+                }, "-=0.6");
+                // Animate the image
+                tl.fromTo(imageRef.current, {
+                    x: 100,
+                    opacity: 0
+                }, {
+                    x: 0,
+                    opacity: 1,
+                    duration: 1
+                }, "-=0.8");
+                // Animate the feature points
+                featureRefs.current.forEach((feature, index)=>{
+                    if (feature) {
+                        tl.fromTo(feature, {
+                            y: 30,
+                            opacity: 0
+                        }, {
+                            y: 0,
+                            opacity: 1,
+                            duration: 0.5,
+                            ease: "power2.out"
+                        }, `-=${0.3 + index * 0.1}`);
+                    }
+                });
+            };
+            return ()=>{
+                observer.disconnect();
+            };
+        }, componentRef);
         return ()=>{
-            // Clean up ScrollTrigger when component unmounts
-            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$ScrollTrigger$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ScrollTrigger"].getAll().forEach((trigger)=>trigger.kill());
+            if (contextRef.current) {
+                contextRef.current.revert();
+                contextRef.current = null;
+            }
         };
     }, []);
     // Add feature point to refs
@@ -3015,7 +3132,7 @@ const RestaurantLanding = ()=>{
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         ref: componentRef,
-        className: "w-full h-screen overflow-hidden bg-white  text-black",
+        className: "w-full h-screen overflow-hidden bg-white text-black",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("nav", {
                 ref: navRef,
@@ -3029,7 +3146,7 @@ const RestaurantLanding = ()=>{
                                 children: "MENU"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/restaurant-landing.jsx",
-                                lineNumber: 97,
+                                lineNumber: 115,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -3037,7 +3154,7 @@ const RestaurantLanding = ()=>{
                                 children: "RESERVATION"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/restaurant-landing.jsx",
-                                lineNumber: 100,
+                                lineNumber: 118,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -3045,7 +3162,7 @@ const RestaurantLanding = ()=>{
                                 children: "ABOUT"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/restaurant-landing.jsx",
-                                lineNumber: 103,
+                                lineNumber: 121,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -3053,13 +3170,13 @@ const RestaurantLanding = ()=>{
                                 children: "CONTACT"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/restaurant-landing.jsx",
-                                lineNumber: 106,
+                                lineNumber: 124,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/restaurant-landing.jsx",
-                        lineNumber: 96,
+                        lineNumber: 114,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3073,18 +3190,18 @@ const RestaurantLanding = ()=>{
                                     children: "Bistro"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/restaurant-landing.jsx",
-                                    lineNumber: 113,
+                                    lineNumber: 131,
                                     columnNumber: 20
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/restaurant-landing.jsx",
-                            lineNumber: 112,
+                            lineNumber: 130,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/restaurant-landing.jsx",
-                        lineNumber: 111,
+                        lineNumber: 129,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3095,7 +3212,7 @@ const RestaurantLanding = ()=>{
                                 children: "EN / NO"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/restaurant-landing.jsx",
-                                lineNumber: 118,
+                                lineNumber: 136,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3103,19 +3220,19 @@ const RestaurantLanding = ()=>{
                                 children: "(704) 555-0127"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/restaurant-landing.jsx",
-                                lineNumber: 119,
+                                lineNumber: 137,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/restaurant-landing.jsx",
-                        lineNumber: 117,
+                        lineNumber: 135,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/restaurant-landing.jsx",
-                lineNumber: 92,
+                lineNumber: 110,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3136,7 +3253,7 @@ const RestaurantLanding = ()=>{
                                             children: "[01]"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/restaurant-landing.jsx",
-                                            lineNumber: 136,
+                                            lineNumber: 154,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3144,13 +3261,13 @@ const RestaurantLanding = ()=>{
                                             children: "A thoughtful and unique concept"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/restaurant-landing.jsx",
-                                            lineNumber: 137,
+                                            lineNumber: 155,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/restaurant-landing.jsx",
-                                    lineNumber: 132,
+                                    lineNumber: 150,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3162,7 +3279,7 @@ const RestaurantLanding = ()=>{
                                             children: "[02]"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/restaurant-landing.jsx",
-                                            lineNumber: 146,
+                                            lineNumber: 164,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3170,13 +3287,13 @@ const RestaurantLanding = ()=>{
                                             children: "Gourmet cuisine from the chef"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/restaurant-landing.jsx",
-                                            lineNumber: 147,
+                                            lineNumber: 165,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/restaurant-landing.jsx",
-                                    lineNumber: 142,
+                                    lineNumber: 160,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3188,7 +3305,7 @@ const RestaurantLanding = ()=>{
                                             children: "[03]"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/restaurant-landing.jsx",
-                                            lineNumber: 156,
+                                            lineNumber: 174,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3196,13 +3313,13 @@ const RestaurantLanding = ()=>{
                                             children: "Incredible cocktails from our bartender"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/restaurant-landing.jsx",
-                                            lineNumber: 157,
+                                            lineNumber: 175,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/restaurant-landing.jsx",
-                                    lineNumber: 152,
+                                    lineNumber: 170,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3214,7 +3331,7 @@ const RestaurantLanding = ()=>{
                                             children: "[04]"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/restaurant-landing.jsx",
-                                            lineNumber: 166,
+                                            lineNumber: 184,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3222,13 +3339,13 @@ const RestaurantLanding = ()=>{
                                             children: "The freshest ingredients for dishes"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/restaurant-landing.jsx",
-                                            lineNumber: 167,
+                                            lineNumber: 185,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/restaurant-landing.jsx",
-                                    lineNumber: 162,
+                                    lineNumber: 180,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3240,7 +3357,7 @@ const RestaurantLanding = ()=>{
                                             children: "Unlock a new"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/restaurant-landing.jsx",
-                                            lineNumber: 177,
+                                            lineNumber: 195,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3248,7 +3365,7 @@ const RestaurantLanding = ()=>{
                                             children: "experience"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/restaurant-landing.jsx",
-                                            lineNumber: 178,
+                                            lineNumber: 196,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -3256,24 +3373,24 @@ const RestaurantLanding = ()=>{
                                             children: "Get Started"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/restaurant-landing.jsx",
-                                            lineNumber: 179,
+                                            lineNumber: 197,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/restaurant-landing.jsx",
-                                    lineNumber: 173,
+                                    lineNumber: 191,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/restaurant-landing.jsx",
-                            lineNumber: 127,
+                            lineNumber: 145,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/restaurant-landing.jsx",
-                        lineNumber: 126,
+                        lineNumber: 144,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3289,37 +3406,37 @@ const RestaurantLanding = ()=>{
                                     className: "h-full w-full object-cover"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/restaurant-landing.jsx",
-                                    lineNumber: 189,
+                                    lineNumber: 207,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "absolute inset-0 bg-gradient-to-br from-[#1a3a32]/30 to-transparent mix-blend-multiply"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/restaurant-landing.jsx",
-                                    lineNumber: 195,
+                                    lineNumber: 213,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/restaurant-landing.jsx",
-                            lineNumber: 188,
+                            lineNumber: 206,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/restaurant-landing.jsx",
-                        lineNumber: 187,
+                        lineNumber: 205,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/restaurant-landing.jsx",
-                lineNumber: 124,
+                lineNumber: 142,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/restaurant-landing.jsx",
-        lineNumber: 87,
+        lineNumber: 105,
         columnNumber: 5
     }, this);
 };
@@ -3351,7 +3468,11 @@ const MaskedText = ({ text, className = "", indent = true, positioning = "" })=>
         const element = textRef.current;
         if (!element) return;
         const words = text.split(" ");
-        element.innerHTML = ""; // Clear any content
+        // ✅ Better way to clear content - remove child nodes properly
+        while(element.firstChild){
+            element.removeChild(element.firstChild);
+        }
+        // Reset refs
         wordRefs.current = [];
         wordContainersRef.current = [];
         const wrapper = document.createElement("div");
@@ -3359,7 +3480,7 @@ const MaskedText = ({ text, className = "", indent = true, positioning = "" })=>
         wrapper.style.flexWrap = "wrap";
         wrapper.style.alignItems = "flex-start";
         wrapper.style.justifyContent = "flex-start";
-        wrapper.style.lineHeight = "1.1"; // Tighter line height for better control
+        wrapper.style.lineHeight = "1.1";
         if (indent) {
             const indentDiv = document.createElement("div");
             indentDiv.style.width = "3em";
@@ -3368,15 +3489,13 @@ const MaskedText = ({ text, className = "", indent = true, positioning = "" })=>
             wrapper.appendChild(indentDiv);
         }
         words.forEach((word, index)=>{
-            // Create container with overflow hidden
             const container = document.createElement("div");
             container.style.display = "inline-block";
             container.style.overflow = "hidden";
             container.style.position = "relative";
             container.style.verticalAlign = "top";
             container.style.paddingBottom = "5px";
-            container.style.marginRight = index < words.length - 1 ? "0.35em" : "0"; // Better word spacing
-            // Create word span that will be animated
+            container.style.marginRight = index < words.length - 1 ? "0.35em" : "0";
             const wordSpan = document.createElement("span");
             wordSpan.textContent = word;
             wordSpan.style.display = "inline-block";
@@ -3384,18 +3503,28 @@ const MaskedText = ({ text, className = "", indent = true, positioning = "" })=>
             wordSpan.style.willChange = "transform";
             container.appendChild(wordSpan);
             wrapper.appendChild(container);
-            // Store references for animation
             wordContainersRef.current.push(container);
             wordRefs.current.push(wordSpan);
         });
         element.appendChild(wrapper);
-        // Force layout calculation to ensure proper sizing
+        // Force layout calculation
         wordContainersRef.current.forEach((container, i)=>{
             const wordHeight = wordRefs.current[i].offsetHeight;
             container.style.height = `${wordHeight + 2}px`;
         });
     };
-    // Setup Intersection Observer
+    // ✅ Cleanup function to prevent memory leaks
+    const cleanup = ()=>{
+        // Kill any running GSAP animations
+        if (wordRefs.current.length > 0) {
+            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].killTweensOf(wordRefs.current);
+        }
+        // Reset refs
+        wordRefs.current = [];
+        wordContainersRef.current = [];
+        animationExecuted.current = false;
+    };
+    // Setup Intersection Observer with cleanup
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
         const options = {
             root: null,
@@ -3417,6 +3546,7 @@ const MaskedText = ({ text, className = "", indent = true, positioning = "" })=>
             if (observer) {
                 observer.disconnect();
             }
+            cleanup(); // ✅ Clean up on unmount
         };
     }, []);
     // Handle creating masked words
@@ -3426,13 +3556,17 @@ const MaskedText = ({ text, className = "", indent = true, positioning = "" })=>
             y: "100%",
             immediateRender: true
         });
+        // ✅ Cleanup function for layout effect
+        return ()=>{
+            cleanup();
+        };
     }, [
         text
     ]);
     // Handle animation when in view
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
         if (isInView && !animationExecuted.current && wordRefs.current.length > 0) {
-            setTimeout(()=>{
+            const timer = setTimeout(()=>{
                 __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].to(wordRefs.current, {
                     y: "0%",
                     duration: 0.6,
@@ -3441,12 +3575,18 @@ const MaskedText = ({ text, className = "", indent = true, positioning = "" })=>
                     onComplete: ()=>{
                         animationExecuted.current = true;
                         wordContainersRef.current.forEach((container, i)=>{
-                            const wordHeight = wordRefs.current[i].offsetHeight;
-                            container.style.height = `${wordHeight + 6}px`;
+                            if (wordRefs.current[i]) {
+                                const wordHeight = wordRefs.current[i].offsetHeight;
+                                container.style.height = `${wordHeight + 6}px`;
+                            }
                         });
                     }
                 });
             }, 100);
+            // ✅ Cleanup timeout
+            return ()=>{
+                clearTimeout(timer);
+            };
         }
     }, [
         isInView
@@ -3460,12 +3600,12 @@ const MaskedText = ({ text, className = "", indent = true, positioning = "" })=>
             children: text
         }, void 0, false, {
             fileName: "[project]/src/components/masked-text.jsx",
-            lineNumber: 138,
+            lineNumber: 167,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/components/masked-text.jsx",
-        lineNumber: 137,
+        lineNumber: 166,
         columnNumber: 5
     }, this);
 };
@@ -3539,73 +3679,115 @@ const slides = [
 const AnimatedSlider = ()=>{
     const containerRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
     const slidesRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])([]);
+    const mainTimelineRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
+    const contextRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
         if (!containerRef.current) return;
         const totalSlides = slides.length;
-        // Set widths dynamically
-        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].set(slidesRef.current, {
-            width: "100vw",
-            height: "100vh"
-        });
-        // Create sections for each slide
-        const sections = slidesRef.current;
-        // Set up the scroll trigger
-        const tl = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].timeline({
-            scrollTrigger: {
-                trigger: containerRef.current,
-                pin: true,
-                anticipatePin: 1,
-                scrub: 1,
-                snap: {
-                    snapTo: 1 / (totalSlides - 1),
-                    duration: 0.5,
-                    ease: "power2.inOut"
-                },
-                end: ()=>`+=${window.innerHeight * (totalSlides - 1)}`
-            }
-        });
-        // Animate horizontal scroll with improved easing
-        tl.to(sections, {
-            xPercent: -100 * (totalSlides - 1),
-            ease: "none",
-            duration: totalSlides - 1
-        });
-        // Make the first slide immediately visible (no fade animation)
-        const firstSlideContent = sections[0].querySelector(".slide-content");
-        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].set(firstSlideContent, {
-            opacity: 1,
-            y: 0
-        });
-        // Animate content inside each slide with better timing (starting from the second slide)
-        sections.forEach((slide, index)=>{
-            // Skip the first slide - it's already set to be visible
-            if (index === 0) return;
-            const content = slide.querySelector(".slide-content");
-            // Create a separate timeline for each slide's content
-            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].fromTo(content, {
-                opacity: 0,
-                y: 30
-            }, {
-                opacity: 1,
-                y: 0,
-                duration: 0.5,
+        // Create GSAP context to manage all animations
+        contextRef.current = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].context(()=>{
+            // Set widths dynamically
+            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].set(slidesRef.current, {
+                width: "100vw",
+                height: "100vh"
+            });
+            // Create sections for each slide
+            const sections = slidesRef.current.filter(Boolean);
+            // Create the main timeline
+            const tl = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].timeline({
                 scrollTrigger: {
+                    trigger: containerRef.current,
+                    pin: true,
+                    anticipatePin: 1,
+                    scrub: 1,
+                    snap: {
+                        snapTo: 1 / (totalSlides - 1),
+                        duration: 0.5,
+                        ease: "power2.inOut"
+                    },
+                    end: ()=>`+=${window.innerHeight * (totalSlides - 1)}`,
+                    onRefresh: ()=>{
+                        // Refresh content animations when ScrollTrigger refreshes
+                        sections.forEach((slide, index)=>{
+                            if (index === 0 || !slide) return;
+                            const content = slide.querySelector(".slide-content");
+                            if (content) {
+                                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].set(content, {
+                                    opacity: index === 0 ? 1 : 0,
+                                    y: index === 0 ? 0 : 30
+                                });
+                            }
+                        });
+                    }
+                }
+            });
+            // Store the main timeline reference
+            mainTimelineRef.current = tl;
+            // Animate horizontal scroll
+            tl.to(sections, {
+                xPercent: -100 * (totalSlides - 1),
+                ease: "none",
+                duration: totalSlides - 1
+            });
+            // Make the first slide immediately visible
+            const firstSlideContent = sections[0]?.querySelector(".slide-content");
+            if (firstSlideContent) {
+                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].set(firstSlideContent, {
+                    opacity: 1,
+                    y: 0
+                });
+            }
+            // Animate content inside each slide
+            sections.forEach((slide, index)=>{
+                if (index === 0 || !slide) return;
+                const content = slide.querySelector(".slide-content");
+                if (!content) return;
+                // Set initial state
+                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].set(content, {
+                    opacity: 0,
+                    y: 30
+                });
+                // Create content animation
+                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$ScrollTrigger$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ScrollTrigger"].create({
                     trigger: slide,
                     containerAnimation: tl,
                     start: "left center-=10%",
                     end: "right center-=40%",
-                    toggleActions: "play none none reverse"
-                }
+                    toggleActions: "play none none reverse",
+                    animation: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].fromTo(content, {
+                        opacity: 0,
+                        y: 30
+                    }, {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.5,
+                        ease: "power2.out"
+                    })
+                });
             });
-        });
-        // Handle resize to maintain proper dimensions
+        }, containerRef);
+        // Handle resize with debounce
+        let resizeTimeout;
         const handleResize = ()=>{
-            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$ScrollTrigger$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ScrollTrigger"].refresh(true);
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(()=>{
+                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$ScrollTrigger$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ScrollTrigger"].refresh(true);
+            }, 100);
         };
         window.addEventListener("resize", handleResize);
+        // Cleanup function
         return ()=>{
-            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$ScrollTrigger$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ScrollTrigger"].getAll().forEach((t)=>t.kill());
+            clearTimeout(resizeTimeout);
             window.removeEventListener("resize", handleResize);
+            // Kill ScrollTriggers first
+            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$ScrollTrigger$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ScrollTrigger"].getAll().forEach((trigger)=>trigger.kill());
+            // Revert GSAP context safely
+            if (contextRef.current) {
+                contextRef.current.revert();
+                contextRef.current = null;
+            }
+            // ✅ Only clear the refs after GSAP has finished cleanup
+            slidesRef.current = [];
         };
     }, []);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3614,66 +3796,96 @@ const AnimatedSlider = ()=>{
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
             className: "flex w-max h-full",
             children: slides.map((slide, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
-                    ref: (el)=>slidesRef.current[index] = el,
+                    ref: (el)=>{
+                        slidesRef.current[index] = el || null;
+                    },
                     className: "w-screen h-screen flex items-center justify-center",
                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: `slide-content text-white w-full h-full ${index === 0 ? "opacity-100" : "opacity-0"}`,
                         children: [
-                            index === 4 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$skincare$2d$landing$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: `${index === 4 ? "block" : "hidden"} w-full h-full`,
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$skincare$2d$landing$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
+                                    fileName: "[project]/src/components/animated-slider.jsx",
+                                    lineNumber: 198,
+                                    columnNumber: 17
+                                }, this)
+                            }, void 0, false, {
                                 fileName: "[project]/src/components/animated-slider.jsx",
-                                lineNumber: 147,
-                                columnNumber: 31
+                                lineNumber: 195,
+                                columnNumber: 15
                             }, this),
-                            index === 1 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$modest$2d$landing$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: `${index === 1 ? "block" : "hidden"} w-full h-full`,
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$modest$2d$landing$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
+                                    fileName: "[project]/src/components/animated-slider.jsx",
+                                    lineNumber: 203,
+                                    columnNumber: 17
+                                }, this)
+                            }, void 0, false, {
                                 fileName: "[project]/src/components/animated-slider.jsx",
-                                lineNumber: 148,
-                                columnNumber: 31
+                                lineNumber: 200,
+                                columnNumber: 15
                             }, this),
-                            index === 2 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ecommerce$2d$landin$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: `${index === 2 ? "block" : "hidden"} w-full h-full`,
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ecommerce$2d$landin$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
+                                    fileName: "[project]/src/components/animated-slider.jsx",
+                                    lineNumber: 208,
+                                    columnNumber: 17
+                                }, this)
+                            }, void 0, false, {
                                 fileName: "[project]/src/components/animated-slider.jsx",
-                                lineNumber: 149,
-                                columnNumber: 31
+                                lineNumber: 205,
+                                columnNumber: 15
                             }, this),
-                            index === 3 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$restaurant$2d$landing$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: `${index === 3 ? "block" : "hidden"} w-full h-full`,
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$restaurant$2d$landing$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
+                                    fileName: "[project]/src/components/animated-slider.jsx",
+                                    lineNumber: 213,
+                                    columnNumber: 17
+                                }, this)
+                            }, void 0, false, {
                                 fileName: "[project]/src/components/animated-slider.jsx",
-                                lineNumber: 150,
-                                columnNumber: 31
+                                lineNumber: 210,
+                                columnNumber: 15
                             }, this),
-                            index === 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "h-full w-full bg-white text-black flex items-center justify-center px-10",
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: `${index === 0 ? "flex" : "hidden"} h-full w-full bg-white text-black items-center justify-center px-10`,
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$masked$2d$text$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
                                     text: "Every detail earns its place. Landing pages that feel right — and work even better.",
                                     className: "text-7xl leading-16",
                                     indent: "false"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/animated-slider.jsx",
-                                    lineNumber: 153,
-                                    columnNumber: 19
+                                    lineNumber: 220,
+                                    columnNumber: 17
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/components/animated-slider.jsx",
-                                lineNumber: 152,
-                                columnNumber: 17
+                                lineNumber: 215,
+                                columnNumber: 15
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/animated-slider.jsx",
-                        lineNumber: 142,
+                        lineNumber: 190,
                         columnNumber: 13
                     }, this)
                 }, slide.id, false, {
                     fileName: "[project]/src/components/animated-slider.jsx",
-                    lineNumber: 137,
+                    lineNumber: 183,
                     columnNumber: 11
                 }, this))
         }, void 0, false, {
             fileName: "[project]/src/components/animated-slider.jsx",
-            lineNumber: 135,
+            lineNumber: 181,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/components/animated-slider.jsx",
-        lineNumber: 131,
+        lineNumber: 177,
         columnNumber: 5
     }, this);
 };

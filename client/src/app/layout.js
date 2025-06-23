@@ -4,6 +4,7 @@ import Lenis from "lenis";
 import "./globals.css";
 import LoadingScreen from "@/components/loading-screen";
 import { usePathname } from "next/navigation";
+import Navbar from "@/components/navbar";
 
 export default function RootLayout({ children }) {
   const pathname = usePathname();
@@ -34,7 +35,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className="antialiased">
         {/* Only show loading screen on homepage */}
-        {isHomePage && <LoadingScreen />}
+        <Navbar />
         {children}
       </body>
     </html>

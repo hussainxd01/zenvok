@@ -28,7 +28,11 @@ const MaskedText = ({ text, className = "", indent = true, positioning = "" })=>
         const element = textRef.current;
         if (!element) return;
         const words = text.split(" ");
-        element.innerHTML = ""; // Clear any content
+        // ✅ Better way to clear content - remove child nodes properly
+        while(element.firstChild){
+            element.removeChild(element.firstChild);
+        }
+        // Reset refs
         wordRefs.current = [];
         wordContainersRef.current = [];
         const wrapper = document.createElement("div");
@@ -36,7 +40,7 @@ const MaskedText = ({ text, className = "", indent = true, positioning = "" })=>
         wrapper.style.flexWrap = "wrap";
         wrapper.style.alignItems = "flex-start";
         wrapper.style.justifyContent = "flex-start";
-        wrapper.style.lineHeight = "1.1"; // Tighter line height for better control
+        wrapper.style.lineHeight = "1.1";
         if (indent) {
             const indentDiv = document.createElement("div");
             indentDiv.style.width = "3em";
@@ -45,15 +49,13 @@ const MaskedText = ({ text, className = "", indent = true, positioning = "" })=>
             wrapper.appendChild(indentDiv);
         }
         words.forEach((word, index)=>{
-            // Create container with overflow hidden
             const container = document.createElement("div");
             container.style.display = "inline-block";
             container.style.overflow = "hidden";
             container.style.position = "relative";
             container.style.verticalAlign = "top";
             container.style.paddingBottom = "5px";
-            container.style.marginRight = index < words.length - 1 ? "0.35em" : "0"; // Better word spacing
-            // Create word span that will be animated
+            container.style.marginRight = index < words.length - 1 ? "0.35em" : "0";
             const wordSpan = document.createElement("span");
             wordSpan.textContent = word;
             wordSpan.style.display = "inline-block";
@@ -61,18 +63,28 @@ const MaskedText = ({ text, className = "", indent = true, positioning = "" })=>
             wordSpan.style.willChange = "transform";
             container.appendChild(wordSpan);
             wrapper.appendChild(container);
-            // Store references for animation
             wordContainersRef.current.push(container);
             wordRefs.current.push(wordSpan);
         });
         element.appendChild(wrapper);
-        // Force layout calculation to ensure proper sizing
+        // Force layout calculation
         wordContainersRef.current.forEach((container, i)=>{
             const wordHeight = wordRefs.current[i].offsetHeight;
             container.style.height = `${wordHeight + 2}px`;
         });
     };
-    // Setup Intersection Observer
+    // ✅ Cleanup function to prevent memory leaks
+    const cleanup = ()=>{
+        // Kill any running GSAP animations
+        if (wordRefs.current.length > 0) {
+            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].killTweensOf(wordRefs.current);
+        }
+        // Reset refs
+        wordRefs.current = [];
+        wordContainersRef.current = [];
+        animationExecuted.current = false;
+    };
+    // Setup Intersection Observer with cleanup
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "MaskedText.useEffect": ()=>{
             const options = {
@@ -100,6 +112,7 @@ const MaskedText = ({ text, className = "", indent = true, positioning = "" })=>
                     if (observer) {
                         observer.disconnect();
                     }
+                    cleanup(); // ✅ Clean up on unmount
                 }
             })["MaskedText.useEffect"];
         }
@@ -112,6 +125,12 @@ const MaskedText = ({ text, className = "", indent = true, positioning = "" })=>
                 y: "100%",
                 immediateRender: true
             });
+            // ✅ Cleanup function for layout effect
+            return ({
+                "MaskedText.useLayoutEffect": ()=>{
+                    cleanup();
+                }
+            })["MaskedText.useLayoutEffect"];
         }
     }["MaskedText.useLayoutEffect"], [
         text
@@ -120,27 +139,35 @@ const MaskedText = ({ text, className = "", indent = true, positioning = "" })=>
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "MaskedText.useEffect": ()=>{
             if (isInView && !animationExecuted.current && wordRefs.current.length > 0) {
-                setTimeout({
-                    "MaskedText.useEffect": ()=>{
+                const timer = setTimeout({
+                    "MaskedText.useEffect.timer": ()=>{
                         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].to(wordRefs.current, {
                             y: "0%",
                             duration: 0.6,
                             ease: "power3.out",
                             stagger: 0.05,
                             onComplete: {
-                                "MaskedText.useEffect": ()=>{
+                                "MaskedText.useEffect.timer": ()=>{
                                     animationExecuted.current = true;
                                     wordContainersRef.current.forEach({
-                                        "MaskedText.useEffect": (container, i)=>{
-                                            const wordHeight = wordRefs.current[i].offsetHeight;
-                                            container.style.height = `${wordHeight + 6}px`;
+                                        "MaskedText.useEffect.timer": (container, i)=>{
+                                            if (wordRefs.current[i]) {
+                                                const wordHeight = wordRefs.current[i].offsetHeight;
+                                                container.style.height = `${wordHeight + 6}px`;
+                                            }
                                         }
-                                    }["MaskedText.useEffect"]);
+                                    }["MaskedText.useEffect.timer"]);
                                 }
-                            }["MaskedText.useEffect"]
+                            }["MaskedText.useEffect.timer"]
                         });
                     }
-                }["MaskedText.useEffect"], 100);
+                }["MaskedText.useEffect.timer"], 100);
+                // ✅ Cleanup timeout
+                return ({
+                    "MaskedText.useEffect": ()=>{
+                        clearTimeout(timer);
+                    }
+                })["MaskedText.useEffect"];
             }
         }
     }["MaskedText.useEffect"], [
@@ -155,12 +182,12 @@ const MaskedText = ({ text, className = "", indent = true, positioning = "" })=>
             children: text
         }, void 0, false, {
             fileName: "[project]/src/components/masked-text.jsx",
-            lineNumber: 138,
+            lineNumber: 167,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/components/masked-text.jsx",
-        lineNumber: 137,
+        lineNumber: 166,
         columnNumber: 5
     }, this);
 };
@@ -193,17 +220,19 @@ var _s = __turbopack_context__.k.signature();
 ;
 ;
 ;
-function Navbar({ heroRef = null }) {
+function Navbar() {
     _s();
     __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].registerPlugin(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$ScrollTrigger$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["ScrollTrigger"]);
     const navbarRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
     const textRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
     const svgNavRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
     const logoContainerRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
+    const scrollTriggersRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])([]); // Track ScrollTriggers
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "Navbar.useEffect": ()=>{
+            if (!navbarRef.current) return;
             // Navbar slide-in animation on page load
-            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].from(navbarRef.current, {
+            const navAnimation = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].from(navbarRef.current, {
                 y: -50,
                 opacity: 0,
                 duration: 1,
@@ -211,69 +240,88 @@ function Navbar({ heroRef = null }) {
                 delay: 1
             });
             // Set initial styles for logo container and SVG
-            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].set(logoContainerRef.current, {
-                overflow: "hidden",
-                height: textRef.current?.offsetHeight || "auto",
-                position: "relative"
-            });
-            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].set(svgNavRef.current, {
-                opacity: 0,
-                y: "100%",
-                position: "absolute",
-                left: 0,
-                top: 0
-            });
+            if (logoContainerRef.current && textRef.current) {
+                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].set(logoContainerRef.current, {
+                    overflow: "hidden",
+                    height: textRef.current.offsetHeight || "auto",
+                    position: "relative"
+                });
+            }
+            if (svgNavRef.current) {
+                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].set(svgNavRef.current, {
+                    opacity: 0,
+                    y: "100%",
+                    position: "absolute",
+                    left: 0,
+                    top: 0
+                });
+            }
+            return ({
+                "Navbar.useEffect": ()=>{
+                    // Clean up the navbar animation
+                    if (navAnimation) {
+                        navAnimation.kill();
+                    }
+                }
+            })["Navbar.useEffect"];
         }
     }["Navbar.useEffect"], []);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "Navbar.useEffect": ()=>{
-            if (!heroRef || !heroRef.current) return;
-            // Text and SVG scroll animation
-            const tl = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].timeline({
-                scrollTrigger: {
-                    trigger: heroRef.current,
-                    start: "bottom top",
-                    end: "bottom top-=100",
-                    scrub: 0.5,
-                    toggleActions: "play reverse play reverse"
+            if (!textRef.current || !svgNavRef.current) return;
+            const ctx = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].context({
+                "Navbar.useEffect.ctx": ()=>{
+                    const trigger = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$ScrollTrigger$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["ScrollTrigger"].create({
+                        start: "top -100",
+                        onEnter: {
+                            "Navbar.useEffect.ctx.trigger": ()=>{
+                                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].to(textRef.current, {
+                                    y: "-100%",
+                                    opacity: 0.3,
+                                    duration: 0.4,
+                                    ease: "power2.inOut"
+                                });
+                                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].to(svgNavRef.current, {
+                                    opacity: 1,
+                                    y: 0,
+                                    duration: 0.4,
+                                    ease: "power2.inOut"
+                                });
+                            }
+                        }["Navbar.useEffect.ctx.trigger"],
+                        onLeaveBack: {
+                            "Navbar.useEffect.ctx.trigger": ()=>{
+                                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].to(textRef.current, {
+                                    y: 0,
+                                    opacity: 1,
+                                    duration: 0.4,
+                                    ease: "power2.inOut"
+                                });
+                                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].to(svgNavRef.current, {
+                                    opacity: 0,
+                                    y: "100%",
+                                    duration: 0.4,
+                                    ease: "power2.inOut"
+                                });
+                            }
+                        }["Navbar.useEffect.ctx.trigger"]
+                    });
+                    scrollTriggersRef.current.push(trigger);
                 }
-            });
-            tl.to(textRef.current, {
-                y: "-100%",
-                opacity: 0.3,
-                duration: 0.4,
-                ease: "power2.inOut"
-            }).to(svgNavRef.current, {
-                opacity: 1,
-                y: 0,
-                duration: 0.4,
-                ease: "power2.inOut"
-            }, "-=0.35");
-            // Reverse animation when scrolling back up
-            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$ScrollTrigger$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["ScrollTrigger"].create({
-                trigger: heroRef.current,
-                start: "bottom top+=200",
-                onLeaveBack: {
-                    "Navbar.useEffect": ()=>{
-                        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].to(textRef.current, {
-                            y: 0,
-                            opacity: 1,
-                            duration: 0.4,
-                            ease: "power2.inOut"
-                        });
-                        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].to(svgNavRef.current, {
-                            opacity: 0,
-                            y: "100%",
-                            duration: 0.4,
-                            ease: "power2.inOut"
-                        });
-                    }
-                }["Navbar.useEffect"]
-            });
+            }["Navbar.useEffect.ctx"]);
+            return ({
+                "Navbar.useEffect": ()=>{
+                    scrollTriggersRef.current.forEach({
+                        "Navbar.useEffect": (trigger)=>{
+                            if (trigger && trigger.kill) trigger.kill();
+                        }
+                    }["Navbar.useEffect"]);
+                    scrollTriggersRef.current = [];
+                    ctx.revert();
+                }
+            })["Navbar.useEffect"];
         }
-    }["Navbar.useEffect"], [
-        heroRef
-    ]);
+    }["Navbar.useEffect"], []);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
         ref: navbarRef,
         className: "h-[80px] w-full fixed top-0 bg-transparent z-50 sm:px-10 flex items-center justify-between",
@@ -294,7 +342,7 @@ function Navbar({ heroRef = null }) {
                             children: "The Brand Catalyst"
                         }, void 0, false, {
                             fileName: "[project]/src/components/navbar.jsx",
-                            lineNumber: 102,
+                            lineNumber: 113,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
@@ -311,7 +359,7 @@ function Navbar({ heroRef = null }) {
                                     fill: "white"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/navbar.jsx",
-                                    lineNumber: 114,
+                                    lineNumber: 125,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
@@ -319,7 +367,7 @@ function Navbar({ heroRef = null }) {
                                     fill: "white"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/navbar.jsx",
-                                    lineNumber: 118,
+                                    lineNumber: 129,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
@@ -327,7 +375,7 @@ function Navbar({ heroRef = null }) {
                                     fill: "white"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/navbar.jsx",
-                                    lineNumber: 122,
+                                    lineNumber: 133,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
@@ -335,7 +383,7 @@ function Navbar({ heroRef = null }) {
                                     fill: "white"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/navbar.jsx",
-                                    lineNumber: 126,
+                                    lineNumber: 137,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
@@ -343,7 +391,7 @@ function Navbar({ heroRef = null }) {
                                     fill: "white"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/navbar.jsx",
-                                    lineNumber: 130,
+                                    lineNumber: 141,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
@@ -351,24 +399,24 @@ function Navbar({ heroRef = null }) {
                                     fill: "white"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/navbar.jsx",
-                                    lineNumber: 134,
+                                    lineNumber: 145,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/navbar.jsx",
-                            lineNumber: 105,
+                            lineNumber: 116,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/navbar.jsx",
-                    lineNumber: 101,
+                    lineNumber: 112,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/navbar.jsx",
-                lineNumber: 100,
+                lineNumber: 111,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -380,7 +428,7 @@ function Navbar({ heroRef = null }) {
                         children: "Home"
                     }, void 0, false, {
                         fileName: "[project]/src/components/navbar.jsx",
-                        lineNumber: 143,
+                        lineNumber: 154,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -389,7 +437,7 @@ function Navbar({ heroRef = null }) {
                         children: "About"
                     }, void 0, false, {
                         fileName: "[project]/src/components/navbar.jsx",
-                        lineNumber: 146,
+                        lineNumber: 157,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -398,7 +446,7 @@ function Navbar({ heroRef = null }) {
                         children: "Works"
                     }, void 0, false, {
                         fileName: "[project]/src/components/navbar.jsx",
-                        lineNumber: 149,
+                        lineNumber: 160,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -407,7 +455,7 @@ function Navbar({ heroRef = null }) {
                         children: "Service"
                     }, void 0, false, {
                         fileName: "[project]/src/components/navbar.jsx",
-                        lineNumber: 152,
+                        lineNumber: 163,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -416,13 +464,13 @@ function Navbar({ heroRef = null }) {
                         children: "Contact"
                     }, void 0, false, {
                         fileName: "[project]/src/components/navbar.jsx",
-                        lineNumber: 155,
+                        lineNumber: 166,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/navbar.jsx",
-                lineNumber: 142,
+                lineNumber: 153,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -438,17 +486,17 @@ function Navbar({ heroRef = null }) {
                 children: "Let's Talk"
             }, void 0, false, {
                 fileName: "[project]/src/components/navbar.jsx",
-                lineNumber: 160,
+                lineNumber: 171,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/navbar.jsx",
-        lineNumber: 92,
+        lineNumber: 103,
         columnNumber: 5
     }, this);
 }
-_s(Navbar, "7+VICqYVM0P5MeMPnyrT9Qv568k=");
+_s(Navbar, "SFWh9QPUf00JWnwJYOADccCS8gE=");
 _c = Navbar;
 var _c;
 __turbopack_context__.k.register(_c, "Navbar");
