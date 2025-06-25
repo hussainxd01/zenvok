@@ -118,22 +118,29 @@ const WorkShowcase = () => {
     };
   }, [projects.length, currentIndex]);
 
+  useEffect(() => {
+    const tl = gsap.timeline();
+    tl.fromTo(
+      heroRef.current,
+      { y: "-100%", opacity: 0 },
+      { y: "0%", opacity: 1, duration: 1.5, ease: "power3.out" }
+    );
+  }, []);
+
   return (
     <>
-      {/* Pass heroRef to Navbar to improve its awareness of sections */}
-      <Navbar heroRef={heroRef} />
-
       <div
         ref={heroRef}
-        className="h-[80vh] w-full bg-white z-40 relative flex items-end justify-between px-10"
+        className="h-[80vh] w-full bg-white z-40 relative flex items-end justify-between px-10 py-10"
         data-theme="light"
       >
         <MaskedText
           text={
-            "Working to shape the future of your industry? We create brands that bring that ambition to life."
+            "We are a collective of seasoned creatives, strategists, growth marketers, and technologists, dedicated to transforming ambitious visions into high-performing brands."
           }
-          className="text-7xl leading-16"
-          indent="false"
+          className="font-light text-6xl text-left leading-[0.5]"
+          indent={5}
+          positioning="w-full"
         />
       </div>
 

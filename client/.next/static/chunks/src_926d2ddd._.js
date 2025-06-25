@@ -1740,7 +1740,7 @@ const MaskedText = ({ text, className = "", indent = true, positioning = "" })=>
         wrapper.style.flexWrap = "wrap";
         wrapper.style.alignItems = "flex-start";
         wrapper.style.justifyContent = "flex-start";
-        wrapper.style.lineHeight = "1.1"; // Tighter line height for better control
+        wrapper.style.lineHeight = "1"; // Tighter line height for better control
         if (indent) {
             const indentDiv = document.createElement("div");
             indentDiv.style.width = "3em";
@@ -1756,7 +1756,8 @@ const MaskedText = ({ text, className = "", indent = true, positioning = "" })=>
             container.style.position = "relative";
             container.style.verticalAlign = "top";
             container.style.paddingBottom = "5px";
-            container.style.marginRight = index < words.length - 1 ? "0.35em" : "0"; // Better word spacing
+            container.style.paddingRight = "2px";
+            container.style.marginRight = index < words.length - 1 ? "0.20em" : "0"; // Better word spacing
             // Create word span that will be animated
             const wordSpan = document.createElement("span");
             wordSpan.textContent = word;
@@ -1859,12 +1860,12 @@ const MaskedText = ({ text, className = "", indent = true, positioning = "" })=>
             children: text
         }, void 0, false, {
             fileName: "[project]/src/components/masked-text.jsx",
-            lineNumber: 138,
+            lineNumber: 139,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/components/masked-text.jsx",
-        lineNumber: 137,
+        lineNumber: 138,
         columnNumber: 5
     }, this);
 };
@@ -2125,7 +2126,9 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$stateme
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$footer$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/footer.jsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$approach$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/approach.jsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$space$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/space.jsx [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$navbar$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/navbar.jsx [app-client] (ecmascript)");
 "use client";
+;
 ;
 ;
 ;
@@ -2136,31 +2139,38 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$space$2
 function Home() {
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
         children: [
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$navbar$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                adaptiveMode: true
+            }, void 0, false, {
+                fileName: "[project]/src/app/page.js",
+                lineNumber: 15,
+                columnNumber: 7
+            }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$hero$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/src/app/page.js",
-                lineNumber: 14,
+                lineNumber: 16,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$media$2d$showcase$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                 enableScaleAnimation: false
             }, void 0, false, {
                 fileName: "[project]/src/app/page.js",
-                lineNumber: 15,
+                lineNumber: 17,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$statement$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/src/app/page.js",
-                lineNumber: 16,
+                lineNumber: 18,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$approach$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/src/app/page.js",
-                lineNumber: 18,
+                lineNumber: 20,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$footer$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/src/app/page.js",
-                lineNumber: 20,
+                lineNumber: 22,
                 columnNumber: 7
             }, this)
         ]

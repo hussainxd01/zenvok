@@ -35,7 +35,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className="antialiased">
         {/* Only show loading screen on homepage */}
-        <Navbar />
+
         {children}
       </body>
     </html>

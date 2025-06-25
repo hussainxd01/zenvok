@@ -1868,8 +1868,16 @@
     letter-spacing: var(--tracking-wider);
   }
 
+  .whitespace-break-spaces {
+    white-space: break-spaces;
+  }
+
   .whitespace-nowrap {
     white-space: nowrap;
+  }
+
+  .whitespace-pre-wrap {
+    white-space: pre-wrap;
   }
 
   .text-\[\#2d3a2c\] {
@@ -2260,6 +2268,12 @@
   }
 
   @media (hover: hover) {
+    .hover\:mix-blend-difference:hover {
+      mix-blend-mode: difference;
+    }
+  }
+
+  @media (hover: hover) {
     .hover\:shadow-\[2px_2px_0_0_black\]:hover {
       --tw-shadow: 2px 2px 0 0 var(--tw-shadow-color, black);
       box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
@@ -2476,32 +2490,6 @@
   }
 }
 
-:root {
-  --background: #000;
-  --foreground: #fff;
-  --transition-speed: .3s;
-}
-
-[data-theme="light"] {
-  --foreground: #000;
-  --background: #fff;
-}
-
-[data-theme="dark"] {
-  --foreground: #fff;
-  --background: #000;
-}
-
-[data-theme="brand"] {
-  --foreground: #f5f5f5;
-  --background: #121212;
-}
-
-[data-theme="accent"] {
-  --foreground: #fff;
-  --background: #3b82f6;
-}
-
 @font-face {
   font-family: Suisse Intl;
   src: url("/font/Suisse_Intl_Regular.ttf") format("truetype");
@@ -2523,17 +2511,6 @@ body {
   color: var(--foreground);
   font-family: Suisse Intl Light, sans-serif;
   overflow-x: hidden;
-}
-
-section[data-theme], div[data-theme] {
-  color: var(--foreground);
-  transition: color var(--transition-speed) ease;
-}
-
-section[data-theme] {
-  color: var(--foreground);
-  transition: color var(--transition-speed) ease;
-  background-color: #0000;
 }
 
 * {

@@ -34,7 +34,7 @@ const MaskedText = ({ text, className = "", indent = true, positioning = "" })=>
         wrapper.style.flexWrap = "wrap";
         wrapper.style.alignItems = "flex-start";
         wrapper.style.justifyContent = "flex-start";
-        wrapper.style.lineHeight = "1.1"; // Tighter line height for better control
+        wrapper.style.lineHeight = "1"; // Tighter line height for better control
         if (indent) {
             const indentDiv = document.createElement("div");
             indentDiv.style.width = "3em";
@@ -50,7 +50,8 @@ const MaskedText = ({ text, className = "", indent = true, positioning = "" })=>
             container.style.position = "relative";
             container.style.verticalAlign = "top";
             container.style.paddingBottom = "5px";
-            container.style.marginRight = index < words.length - 1 ? "0.35em" : "0"; // Better word spacing
+            container.style.paddingRight = "2px";
+            container.style.marginRight = index < words.length - 1 ? "0.20em" : "0"; // Better word spacing
             // Create word span that will be animated
             const wordSpan = document.createElement("span");
             wordSpan.textContent = word;
@@ -135,12 +136,12 @@ const MaskedText = ({ text, className = "", indent = true, positioning = "" })=>
             children: text
         }, void 0, false, {
             fileName: "[project]/src/components/masked-text.jsx",
-            lineNumber: 138,
+            lineNumber: 139,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/components/masked-text.jsx",
-        lineNumber: 137,
+        lineNumber: 138,
         columnNumber: 5
     }, this);
 };

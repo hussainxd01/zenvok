@@ -29,7 +29,7 @@ const MaskedText = ({
     wrapper.style.flexWrap = "wrap";
     wrapper.style.alignItems = "flex-start";
     wrapper.style.justifyContent = "flex-start";
-    wrapper.style.lineHeight = "1.1"; // Tighter line height for better control
+    wrapper.style.lineHeight = "1"; // Tighter line height for better control
 
     if (indent) {
       const indentDiv = document.createElement("div");
@@ -47,7 +47,8 @@ const MaskedText = ({
       container.style.position = "relative";
       container.style.verticalAlign = "top";
       container.style.paddingBottom = "5px";
-      container.style.marginRight = index < words.length - 1 ? "0.35em" : "0"; // Better word spacing
+      container.style.paddingRight = "2px";
+      container.style.marginRight = index < words.length - 1 ? "0.20em" : "0"; // Better word spacing
 
       // Create word span that will be animated
       const wordSpan = document.createElement("span");

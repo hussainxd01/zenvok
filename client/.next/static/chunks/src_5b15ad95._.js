@@ -36,7 +36,7 @@ const MaskedText = ({ text, className = "", indent = true, positioning = "" })=>
         wrapper.style.flexWrap = "wrap";
         wrapper.style.alignItems = "flex-start";
         wrapper.style.justifyContent = "flex-start";
-        wrapper.style.lineHeight = "1.1"; // Tighter line height for better control
+        wrapper.style.lineHeight = "1"; // Tighter line height for better control
         if (indent) {
             const indentDiv = document.createElement("div");
             indentDiv.style.width = "3em";
@@ -52,7 +52,8 @@ const MaskedText = ({ text, className = "", indent = true, positioning = "" })=>
             container.style.position = "relative";
             container.style.verticalAlign = "top";
             container.style.paddingBottom = "5px";
-            container.style.marginRight = index < words.length - 1 ? "0.35em" : "0"; // Better word spacing
+            container.style.paddingRight = "2px";
+            container.style.marginRight = index < words.length - 1 ? "0.20em" : "0"; // Better word spacing
             // Create word span that will be animated
             const wordSpan = document.createElement("span");
             wordSpan.textContent = word;
@@ -155,12 +156,12 @@ const MaskedText = ({ text, className = "", indent = true, positioning = "" })=>
             children: text
         }, void 0, false, {
             fileName: "[project]/src/components/masked-text.jsx",
-            lineNumber: 138,
+            lineNumber: 139,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/components/masked-text.jsx",
-        lineNumber: 137,
+        lineNumber: 138,
         columnNumber: 5
     }, this);
 };
@@ -304,31 +305,39 @@ const WorkShowcase = ()=>{
         projects.length,
         currentIndex
     ]);
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "WorkShowcase.useEffect": ()=>{
+            const tl = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].timeline();
+            tl.fromTo(heroRef.current, {
+                y: "-100%",
+                opacity: 0
+            }, {
+                y: "0%",
+                opacity: 1,
+                duration: 1.5,
+                ease: "power3.out"
+            });
+        }
+    }["WorkShowcase.useEffect"], []);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
         children: [
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$navbar$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                heroRef: heroRef
-            }, void 0, false, {
-                fileName: "[project]/src/components/work-showcase.jsx",
-                lineNumber: 124,
-                columnNumber: 7
-            }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 ref: heroRef,
-                className: "h-[80vh] w-full bg-white z-40 relative flex items-end justify-between px-10",
+                className: "h-[80vh] w-full bg-white z-40 relative flex items-end justify-between px-10 py-10",
                 "data-theme": "light",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$masked$2d$text$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                    text: "Working to shape the future of your industry? We create brands that bring that ambition to life.",
-                    className: "text-7xl leading-16",
-                    indent: "false"
+                    text: "We are a collective of seasoned creatives, strategists, growth marketers, and technologists, dedicated to transforming ambitious visions into high-performing brands.",
+                    className: "font-light text-6xl text-left leading-[0.5]",
+                    indent: 5,
+                    positioning: "w-full"
                 }, void 0, false, {
                     fileName: "[project]/src/components/work-showcase.jsx",
-                    lineNumber: 131,
+                    lineNumber: 137,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/work-showcase.jsx",
-                lineNumber: 126,
+                lineNumber: 132,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -340,7 +349,7 @@ const WorkShowcase = ()=>{
                         className: "fixed inset-0 w-full h-full bg-black z-0"
                     }, void 0, false, {
                         fileName: "[project]/src/components/work-showcase.jsx",
-                        lineNumber: 146,
+                        lineNumber: 153,
                         columnNumber: 9
                     }, this),
                     projects.map((project, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -377,20 +386,20 @@ const WorkShowcase = ()=>{
                                                     sizes: "100vw"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/work-showcase.jsx",
-                                                    lineNumber: 176,
+                                                    lineNumber: 183,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                     className: "absolute inset-0 bg-black/30"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/work-showcase.jsx",
-                                                    lineNumber: 184,
+                                                    lineNumber: 191,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/work-showcase.jsx",
-                                            lineNumber: 175,
+                                            lineNumber: 182,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -400,12 +409,12 @@ const WorkShowcase = ()=>{
                                                 children: project.name
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/work-showcase.jsx",
-                                                lineNumber: 188,
+                                                lineNumber: 195,
                                                 columnNumber: 19
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/work-showcase.jsx",
-                                            lineNumber: 187,
+                                            lineNumber: 194,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -413,7 +422,7 @@ const WorkShowcase = ()=>{
                                             children: project.number
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/work-showcase.jsx",
-                                            lineNumber: 193,
+                                            lineNumber: 200,
                                             columnNumber: 17
                                         }, this),
                                         index === 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -424,48 +433,48 @@ const WorkShowcase = ()=>{
                                                     children: ":"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/work-showcase.jsx",
-                                                    lineNumber: 199,
+                                                    lineNumber: 206,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                     children: "List view"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/work-showcase.jsx",
-                                                    lineNumber: 202,
+                                                    lineNumber: 209,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/work-showcase.jsx",
-                                            lineNumber: 198,
+                                            lineNumber: 205,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/work-showcase.jsx",
-                                    lineNumber: 168,
+                                    lineNumber: 175,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/components/work-showcase.jsx",
-                                lineNumber: 163,
+                                lineNumber: 170,
                                 columnNumber: 13
                             }, this)
                         }, project.id, false, {
                             fileName: "[project]/src/components/work-showcase.jsx",
-                            lineNumber: 150,
+                            lineNumber: 157,
                             columnNumber: 11
                         }, this))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/work-showcase.jsx",
-                lineNumber: 140,
+                lineNumber: 147,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true);
 };
-_s(WorkShowcase, "dIGs5zi8vtL1f64uh6S2RmjcXJM=");
+_s(WorkShowcase, "8FBr+30Pxzw5+7fH7PCMaw3J0pc=");
 _c = WorkShowcase;
 const __TURBOPACK__default__export__ = WorkShowcase;
 var _c;
@@ -483,18 +492,29 @@ __turbopack_context__.s({
     "default": (()=>Work)
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$navbar$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/navbar.jsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$work$2d$showcase$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/work-showcase.jsx [app-client] (ecmascript)");
 "use client";
 ;
 ;
+;
 function Work() {
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
-        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$work$2d$showcase$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
-            fileName: "[project]/src/app/works/page.js",
-            lineNumber: 6,
-            columnNumber: 7
-        }, this)
-    }, void 0, false);
+        children: [
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$navbar$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                adaptiveMode: true
+            }, void 0, false, {
+                fileName: "[project]/src/app/works/page.js",
+                lineNumber: 7,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$work$2d$showcase$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
+                fileName: "[project]/src/app/works/page.js",
+                lineNumber: 8,
+                columnNumber: 7
+            }, this)
+        ]
+    }, void 0, true);
 }
 _c = Work;
 var _c;

@@ -6,7 +6,7 @@ import AwardSection from "@/components/award-section";
 export default function About() {
   return (
     <>
-      <Navbar />
+      <Navbar adaptiveMode={true} />
       {/* Hero Section */}
       <div
         className="min-h-screen w-full bg-white z-40 relative flex items-center justify-center pt-32 pb-20"
@@ -17,7 +17,7 @@ export default function About() {
             text={
               "We are a collective of seasoned creatives, strategists, growth marketers, and technologists, dedicated to transforming ambitious visions into high-performing brands."
             }
-            className="font-light text-6xl text-left leading-[0.5]"
+            className="font-light text-6xl text-left leading-[0.5] tracking-tighter"
             indent={5}
             positioning="w-full"
           />
