@@ -164,7 +164,7 @@ function Navbar({ initialColor = "white", adaptiveMode = true, blendMode = "diff
                 position: "absolute",
                 left: 0,
                 top: 0,
-                width: "100%",
+                width: "50%",
                 height: "100%"
             });
         }

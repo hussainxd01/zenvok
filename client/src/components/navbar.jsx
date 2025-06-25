@@ -69,7 +69,7 @@ export default function Navbar({
         position: "absolute",
         left: 0,
         top: 0,
-        width: "100%",
+        width: "50%",
         height: "100%",
       });
     }
