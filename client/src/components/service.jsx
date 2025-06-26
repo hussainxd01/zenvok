@@ -1,4 +1,5 @@
 "use client";
+import React from "react";
 import { useLayoutEffect, useRef, useEffect, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -170,7 +171,7 @@ const AnimatedHR = ({ delay = 0 }) => {
   }, [isInView, delay]);
 
   return (
-    <div className="w-full h-px bg-gray-300 my-8">
+    <div className="w-full h-px bg-gray-300 mb-8">
       <div ref={hrRef} className="w-full h-full bg-gray-400"></div>
     </div>
   );
@@ -277,9 +278,9 @@ export default function Service() {
           <div ref={rightColumnRef} className="col-span-9 w-full">
             <div className="space-y-16">
               {capabilities.map((section, sectionIndex) => (
-                <>
+                <React.Fragment key={section.category}>
                   <AnimatedHR delay={sectionIndex * 0.1 + 0.5} />
-                  <div key={section.category} className="space-y-8 flex gap-40">
+                  <div className="space-y-8 flex gap-40">
                     <div className="space-y-6 min-w-[200px]">
                       <MaskedText
                         text={section.category}
@@ -299,7 +300,7 @@ export default function Service() {
                       ))}
                     </div>
                   </div>
-                </>
+                </React.Fragment>
               ))}
             </div>
           </div>

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -10,10 +10,39 @@ export default function Footer() {
   const letterRefs = useRef([]);
   const outerDivRef = useRef(null);
   const svgContainerRef = useRef(null);
+  const [refsReady, setRefsReady] = useState(false);
 
-  // Add useEffect to make sure refs are set
+  // Clear and reset letterRefs on each render
+  letterRefs.current = [];
+
+  const setLetterRef = (el) => {
+    if (el) {
+      letterRefs.current.push(el);
+    }
+  };
+
+  // Check if all refs are ready after component mounts/updates
   useEffect(() => {
-    if (letterRefs.current.length === 0) return; // Prevent running the animation if refs are not set yet
+    // Wait a tick to ensure all refs are set
+    const timer = setTimeout(() => {
+      if (
+        letterRefs.current.length > 0 &&
+        svgContainerRef.current &&
+        footerRef.current &&
+        outerDivRef.current
+      ) {
+        setRefsReady(true);
+      }
+    }, 0);
+
+    return () => clearTimeout(timer);
+  });
+
+  useEffect(() => {
+    if (!refsReady || letterRefs.current.length === 0) return;
+
+    // Refresh ScrollTrigger to recalculate positions
+    ScrollTrigger.refresh();
 
     // Create timeline for animations that triggers when footer comes into view
     const tl = gsap.timeline({
@@ -21,27 +50,35 @@ export default function Footer() {
         trigger: svgContainerRef.current,
         start: "top 80%",
         toggleActions: "play none none none",
+        onRefresh: () => {
+          // Ensure animation state is reset on refresh
+          gsap.set(letterRefs.current, {
+            yPercent: 100,
+            opacity: 0,
+            scaleY: 1.2,
+            transformOrigin: "bottom",
+          });
+        },
       },
     });
 
+    // Set initial state explicitly
+    gsap.set(letterRefs.current, {
+      yPercent: 100,
+      opacity: 0,
+      scaleY: 1.2,
+      transformOrigin: "bottom",
+    });
+
     // ONLY animate the SVG letters
-    tl.fromTo(
-      letterRefs.current,
-      {
-        yPercent: 100,
-        opacity: 0,
-        scaleY: 1.2,
-        transformOrigin: "bottom",
-      },
-      {
-        yPercent: 0,
-        opacity: 1,
-        scaleY: 1,
-        duration: 1.2,
-        stagger: 0.08,
-        ease: "power3.out",
-      }
-    );
+    tl.to(letterRefs.current, {
+      yPercent: 0,
+      opacity: 1,
+      scaleY: 1,
+      duration: 1.2,
+      stagger: 0.08,
+      ease: "power3.out",
+    });
 
     // Height animation when scrolled to
     const heightTween = gsap.to(footerRef.current, {
@@ -55,19 +92,14 @@ export default function Footer() {
       },
     });
 
+    // Cleanup function
     return () => {
       if (tl.scrollTrigger) tl.scrollTrigger.kill();
       if (heightTween.scrollTrigger) heightTween.scrollTrigger.kill();
       tl.kill();
       heightTween.kill();
     };
-  }, [letterRefs.current]); // Adding letterRefs.current to the dependency array to ensure animation runs when refs are set
-
-  const setLetterRef = (el) => {
-    if (el && !letterRefs.current.includes(el)) {
-      letterRefs.current.push(el);
-    }
-  };
+  }, [refsReady]); // Depend on refsReady instead of letterRefs.current
 
   return (
     <div ref={outerDivRef}>
@@ -215,7 +247,6 @@ export default function Footer() {
               d="M1136.22 249V3.99998H1195.72V147.15L1280.07 3.99998H1346.57L1278.32 114.6L1363.72 249H1295.47L1244.37 169.9L1195.72 249H1136.22Z"
               fill="white"
             />
-            {/* More paths here */}
           </svg>
         </div>
       </footer>
