@@ -797,6 +797,10 @@
     margin-left: calc(var(--spacing) * 40);
   }
 
+  .ml-50 {
+    margin-left: calc(var(--spacing) * 50);
+  }
+
   .block {
     display: block;
   }

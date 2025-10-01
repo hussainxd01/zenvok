@@ -117,7 +117,7 @@ export default function Footer() {
             <div className="mb-8">
               <p className="font-medium">New Business:</p>
               <a href="mailto:hello@rejoice.com" className="hover:underline">
-                hello@rejoice.com
+                zenvok.inbox@gmail.com
               </a>
             </div>
 

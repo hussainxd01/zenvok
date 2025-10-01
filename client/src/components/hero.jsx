@@ -151,7 +151,7 @@ export default function HeroComponent() {
             </div>
             <div>
               <p>Two Engagement</p>
-              <p>Models: Cash & Equity</p>
+              <p>Models: Project & Partnership</p>
             </div>
           </div>
         </div>

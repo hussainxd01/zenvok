@@ -199,26 +199,58 @@ export default function Navbar({
         </div>
       </div>
 
-      <div className="navigation-wrapper text-sm flex gap-4 ml-40">
-        <Link href="/" className="hover:opacity-70 transition-opacity">
+      <div className="navigation-wrapper text-sm flex gap-2 ml-50">
+        <Link
+          href="/"
+          className="hover:opacity-70 transition-opacity"
+          prefetch={true}
+        >
           Home
         </Link>
-        <Link href="/about" className="hover:opacity-70 transition-opacity">
+        <Link
+          href="/about"
+          className="hover:opacity-70 transition-opacity"
+          prefetch={true}
+        >
           About
         </Link>
-        <Link href="/works" className="hover:opacity-70 transition-opacity">
+        <Link
+          href="/works"
+          className="hover:opacity-70 transition-opacity"
+          prefetch={true}
+        >
           Works
         </Link>
-        <Link href="/service" className="hover:opacity-70 transition-opacity">
+        <Link
+          href="/service"
+          className="hover:opacity-70 transition-opacity"
+          prefetch={true}
+        >
           Service
         </Link>
-        <Link href="/contact" className="hover:opacity-70 transition-opacity">
+        <Link
+          href="/contact"
+          className="hover:opacity-70 transition-opacity"
+          prefetch={true}
+        >
           Contact
         </Link>
       </div>
 
-      <div className="cursor-pointer px-4 py-2 rounded transition-all duration-200 hover:bg-current hover:text-white hover:mix-blend-difference">
+      <div className="cursor-pointer px-4 py-2 flex gap-1 items-center transition-all duration-200 hover:mix-blend-difference">
         Let's Talk
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          class="size-5"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M5.22 14.78a.75.75 0 0 0 1.06 0l7.22-7.22v5.69a.75.75 0 0 0 1.5 0v-7.5a.75.75 0 0 0-.75-.75h-7.5a.75.75 0 0 0 0 1.5h5.69l-7.22 7.22a.75.75 0 0 0 0 1.06Z"
+            clipRule="evenodd"
+          />
+        </svg>
       </div>
     </section>
   );

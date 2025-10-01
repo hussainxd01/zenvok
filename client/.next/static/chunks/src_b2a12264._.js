@@ -373,11 +373,12 @@ function Navbar({ initialColor = "white", adaptiveMode = true, blendMode = "diff
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "navigation-wrapper text-sm flex gap-4 ml-40",
+                className: "navigation-wrapper text-sm flex gap-2 ml-50",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                         href: "/",
                         className: "hover:opacity-70 transition-opacity",
+                        prefetch: true,
                         children: "Home"
                     }, void 0, false, {
                         fileName: "[project]/src/components/navbar.jsx",
@@ -387,37 +388,41 @@ function Navbar({ initialColor = "white", adaptiveMode = true, blendMode = "diff
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                         href: "/about",
                         className: "hover:opacity-70 transition-opacity",
+                        prefetch: true,
                         children: "About"
                     }, void 0, false, {
                         fileName: "[project]/src/components/navbar.jsx",
-                        lineNumber: 206,
+                        lineNumber: 210,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                         href: "/works",
                         className: "hover:opacity-70 transition-opacity",
+                        prefetch: true,
                         children: "Works"
                     }, void 0, false, {
                         fileName: "[project]/src/components/navbar.jsx",
-                        lineNumber: 209,
+                        lineNumber: 217,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                         href: "/service",
                         className: "hover:opacity-70 transition-opacity",
+                        prefetch: true,
                         children: "Service"
                     }, void 0, false, {
                         fileName: "[project]/src/components/navbar.jsx",
-                        lineNumber: 212,
+                        lineNumber: 224,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                         href: "/contact",
                         className: "hover:opacity-70 transition-opacity",
+                        prefetch: true,
                         children: "Contact"
                     }, void 0, false, {
                         fileName: "[project]/src/components/navbar.jsx",
-                        lineNumber: 215,
+                        lineNumber: 231,
                         columnNumber: 9
                     }, this)
                 ]
@@ -427,11 +432,32 @@ function Navbar({ initialColor = "white", adaptiveMode = true, blendMode = "diff
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "cursor-pointer px-4 py-2 rounded transition-all duration-200 hover:bg-current hover:text-white hover:mix-blend-difference",
-                children: "Let's Talk"
-            }, void 0, false, {
+                className: "cursor-pointer px-4 py-2 flex gap-1 items-center transition-all duration-200 hover:mix-blend-difference",
+                children: [
+                    "Let's Talk",
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+                        xmlns: "http://www.w3.org/2000/svg",
+                        viewBox: "0 0 20 20",
+                        fill: "currentColor",
+                        class: "size-5",
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                            "fill-rule": "evenodd",
+                            d: "M5.22 14.78a.75.75 0 0 0 1.06 0l7.22-7.22v5.69a.75.75 0 0 0 1.5 0v-7.5a.75.75 0 0 0-.75-.75h-7.5a.75.75 0 0 0 0 1.5h5.69l-7.22 7.22a.75.75 0 0 0 0 1.06Z",
+                            clipRule: "evenodd"
+                        }, void 0, false, {
+                            fileName: "[project]/src/components/navbar.jsx",
+                            lineNumber: 248,
+                            columnNumber: 11
+                        }, this)
+                    }, void 0, false, {
+                        fileName: "[project]/src/components/navbar.jsx",
+                        lineNumber: 242,
+                        columnNumber: 9
+                    }, this)
+                ]
+            }, void 0, true, {
                 fileName: "[project]/src/components/navbar.jsx",
-                lineNumber: 220,
+                lineNumber: 240,
                 columnNumber: 7
             }, this)
         ]

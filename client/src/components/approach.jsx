@@ -96,7 +96,7 @@ const Approach = () => {
         </div>
         <div className="max-w-[380px]">
           <MaskedText
-            text="We build brands that set new benchmarks. To do so, we don't do volume. We partner with only five clients a year, ensuring unmatched focus, precision, and impact. Every detail is crafted, every decision strategic, and every outcome transformative."
+            text="We work with select clients to ensure focus, precision, and results. Every project is crafted to be strategic and transformative."
             className="text-lg md:text-xl font-normal"
             indent={false}
           />
@@ -117,7 +117,7 @@ const Approach = () => {
         </div>
         <div className="max-w-[380px]">
           <MaskedText
-            text="Data is vital. Fostering an emotional connection with your audience is equally vital if you want to drive retention and advocacy. That's why we create brands that not only captivate but also deliver measurable and sustainable growth."
+            text="We build websites that are fast, reliable, and designed for people—combining clean code with growth-focused design."
             className="text-lg md:text-xl font-normal leading-relaxed"
             indent={false}
           />

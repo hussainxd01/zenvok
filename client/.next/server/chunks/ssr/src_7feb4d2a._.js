@@ -218,7 +218,7 @@ function HeroComponent() {
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            children: "Models: Cash & Equity"
+                                            children: "Models: Project & Partnership"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/hero.jsx",
                                             lineNumber: 154,
@@ -1298,7 +1298,7 @@ function Footer() {
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
                                             href: "mailto:hello@rejoice.com",
                                             className: "hover:underline",
-                                            children: "hello@rejoice.com"
+                                            children: "zenvok.inbox@gmail.com"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/footer.jsx",
                                             lineNumber: 119,
@@ -1919,7 +1919,7 @@ const Approach = ()=>{
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "max-w-[380px]",
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$masked$2d$text$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
-                            text: "We build brands that set new benchmarks. To do so, we don't do volume. We partner with only five clients a year, ensuring unmatched focus, precision, and impact. Every detail is crafted, every decision strategic, and every outcome transformative.",
+                            text: "We work with select clients to ensure focus, precision, and results. Every project is crafted to be strategic and transformative.",
                             className: "text-lg md:text-xl font-normal",
                             indent: false
                         }, void 0, false, {
@@ -1967,7 +1967,7 @@ const Approach = ()=>{
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "max-w-[380px]",
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$masked$2d$text$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
-                            text: "Data is vital. Fostering an emotional connection with your audience is equally vital if you want to drive retention and advocacy. That's why we create brands that not only captivate but also deliver measurable and sustainable growth.",
+                            text: "We build websites that are fast, reliable, and designed for people—combining clean code with growth-focused design.",
                             className: "text-lg md:text-xl font-normal leading-relaxed",
                             indent: false
                         }, void 0, false, {
