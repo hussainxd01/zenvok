@@ -14,7 +14,7 @@ export default function Page() {
         <div className="max-w-[1400px] mx-auto px-12 w-full">
           <MaskedText
             text={
-              "One Partnering with global brands, founders, startups, and VCs to deliver brands that drive profitable growth and lasting impact."
+              "Partnering with founders, startups, and brands to craft websites that scale, perform, and leave a lasting impact."
             }
             className="font-light text-6xl text-left leading-[0.5] tracking-tighter text-white"
             indent={5}

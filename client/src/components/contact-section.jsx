@@ -177,6 +177,30 @@ const AnimatedHR = ({ delay = 0 }) => {
 };
 
 export default function ContactSection() {
+  const [time, setTime] = useState("");
+
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      // Convert to IST using locale string
+      const istTime = now
+        .toLocaleTimeString("en-US", {
+          timeZone: "Asia/Kolkata",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: true,
+        })
+        .replace(" ", "");
+      setTime(istTime);
+    };
+
+    updateTime(); // run once immediately
+    const interval = setInterval(updateTime, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="bg-black text-white py-16 px-16">
       <div className="w-full mx-auto">
@@ -191,12 +215,12 @@ export default function ContactSection() {
           </div>
           <div>
             <MaskedText
-              text="New Business"
+              text="New Project?"
               className="text-2xl md:text-3xl font-light  tracking-tight mb-2"
               delay={0.2}
             />
             <MaskedText
-              text="hello@rejouice.com"
+              text="zenvok.inbox@gmail.com"
               className="text-2xl md:text-3xl font-light tracking-tight"
               delay={0.3}
             />
@@ -208,56 +232,50 @@ export default function ContactSection() {
               delay={0.4}
             />
             <MaskedText
-              text="jobs@rejouice.com"
+              text="zenvok.career@gmail.com"
               className="text-2xl md:text-3xl font-light tracking-tight"
               delay={0.5}
             />
           </div>
         </div>
-
         {/* First HR */}
         <AnimatedHR delay={0.6} />
-
         {/* Second Row */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-16 my-16">
           <div>
             <MaskedText
-              text="San Diego"
+              text="India"
               className="text-2xl md:text-3xl font-light tracking-tight"
               delay={0.7}
             />
           </div>
           <div>
             <MaskedText
-              text="4375 30th Street"
+              text="8, Kolkata"
               className="text-2xl md:text-3xl font-light tracking-tight mb-2"
               delay={0.8}
             />
             <MaskedText
-              text="California, 92104"
+              text="West Bengal, 700023"
               className="text-2xl md:text-3xl font-light tracking-tight mb-2"
               delay={0.9}
             />
             <MaskedText
-              text="USA"
+              text=""
               className="text-2xl md:text-3xl font-light tracking-tight"
               delay={1.0}
             />
           </div>
           <div>
-            <MaskedText
-              text="09:54:18AM"
-              className="text-2xl md:text-3xl font-light tracking-tight"
-              delay={1.1}
-            />
+            <span className="text-2xl md:text-3xl font-light tracking-tight">
+              {time}
+            </span>
           </div>
         </div>
 
-        {/* Second HR */}
         <AnimatedHR delay={1.2} />
-
         {/* Third Row */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-16 mt-16">
+        {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-16 mt-16">
           <div>
             <MaskedText
               text="Paris"
@@ -289,7 +307,7 @@ export default function ContactSection() {
               delay={1.7}
             />
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

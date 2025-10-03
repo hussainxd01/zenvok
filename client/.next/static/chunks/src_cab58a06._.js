@@ -13,7 +13,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/node_modules/gsap/index.js [app-client] (ecmascript) <locals>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$ScrollTrigger$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/gsap/ScrollTrigger.js [app-client] (ecmascript)");
 ;
-var _s = __turbopack_context__.k.signature(), _s1 = __turbopack_context__.k.signature();
+var _s = __turbopack_context__.k.signature(), _s1 = __turbopack_context__.k.signature(), _s2 = __turbopack_context__.k.signature();
 "use client";
 ;
 ;
@@ -222,6 +222,31 @@ const AnimatedHR = ({ delay = 0 })=>{
 _s1(AnimatedHR, "npQsf47Ys4gahuIYBxpA1fUDrsI=");
 _c1 = AnimatedHR;
 function ContactSection() {
+    _s2();
+    const [time, setTime] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("");
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "ContactSection.useEffect": ()=>{
+            const updateTime = {
+                "ContactSection.useEffect.updateTime": ()=>{
+                    const now = new Date();
+                    // Convert to IST using locale string
+                    const istTime = now.toLocaleTimeString("en-US", {
+                        timeZone: "Asia/Kolkata",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        second: "2-digit",
+                        hour12: true
+                    }).replace(" ", "");
+                    setTime(istTime);
+                }
+            }["ContactSection.useEffect.updateTime"];
+            updateTime(); // run once immediately
+            const interval = setInterval(updateTime, 1000);
+            return ({
+                "ContactSection.useEffect": ()=>clearInterval(interval)
+            })["ContactSection.useEffect"];
+        }
+    }["ContactSection.useEffect"], []);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "bg-black text-white py-16 px-16",
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -237,38 +262,38 @@ function ContactSection() {
                                 delay: 0.1
                             }, void 0, false, {
                                 fileName: "[project]/src/components/contact-section.jsx",
-                                lineNumber: 186,
+                                lineNumber: 210,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/components/contact-section.jsx",
-                            lineNumber: 185,
+                            lineNumber: 209,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(MaskedText, {
-                                    text: "New Business",
+                                    text: "New Project?",
                                     className: "text-2xl md:text-3xl font-light  tracking-tight mb-2",
                                     delay: 0.2
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/contact-section.jsx",
-                                    lineNumber: 193,
+                                    lineNumber: 217,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(MaskedText, {
-                                    text: "hello@rejouice.com",
+                                    text: "zenvok.inbox@gmail.com",
                                     className: "text-2xl md:text-3xl font-light tracking-tight",
                                     delay: 0.3
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/contact-section.jsx",
-                                    lineNumber: 198,
+                                    lineNumber: 222,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/contact-section.jsx",
-                            lineNumber: 192,
+                            lineNumber: 216,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -279,35 +304,35 @@ function ContactSection() {
                                     delay: 0.4
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/contact-section.jsx",
-                                    lineNumber: 205,
+                                    lineNumber: 229,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(MaskedText, {
-                                    text: "jobs@rejouice.com",
+                                    text: "zenvok.career@gmail.com",
                                     className: "text-2xl md:text-3xl font-light tracking-tight",
                                     delay: 0.5
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/contact-section.jsx",
-                                    lineNumber: 210,
+                                    lineNumber: 234,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/contact-section.jsx",
-                            lineNumber: 204,
+                            lineNumber: 228,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/contact-section.jsx",
-                    lineNumber: 184,
+                    lineNumber: 208,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(AnimatedHR, {
                     delay: 0.6
                 }, void 0, false, {
                     fileName: "[project]/src/components/contact-section.jsx",
-                    lineNumber: 219,
+                    lineNumber: 242,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -315,168 +340,94 @@ function ContactSection() {
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(MaskedText, {
-                                text: "San Diego",
+                                text: "India",
                                 className: "text-2xl md:text-3xl font-light tracking-tight",
                                 delay: 0.7
                             }, void 0, false, {
                                 fileName: "[project]/src/components/contact-section.jsx",
-                                lineNumber: 224,
+                                lineNumber: 246,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/components/contact-section.jsx",
-                            lineNumber: 223,
+                            lineNumber: 245,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(MaskedText, {
-                                    text: "4375 30th Street",
+                                    text: "8, Kolkata",
                                     className: "text-2xl md:text-3xl font-light tracking-tight mb-2",
                                     delay: 0.8
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/contact-section.jsx",
-                                    lineNumber: 231,
+                                    lineNumber: 253,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(MaskedText, {
-                                    text: "California, 92104",
+                                    text: "West Bengal, 700023",
                                     className: "text-2xl md:text-3xl font-light tracking-tight mb-2",
                                     delay: 0.9
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/contact-section.jsx",
-                                    lineNumber: 236,
+                                    lineNumber: 258,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(MaskedText, {
-                                    text: "USA",
+                                    text: "",
                                     className: "text-2xl md:text-3xl font-light tracking-tight",
                                     delay: 1.0
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/contact-section.jsx",
-                                    lineNumber: 241,
+                                    lineNumber: 263,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/contact-section.jsx",
-                            lineNumber: 230,
+                            lineNumber: 252,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(MaskedText, {
-                                text: "09:54:18AM",
+                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                 className: "text-2xl md:text-3xl font-light tracking-tight",
-                                delay: 1.1
+                                children: time
                             }, void 0, false, {
                                 fileName: "[project]/src/components/contact-section.jsx",
-                                lineNumber: 248,
+                                lineNumber: 270,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/components/contact-section.jsx",
-                            lineNumber: 247,
+                            lineNumber: 269,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/contact-section.jsx",
-                    lineNumber: 222,
+                    lineNumber: 244,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(AnimatedHR, {
                     delay: 1.2
                 }, void 0, false, {
                     fileName: "[project]/src/components/contact-section.jsx",
-                    lineNumber: 257,
-                    columnNumber: 9
-                }, this),
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-16 mt-16",
-                    children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(MaskedText, {
-                                text: "Paris",
-                                className: "text-2xl md:text-3xl font-light tracking-tight",
-                                delay: 1.3
-                            }, void 0, false, {
-                                fileName: "[project]/src/components/contact-section.jsx",
-                                lineNumber: 262,
-                                columnNumber: 13
-                            }, this)
-                        }, void 0, false, {
-                            fileName: "[project]/src/components/contact-section.jsx",
-                            lineNumber: 261,
-                            columnNumber: 11
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(MaskedText, {
-                                    text: "26 rue du Chalet",
-                                    className: "text-2xl md:text-3xl font-light tracking-tight mb-2",
-                                    delay: 1.4
-                                }, void 0, false, {
-                                    fileName: "[project]/src/components/contact-section.jsx",
-                                    lineNumber: 269,
-                                    columnNumber: 13
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(MaskedText, {
-                                    text: "75010 Paris,",
-                                    className: "text-2xl md:text-3xl font-light tracking-tight mb-2",
-                                    delay: 1.5
-                                }, void 0, false, {
-                                    fileName: "[project]/src/components/contact-section.jsx",
-                                    lineNumber: 274,
-                                    columnNumber: 13
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(MaskedText, {
-                                    text: "France",
-                                    className: "text-2xl md:text-3xl font-light tracking-tight",
-                                    delay: 1.6
-                                }, void 0, false, {
-                                    fileName: "[project]/src/components/contact-section.jsx",
-                                    lineNumber: 279,
-                                    columnNumber: 13
-                                }, this)
-                            ]
-                        }, void 0, true, {
-                            fileName: "[project]/src/components/contact-section.jsx",
-                            lineNumber: 268,
-                            columnNumber: 11
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(MaskedText, {
-                                text: "06:54:18PM",
-                                className: "text-2xl md:text-3xl font-light tracking-tight",
-                                delay: 1.7
-                            }, void 0, false, {
-                                fileName: "[project]/src/components/contact-section.jsx",
-                                lineNumber: 286,
-                                columnNumber: 13
-                            }, this)
-                        }, void 0, false, {
-                            fileName: "[project]/src/components/contact-section.jsx",
-                            lineNumber: 285,
-                            columnNumber: 11
-                        }, this)
-                    ]
-                }, void 0, true, {
-                    fileName: "[project]/src/components/contact-section.jsx",
-                    lineNumber: 260,
+                    lineNumber: 276,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/contact-section.jsx",
-            lineNumber: 182,
+            lineNumber: 206,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/components/contact-section.jsx",
-        lineNumber: 181,
+        lineNumber: 205,
         columnNumber: 5
     }, this);
 }
+_s2(ContactSection, "BOCfeVG4OKCNzybCuynup9cQfu8=");
 _c2 = ContactSection;
 var _c, _c1, _c2;
 __turbopack_context__.k.register(_c, "MaskedText");
@@ -694,7 +645,7 @@ function Page() {
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "max-w-[1400px] mx-auto px-12 w-full",
                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$masked$2d$text$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                        text: "One Partnering with global brands, founders, startups, and VCs to deliver brands that drive profitable growth and lasting impact.",
+                        text: "Partnering with founders, startups, and brands to craft websites that scale, perform, and leave a lasting impact.",
                         className: "font-light text-6xl text-left leading-[0.5] tracking-tighter text-white",
                         indent: 5,
                         positioning: "w-full"

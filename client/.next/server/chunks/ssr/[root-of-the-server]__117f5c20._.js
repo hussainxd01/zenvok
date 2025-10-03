@@ -403,9 +403,9 @@ function Navbar({ initialColor = "white", adaptiveMode = true, blendMode = "diff
                         xmlns: "http://www.w3.org/2000/svg",
                         viewBox: "0 0 20 20",
                         fill: "currentColor",
-                        class: "size-5",
+                        className: "size-5",
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
-                            "fill-rule": "evenodd",
+                            fillRule: "evenodd",
                             d: "M5.22 14.78a.75.75 0 0 0 1.06 0l7.22-7.22v5.69a.75.75 0 0 0 1.5 0v-7.5a.75.75 0 0 0-.75-.75h-7.5a.75.75 0 0 0 0 1.5h5.69l-7.22 7.22a.75.75 0 0 0 0 1.06Z",
                             clipRule: "evenodd"
                         }, void 0, false, {
