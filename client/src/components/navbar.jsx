@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import gsap from "gsap";
@@ -16,44 +16,35 @@ export default function Navbar({
   const textRef = useRef(null);
   const svgNavRef = useRef(null);
   const logoContainerRef = useRef(null);
+  const menuRef = useRef(null);
   const scrollTriggersRef = useRef([]);
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  // Reset animations when route changes
+  // Reset animations on route change
   useEffect(() => {
-    // Clean up all ScrollTriggers
-    scrollTriggersRef.current.forEach((trigger) => {
-      if (trigger && trigger.kill) trigger.kill();
-    });
+    scrollTriggersRef.current.forEach((trigger) => trigger?.kill?.());
     scrollTriggersRef.current = [];
 
-    // Reset GSAP states
-    if (textRef.current) {
-      gsap.set(textRef.current, { y: 0, opacity: 1 });
-    }
-    if (svgNavRef.current) {
+    if (textRef.current) gsap.set(textRef.current, { y: 0, opacity: 1 });
+    if (svgNavRef.current)
       gsap.set(svgNavRef.current, { opacity: 0, y: "100%" });
-    }
 
-    // Force ScrollTrigger refresh
     ScrollTrigger.refresh();
   }, [pathname]);
 
   useEffect(() => {
     if (!navbarRef.current) return;
 
-    // Ensure navbar is visible
     gsap.set(navbarRef.current, { opacity: 1, y: 0 });
 
-    // Navbar slide-in animation on page load
     const navAnimation = gsap.from(navbarRef.current, {
       y: -50,
       opacity: 0,
       duration: 1,
       ease: "power2.out",
-      delay: 0.5, // Reduced delay
+      delay: 0.5,
     });
 
-    // Set initial styles for logo container and SVG
     if (logoContainerRef.current && textRef.current) {
       gsap.set(logoContainerRef.current, {
         overflow: "hidden",
@@ -74,12 +65,8 @@ export default function Navbar({
       });
     }
 
-    return () => {
-      if (navAnimation) {
-        navAnimation.kill();
-      }
-    };
-  }, [pathname]); // Re-run when pathname changes
+    return () => navAnimation.kill();
+  }, [pathname]);
 
   useEffect(() => {
     if (!textRef.current || !svgNavRef.current) return;
@@ -122,15 +109,37 @@ export default function Navbar({
     });
 
     return () => {
-      scrollTriggersRef.current.forEach((trigger) => {
-        if (trigger && trigger.kill) trigger.kill();
-      });
+      scrollTriggersRef.current.forEach((t) => t?.kill?.());
       scrollTriggersRef.current = [];
       ctx.revert();
     };
-  }, [pathname]); // Re-run when pathname changes
+  }, [pathname]);
 
-  // Determine navbar styling based on mode
+  // Animate mobile menu slide-in
+  useEffect(() => {
+    if (!menuRef.current) return;
+
+    if (menuOpen) {
+      gsap.fromTo(
+        menuRef.current,
+        { y: "-100%", opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.6,
+          ease: "power3.out",
+        }
+      );
+    } else {
+      gsap.to(menuRef.current, {
+        y: "-100%",
+        opacity: 0,
+        duration: 0.4,
+        ease: "power3.inOut",
+      });
+    }
+  }, [menuOpen]);
+
   const getNavbarStyle = () => {
     if (adaptiveMode) {
       return {
@@ -151,12 +160,13 @@ export default function Navbar({
   return (
     <section
       ref={navbarRef}
-      className="h-[80px] w-full fixed top-0 bg-transparent z-50 sm:px-10 flex items-center justify-between"
+      className="fixed top-0 left-0 w-full h-[80px] z-50 bg-transparent flex items-center justify-between px-2 sm:px-10"
       style={navbarStyle}
     >
-      <div className="logo-wrapper flex items-start gap-2">
+      {/* === Logo + Animated SVG === */}
+      <div className="flex items-center gap-2">
         <div ref={logoContainerRef} className="relative overflow-hidden">
-          <p ref={textRef} className="text whitespace-nowrap font-medium">
+          <p ref={textRef} className="text font-medium whitespace-nowrap">
             The Brand Catalyst
           </p>
           <svg
@@ -166,11 +176,9 @@ export default function Navbar({
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             preserveAspectRatio="xMidYMid meet"
-            style={{
-              width: "50%",
-              height: "100%",
-            }}
+            style={{ width: "50%", height: "100%" }}
           >
+            {/* Your original SVG paths remain untouched */}
             <path
               d="M0.0500007 196.5L113.8 56.5H0.0500007V3.99998H183.45V56.5L69.7 196.5H183.45V249H0.0500007V196.5Z"
               fill="currentColor"
@@ -199,58 +207,78 @@ export default function Navbar({
         </div>
       </div>
 
-      <div className="navigation-wrapper text-sm flex gap-2 ml-50">
-        <Link
-          href="/"
-          className="hover:opacity-70 transition-opacity"
-          prefetch={true}
-        >
+      {/* === Desktop Nav Links === */}
+      <div className="hidden md:flex items-center gap-6 text-sm">
+        <Link href="/" className="hover:opacity-70 transition-opacity">
           Home
         </Link>
-        <Link
-          href="/about"
-          className="hover:opacity-70 transition-opacity"
-          prefetch={true}
-        >
+        <Link href="/about" className="hover:opacity-70 transition-opacity">
           About
         </Link>
-        <Link
-          href="/works"
-          className="hover:opacity-70 transition-opacity"
-          prefetch={true}
-        >
+        <Link href="/works" className="hover:opacity-70 transition-opacity">
           Works
         </Link>
-        <Link
-          href="/service"
-          className="hover:opacity-70 transition-opacity"
-          prefetch={true}
-        >
+        <Link href="/service" className="hover:opacity-70 transition-opacity">
           Service
         </Link>
-        <Link
-          href="/contact"
-          className="hover:opacity-70 transition-opacity"
-          prefetch={true}
-        >
+        <Link href="/contact" className="hover:opacity-70 transition-opacity">
           Contact
         </Link>
+
+        <div className="cursor-pointer px-4 py-2 flex gap-1 items-center transition-all duration-200 hover:mix-blend-difference">
+          Let&apos;s Talk
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            className="size-5"
+          >
+            <path
+              fillRule="evenodd"
+              d="M5.22 14.78a.75.75 0 0 0 1.06 0l7.22-7.22v5.69a.75.75 0 0 0 1.5 0v-7.5a.75.75 0 0 0-.75-.75h-7.5a.75.75 0 0 0 0 1.5h5.69l-7.22 7.22a.75.75 0 0 0 0 1.06Z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </div>
       </div>
 
-      <div className="cursor-pointer px-4 py-2 flex gap-1 items-center transition-all duration-200 hover:mix-blend-difference">
-        Let's Talk
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          className="size-5"
+      {/* === Mobile Menu Button === */}
+      <div className="md:hidden flex items-center">
+        <button
+          type="button"
+          onClick={() => setMenuOpen(!menuOpen)}
+          className="text-white bg-[#2e2e2e] px-4 py-2 text-sm rounded-sm active:scale-95 transition-all"
         >
-          <path
-            fillRule="evenodd"
-            d="M5.22 14.78a.75.75 0 0 0 1.06 0l7.22-7.22v5.69a.75.75 0 0 0 1.5 0v-7.5a.75.75 0 0 0-.75-.75h-7.5a.75.75 0 0 0 0 1.5h5.69l-7.22 7.22a.75.75 0 0 0 0 1.06Z"
-            clipRule="evenodd"
-          />
-        </svg>
+          {menuOpen ? "Close" : "Menu"}
+        </button>
+      </div>
+
+      {/* === Mobile Menu Animated Dropdown === */}
+      <div
+        ref={menuRef}
+        className={`fixed left-0 top-[80px] w-full bg-black text-white flex flex-col items-start gap-6 px-6 py-6 border-t border-[#2d2d2d] md:hidden z-40 ${
+          menuOpen ? "pointer-events-auto" : "pointer-events-none"
+        }`}
+        style={{ transformOrigin: "top center" }}
+      >
+        <Link href="/" onClick={() => setMenuOpen(false)}>
+          Home
+        </Link>
+        <Link href="/about" onClick={() => setMenuOpen(false)}>
+          About
+        </Link>
+        <Link href="/works" onClick={() => setMenuOpen(false)}>
+          Works
+        </Link>
+        <Link href="/service" onClick={() => setMenuOpen(false)}>
+          Service
+        </Link>
+        <Link href="/contact" onClick={() => setMenuOpen(false)}>
+          Contact
+        </Link>
+        <button className="mt-2 text-sm opacity-70 hover:opacity-100 transition">
+          Let&apos;s Talk
+        </button>
       </div>
     </section>
   );
