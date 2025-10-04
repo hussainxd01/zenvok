@@ -7,8 +7,7 @@ import Footer from "@/components/footer";
 import Approach from "@/components/approach";
 import Space from "@/components/space";
 import Navbar from "@/components/navbar";
-import InfiniteCarousel from "@/components/infinite-carousel";
-
+import WorkShowcase from "@/components/showcase";
 export default function Home() {
   return (
     <>
@@ -17,8 +16,8 @@ export default function Home() {
       <MediaShowcase enableScaleAnimation={false} />
       <Statement />
       {/* <Space /> */}
+      <WorkShowcase />
       <Approach />
-      <InfiniteCarousel />
       <Footer />
     </>
   );
