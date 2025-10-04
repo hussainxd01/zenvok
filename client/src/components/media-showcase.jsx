@@ -15,11 +15,11 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 const MediaShowcase = ({
   // Media configuration
   type = "video", // "video", "image", "slideshow"
-  src = "/reel.mp4", // Single source for video/image
+  src = "/showreel.mp4", // Single source for video/image
   sources = [], // Array of sources for slideshow: [{ src: "...", alt: "..." }]
 
   // Display configuration
-  title = "Show Reel",
+  title = "",
   height = "800px",
   backgroundColor = "bg-white",
   titleColor = "white",
@@ -56,6 +56,8 @@ const MediaShowcase = ({
   const [isPlaying, setIsPlaying] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [progress, setProgress] = useState(0);
+  const [isScrubbing, setIsScrubbing] = useState(false);
 
   // Refs
   const sectionRef = useRef(null);
@@ -66,6 +68,7 @@ const MediaShowcase = ({
   const mediaRef = useRef(null);
   const overlayRef = useRef(null);
   const timelineRef = useRef(null);
+  const progressTrackRef = useRef(null);
 
   // Cursor position tracking
   const cursor = useRef({
@@ -106,6 +109,81 @@ const MediaShowcase = ({
     }
   };
 
+  const pauseVideo = () => {
+    if (type === "video" && mediaRef.current) {
+      mediaRef.current.pause();
+      setIsPlaying(false);
+      onPause();
+    }
+  };
+
+  // Update progress from video
+  const updateProgress = () => {
+    if (type === "video" && mediaRef.current && !isScrubbing) {
+      const currentTime = mediaRef.current.currentTime;
+      const duration = mediaRef.current.duration;
+      if (duration > 0) {
+        setProgress(currentTime / duration);
+      }
+    }
+  };
+
+  // Seek functionality
+  const handleProgressClick = (e) => {
+    if (type !== "video" || !progressTrackRef.current || !mediaRef.current)
+      return;
+
+    const rect = progressTrackRef.current.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const newProgress = Math.max(0, Math.min(1, clickX / rect.width));
+
+    const duration = mediaRef.current.duration;
+    if (duration > 0) {
+      mediaRef.current.currentTime = newProgress * duration;
+      setProgress(newProgress);
+    }
+  };
+
+  const handleSeekStart = (e) => {
+    if (type !== "video") return;
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    setIsScrubbing(true);
+
+    const handleSeekMove = (moveEvent) => {
+      if (!progressTrackRef.current || !mediaRef.current) return;
+
+      const rect = progressTrackRef.current.getBoundingClientRect();
+      const clientX = moveEvent.touches
+        ? moveEvent.touches[0].clientX
+        : moveEvent.clientX;
+      const clickX = clientX - rect.left;
+      const newProgress = Math.max(0, Math.min(1, clickX / rect.width));
+
+      const duration = mediaRef.current.duration;
+      if (duration > 0) {
+        mediaRef.current.currentTime = newProgress * duration;
+        setProgress(newProgress);
+      }
+    };
+
+    const handleSeekEnd = () => {
+      setIsScrubbing(false);
+      document.removeEventListener("mousemove", handleSeekMove);
+      document.removeEventListener("mouseup", handleSeekEnd);
+      document.removeEventListener("touchmove", handleSeekMove);
+      document.removeEventListener("touchend", handleSeekEnd);
+    };
+
+    handleSeekMove(e);
+    document.addEventListener("mousemove", handleSeekMove);
+    document.addEventListener("mouseup", handleSeekEnd);
+    document.addEventListener("touchmove", handleSeekMove, { passive: false });
+    document.addEventListener("touchend", handleSeekEnd);
+  };
+
   // Slideshow navigation
   const nextSlide = (e) => {
     e.stopPropagation();
@@ -131,9 +209,7 @@ const MediaShowcase = ({
       timelineRef.current.reverse().then(() => {
         setIsOpen(false);
         if (type === "video" && mediaRef.current) {
-          mediaRef.current.pause();
-          setIsPlaying(false);
-          onPause();
+          pauseVideo();
         }
         onClose();
       });
@@ -154,9 +230,7 @@ const MediaShowcase = ({
     e.stopPropagation();
     if (type === "video" && mediaRef.current) {
       if (isPlaying) {
-        mediaRef.current.pause();
-        setIsPlaying(false);
-        onPause();
+        pauseVideo();
       } else {
         playVideo();
       }
@@ -238,7 +312,7 @@ const MediaShowcase = ({
       document.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("keydown", handleEsc);
     };
-  }, [isOpen, enableScaleAnimation]); // Added enableScaleAnimation to dependency array
+  }, [isOpen, enableScaleAnimation]);
 
   // Modal animation when opened
   useEffect(() => {
@@ -317,6 +391,31 @@ const MediaShowcase = ({
     });
   };
 
+  // Sync progress with video
+  useEffect(() => {
+    if (type !== "video" || !mediaRef.current) return;
+
+    const video = mediaRef.current;
+
+    const handleTimeUpdate = () => {
+      updateProgress();
+    };
+
+    const handleEnded = () => {
+      if (!loop) {
+        setIsPlaying(false);
+      }
+    };
+
+    video.addEventListener("timeupdate", handleTimeUpdate);
+    video.addEventListener("ended", handleEnded);
+
+    return () => {
+      video.removeEventListener("timeupdate", handleTimeUpdate);
+      video.removeEventListener("ended", handleEnded);
+    };
+  }, [type, isScrubbing, loop]);
+
   // Render preview media
   const renderPreviewMedia = () => {
     const currentSrc = getCurrentSrc();
@@ -337,7 +436,7 @@ const MediaShowcase = ({
     } else {
       return (
         <img
-          src={currentSrc}
+          src={currentSrc || "/placeholder.svg"}
           alt={
             type === "slideshow" ? sources[currentSlide]?.alt || "" : "Preview"
           }
@@ -369,7 +468,7 @@ const MediaShowcase = ({
       return (
         <img
           ref={mediaRef}
-          src={currentSrc}
+          src={currentSrc || "/placeholder.svg"}
           alt={
             type === "slideshow" ? sources[currentSlide]?.alt || "" : "Modal"
           }
@@ -451,52 +550,87 @@ const MediaShowcase = ({
           <div
             ref={modalRef}
             className="relative w-full max-w-5xl aspect-video bg-black overflow-hidden rounded shadow-xl"
+            onClick={(e) => e.stopPropagation()}
           >
             {renderModalMedia()}
 
-            {/* Controls */}
-            <div className="absolute bottom-4 left-4 flex gap-2">
-              {/* Video Controls */}
+            {/* Close Button */}
+            <button
+              onClick={closeModal}
+              className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center text-white/60 hover:text-white transition-colors z-10"
+            >
+              <X size={20} strokeWidth={1.5} />
+            </button>
+
+            {/* Controls Container */}
+            <div className="absolute bottom-0 left-0 right-0 p-4">
+              {/* Progress Bar */}
               {type === "video" && (
-                <>
-                  <button
-                    onClick={toggleMute}
-                    className="bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full p-2 text-white transition-all"
-                  >
-                    {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
-                  </button>
-
-                  <button
-                    onClick={togglePlayPause}
-                    className="bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full p-2 text-white transition-all"
-                  >
-                    {isPlaying ? <Pause size={20} /> : <Play size={20} />}
-                  </button>
-                </>
+                <div
+                  ref={progressTrackRef}
+                  className="w-full h-0.5 bg-white/30 mb-3 cursor-pointer relative"
+                  onMouseDown={handleSeekStart}
+                  onTouchStart={handleSeekStart}
+                >
+                  <div
+                    className="h-full bg-white transition-none"
+                    style={{ width: `${progress * 100}%` }}
+                  />
+                </div>
               )}
 
-              {/* Slideshow Controls */}
-              {type === "slideshow" && sources.length > 1 && (
-                <>
-                  <button
-                    onClick={prevSlide}
-                    className="bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full p-2 text-white transition-all"
-                  >
-                    <ChevronLeft size={20} />
-                  </button>
+              {/* Buttons */}
+              <div className="flex gap-3">
+                {/* Video Controls */}
+                {type === "video" && (
+                  <>
+                    <button
+                      onClick={togglePlayPause}
+                      className="w-6 h-6 flex items-center justify-center text-white/80 hover:text-white transition-colors"
+                    >
+                      {isPlaying ? (
+                        <Pause size={16} strokeWidth={1.5} />
+                      ) : (
+                        <Play size={16} strokeWidth={1.5} />
+                      )}
+                    </button>
 
-                  <div className="bg-white bg-opacity-20 rounded-full px-3 py-2 text-white text-sm flex items-center">
-                    {currentSlide + 1} / {sources.length}
-                  </div>
+                    <button
+                      onClick={toggleMute}
+                      className="w-6 h-6 flex items-center justify-center text-white/80 hover:text-white transition-colors"
+                    >
+                      {isMuted ? (
+                        <VolumeX size={16} strokeWidth={1.5} />
+                      ) : (
+                        <Volume2 size={16} strokeWidth={1.5} />
+                      )}
+                    </button>
+                  </>
+                )}
 
-                  <button
-                    onClick={nextSlide}
-                    className="bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full p-2 text-white transition-all"
-                  >
-                    <ChevronRight size={20} />
-                  </button>
-                </>
-              )}
+                {/* Slideshow Controls */}
+                {type === "slideshow" && sources.length > 1 && (
+                  <>
+                    <button
+                      onClick={prevSlide}
+                      className="w-6 h-6 flex items-center justify-center text-white/80 hover:text-white transition-colors"
+                    >
+                      <ChevronLeft size={16} strokeWidth={1.5} />
+                    </button>
+
+                    <div className="px-2 text-white/80 text-xs flex items-center">
+                      {currentSlide + 1} / {sources.length}
+                    </div>
+
+                    <button
+                      onClick={nextSlide}
+                      className="w-6 h-6 flex items-center justify-center text-white/80 hover:text-white transition-colors"
+                    >
+                      <ChevronRight size={16} strokeWidth={1.5} />
+                    </button>
+                  </>
+                )}
+              </div>
             </div>
           </div>
         </div>
