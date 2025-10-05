@@ -145,7 +145,7 @@ function MobileMenu({ isOpen, onClose }) {
   return (
     <div
       ref={menuRef}
-      className="fixed left-0 top-0 w-full h-screen bg-black text-white flex flex-col items-start justify-center gap-5 px-2 md:hidden z-[80] overflow-hidden pointer-events-none"
+      className="fixed left-0 top-0 w-full min-h-[100dvh] bg-black text-white flex flex-col items-start justify-center gap-10 px-2 md:hidden z-[80] overflow-hidden pointer-events-none "
       style={{ transformOrigin: "top center" }}
     >
       <button

@@ -251,7 +251,7 @@ function MobileMenu({ isOpen, onClose }) {
     ];
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         ref: menuRef,
-        className: "fixed left-0 top-0 w-full h-screen bg-black text-white flex flex-col items-start justify-center gap-5 px-2 md:hidden z-[80] overflow-hidden pointer-events-none",
+        className: "fixed left-0 top-0 w-full min-h-[100dvh] bg-black text-white flex flex-col items-start justify-center gap-10 px-2 md:hidden z-[80] overflow-hidden pointer-events-none ",
         style: {
             transformOrigin: "top center"
         },
