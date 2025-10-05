@@ -503,7 +503,7 @@ const MediaShowcase = ({
       </div>
 
       {/* Close cursor follower */}
-      <div
+      {/* <div
         ref={modalCursorRef}
         className="pointer-events-none fixed top-0 left-0 w-auto h-20 flex items-center justify-center gap-2 bg-opacity-20 rounded-full z-[9999]"
         style={{
@@ -515,7 +515,7 @@ const MediaShowcase = ({
           <X size={20} color="white" />
         </div>
         <p className="text-white">{closeText}</p>
-      </div>
+      </div> */}
 
       {/* Media Section */}
       <section
@@ -557,7 +557,7 @@ const MediaShowcase = ({
             {/* Close Button */}
             <button
               onClick={closeModal}
-              className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center text-white/60 hover:text-white transition-colors z-10"
+              className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center text-white/60 hover:text-white transition-colors z-10 cursor-pointer"
             >
               <X size={20} strokeWidth={1.5} />
             </button>

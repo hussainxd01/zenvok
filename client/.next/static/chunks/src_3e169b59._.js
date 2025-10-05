@@ -809,43 +809,6 @@ onOpen = ()=>{}, onClose = ()=>{}, onPlay = ()=>{}, onPause = ()=>{} })=>{
                 lineNumber: 484,
                 columnNumber: 7
             }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                ref: modalCursorRef,
-                className: "pointer-events-none fixed top-0 left-0 w-auto h-20 flex items-center justify-center gap-2 bg-opacity-20 rounded-full z-[9999]",
-                style: {
-                    opacity: 0,
-                    transform: "translate(-50%, -50%)"
-                },
-                children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "w-6 h-6 flex items-center justify-center",
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__["X"], {
-                            size: 20,
-                            color: "white"
-                        }, void 0, false, {
-                            fileName: "[project]/src/components/media-showcase.jsx",
-                            lineNumber: 515,
-                            columnNumber: 11
-                        }, this)
-                    }, void 0, false, {
-                        fileName: "[project]/src/components/media-showcase.jsx",
-                        lineNumber: 514,
-                        columnNumber: 9
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                        className: "text-white",
-                        children: closeText
-                    }, void 0, false, {
-                        fileName: "[project]/src/components/media-showcase.jsx",
-                        lineNumber: 517,
-                        columnNumber: 9
-                    }, this)
-                ]
-            }, void 0, true, {
-                fileName: "[project]/src/components/media-showcase.jsx",
-                lineNumber: 506,
-                columnNumber: 7
-            }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
                 ref: sectionRef,
                 className: `w-full flex items-center justify-center relative overflow-hidden ${backgroundColor} ${containerClassName}`,
@@ -898,7 +861,7 @@ onOpen = ()=>{}, onClose = ()=>{}, onPlay = ()=>{}, onPause = ()=>{} })=>{
                         renderModalMedia(),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                             onClick: closeModal,
-                            className: "absolute top-4 right-4 w-8 h-8 flex items-center justify-center text-white/60 hover:text-white transition-colors z-10",
+                            className: "absolute top-4 right-4 w-8 h-8 flex items-center justify-center text-white/60 hover:text-white transition-colors z-10 cursor-pointer",
                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__["X"], {
                                 size: 20,
                                 strokeWidth: 1.5
@@ -1099,7 +1062,13 @@ const Statement = ()=>{
     const columnTwoParaRefs = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])([]);
     const columnOneContainersRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])([]);
     const columnTwoContainersRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])([]);
-    // Function to create masked text animation
+    // ✅ Conditionally apply indent only for md+ screens
+    const shouldIndent = ()=>{
+        if ("TURBOPACK compile-time falsy", 0) {
+            "TURBOPACK unreachable";
+        }
+        return window.innerWidth >= 768; // Tailwind's md breakpoint
+    };
     const createMaskedTextAnimation = (element, text, containersRef, indent = false)=>{
         if (!element) return;
         const words = text.split(" ");
@@ -1107,7 +1076,8 @@ const Statement = ()=>{
         const textWrapper = document.createElement("div");
         textWrapper.style.display = "inline";
         textWrapper.style.lineHeight = "inherit";
-        if (indent) {
+        // ✅ Only indent on larger screens
+        if (indent && shouldIndent()) {
             const indentSpan = document.createElement("span");
             indentSpan.style.display = "inline-block";
             indentSpan.style.width = "3em";
@@ -1148,11 +1118,9 @@ const Statement = ()=>{
             columnTwoContainersRef.current = [];
             const ctx = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].context({
                 "Statement.useLayoutEffect.ctx": ()=>{
-                    // Main statement animation
-                    createMaskedTextAnimation(statementRef.current, statementRef.current.textContent, textContainersRef, true);
-                    // Column one animation
+                    createMaskedTextAnimation(statementRef.current, statementRef.current.textContent, textContainersRef, true // keep indent logic dynamic
+                    );
                     createMaskedTextAnimation(columnOneRef.current, columnOneRef.current.textContent, columnOneContainersRef, false);
-                    // Column two paragraphs
                     const columnTwoWordSpans = [];
                     columnTwoParaRefs.current.forEach({
                         "Statement.useLayoutEffect.ctx": (paraRef)=>{
@@ -1168,7 +1136,6 @@ const Statement = ()=>{
                             }
                         }
                     }["Statement.useLayoutEffect.ctx"]);
-                    // Animate statement headline
                     textContainersRef.current.forEach({
                         "Statement.useLayoutEffect.ctx": ({ wordSpan }, index)=>{
                             __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].to(wordSpan, {
@@ -1184,7 +1151,6 @@ const Statement = ()=>{
                             });
                         }
                     }["Statement.useLayoutEffect.ctx"]);
-                    // Animate the HR
                     __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].fromTo(hrRef.current, {
                         width: "0%"
                     }, {
@@ -1197,7 +1163,6 @@ const Statement = ()=>{
                             end: "bottom 90%"
                         }
                     });
-                    // Timeline for column one → then column two
                     const timeline = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].timeline({
                         scrollTrigger: {
                             trigger: statementSectionRef.current,
@@ -1205,7 +1170,6 @@ const Statement = ()=>{
                             end: "bottom 20%"
                         }
                     });
-                    // Column one animation
                     columnOneContainersRef.current.forEach({
                         "Statement.useLayoutEffect.ctx": ({ wordSpan }, index)=>{
                             timeline.to(wordSpan, {
@@ -1215,7 +1179,6 @@ const Statement = ()=>{
                             }, index * 0.05);
                         }
                     }["Statement.useLayoutEffect.ctx"]);
-                    // Column two animation (starts after column one)
                     timeline.to(columnTwoWordSpans, {
                         y: 0,
                         duration: 0.3,
@@ -1239,18 +1202,15 @@ const Statement = ()=>{
             columnTwoParaRefs.current = [];
         }
     }["Statement.useEffect"], []);
-    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
         ref: statementSectionRef,
-        className: "bg-black text-white py-16 px-4 md:px-8 lg:px-16 statement-section w-full",
+        className: "bg-black text-white py-12 px-4 sm:py-16 sm:px-6 md:px-8 lg:px-16 w-full",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "max-w-7xl mx-auto",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
                     ref: statementRef,
-                    className: "text-4xl text-white md:text-5xl lg:text-6xl font-extralight leading-tight tracking-tighter mb-12",
-                    style: {
-                        lineHeight: "1.1"
-                    },
+                    className: "text-[1.5rem] sm:text-3xl md:text-5xl lg:text-6xl font-extralight leading-snug sm:leading-tight tracking-tight sm:tracking-tighter mb-8 sm:mb-12",
                     children: [
                         "We blend the power of strategy, design, and performance marketing to transform founders' visions into remarkable brands. See",
                         " ",
@@ -1260,19 +1220,19 @@ const Statement = ()=>{
                             children: "our services"
                         }, void 0, false, {
                             fileName: "[project]/src/components/statement.jsx",
-                            lineNumber: 203,
+                            lineNumber: 200,
                             columnNumber: 11
                         }, this),
                         "."
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/statement.jsx",
-                    lineNumber: 196,
+                    lineNumber: 194,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/statement.jsx",
-                lineNumber: 195,
+                lineNumber: 193,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1280,83 +1240,74 @@ const Statement = ()=>{
                 className: "w-0 border-gray-50/30 border-b h-[0.5px] max-w-7xl mx-auto"
             }, void 0, false, {
                 fileName: "[project]/src/components/statement.jsx",
-                lineNumber: 210,
+                lineNumber: 207,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "max-w-7xl mx-auto mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16",
+                className: "max-w-7xl mx-auto mt-10 sm:mt-12 grid grid-cols-2 gap-x-4 gap-y-6 sm:gap-x-8 md:gap-16",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "column",
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
                             ref: columnOneRef,
-                            className: "text-xl md:text-2xl font-light mb-6",
+                            className: "text-base sm:text-lg md:text-2xl font-light",
                             children: "Design that converts."
                         }, void 0, false, {
                             fileName: "[project]/src/components/statement.jsx",
-                            lineNumber: 217,
+                            lineNumber: 215,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/statement.jsx",
-                        lineNumber: 216,
+                        lineNumber: 214,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "column flex flex-col gap-6 w-full md:w-4/5 lg:w-[75%] tracking-tight",
+                        className: "column flex flex-col gap-4 sm:gap-6 tracking-tight col-span-1",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                 ref: addParaRef,
-                                className: "text-lg font-light leading-relaxed",
-                                children: "We are the brand catalyst."
-                            }, void 0, false, {
-                                fileName: "[project]/src/components/statement.jsx",
-                                lineNumber: 225,
-                                columnNumber: 11
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                ref: addParaRef,
-                                className: "text-lg font-light leading-relaxed",
+                                className: "text-sm sm:text-base md:text-lg font-light leading-relaxed",
                                 children: "Since day one, Zenvok has helped businesses launch, scale, and stay sharp — through strategy, design, and clean engineering."
                             }, void 0, false, {
                                 fileName: "[project]/src/components/statement.jsx",
-                                lineNumber: 228,
+                                lineNumber: 224,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                 ref: addParaRef,
-                                className: "text-lg font-light leading-relaxed",
+                                className: "text-sm sm:text-base md:text-lg font-light leading-relaxed",
                                 children: "In 2025, we introduced our selective model — partnering with a few bold teams at a time to go deep, not wide."
                             }, void 0, false, {
                                 fileName: "[project]/src/components/statement.jsx",
-                                lineNumber: 232,
+                                lineNumber: 231,
                                 columnNumber: 11
                             }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                ref: addParaRef,
-                                className: "text-lg font-light leading-relaxed",
-                                children: "No noise. Just focus, precision, and digital built to perform."
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
+                                href: "#",
+                                className: "underline underline-offset-4 text-sm sm:text-base font-light mt-2",
+                                children: "Learn more ↗"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/statement.jsx",
-                                lineNumber: 236,
+                                lineNumber: 239,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/statement.jsx",
-                        lineNumber: 224,
+                        lineNumber: 223,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/statement.jsx",
-                lineNumber: 215,
+                lineNumber: 213,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/statement.jsx",
-        lineNumber: 191,
+        lineNumber: 189,
         columnNumber: 5
     }, this);
 };

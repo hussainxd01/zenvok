@@ -13,7 +13,12 @@ const Statement = () => {
   const columnOneContainersRef = useRef([]);
   const columnTwoContainersRef = useRef([]);
 
-  // Function to create masked text animation
+  // ✅ Conditionally apply indent only for md+ screens
+  const shouldIndent = () => {
+    if (typeof window === "undefined") return false;
+    return window.innerWidth >= 768; // Tailwind's md breakpoint
+  };
+
   const createMaskedTextAnimation = (
     element,
     text,
@@ -29,7 +34,8 @@ const Statement = () => {
     textWrapper.style.display = "inline";
     textWrapper.style.lineHeight = "inherit";
 
-    if (indent) {
+    // ✅ Only indent on larger screens
+    if (indent && shouldIndent()) {
       const indentSpan = document.createElement("span");
       indentSpan.style.display = "inline-block";
       indentSpan.style.width = "3em";
@@ -73,15 +79,13 @@ const Statement = () => {
     columnTwoContainersRef.current = [];
 
     const ctx = gsap.context(() => {
-      // Main statement animation
       createMaskedTextAnimation(
         statementRef.current,
         statementRef.current.textContent,
         textContainersRef,
-        true
+        true // keep indent logic dynamic
       );
 
-      // Column one animation
       createMaskedTextAnimation(
         columnOneRef.current,
         columnOneRef.current.textContent,
@@ -89,7 +93,6 @@ const Statement = () => {
         false
       );
 
-      // Column two paragraphs
       const columnTwoWordSpans = [];
 
       columnTwoParaRefs.current.forEach((paraRef) => {
@@ -108,7 +111,6 @@ const Statement = () => {
         }
       });
 
-      // Animate statement headline
       textContainersRef.current.forEach(({ wordSpan }, index) => {
         gsap.to(wordSpan, {
           y: 0,
@@ -123,7 +125,6 @@ const Statement = () => {
         });
       });
 
-      // Animate the HR
       gsap.fromTo(
         hrRef.current,
         { width: "0%" },
@@ -139,7 +140,6 @@ const Statement = () => {
         }
       );
 
-      // Timeline for column one → then column two
       const timeline = gsap.timeline({
         scrollTrigger: {
           trigger: statementSectionRef.current,
@@ -148,7 +148,6 @@ const Statement = () => {
         },
       });
 
-      // Column one animation
       columnOneContainersRef.current.forEach(({ wordSpan }, index) => {
         timeline.to(
           wordSpan,
@@ -161,7 +160,6 @@ const Statement = () => {
         );
       });
 
-      // Column two animation (starts after column one)
       timeline.to(
         columnTwoWordSpans,
         {
@@ -188,15 +186,14 @@ const Statement = () => {
   }, []);
 
   return (
-    <div
+    <section
       ref={statementSectionRef}
-      className="bg-black text-white py-16 px-4 md:px-8 lg:px-16 statement-section w-full"
+      className="bg-black text-white py-12 px-4 sm:py-16 sm:px-6 md:px-8 lg:px-16 w-full"
     >
       <div className="max-w-7xl mx-auto">
         <h1
           ref={statementRef}
-          className="text-4xl text-white md:text-5xl lg:text-6xl font-extralight leading-tight tracking-tighter mb-12"
-          style={{ lineHeight: "1.1" }}
+          className="text-[1.5rem] sm:text-3xl md:text-5xl lg:text-6xl font-extralight leading-snug sm:leading-tight tracking-tight sm:tracking-tighter mb-8 sm:mb-12"
         >
           We blend the power of strategy, design, and performance marketing to
           transform founders' visions into remarkable brands. See{" "}
@@ -212,33 +209,42 @@ const Statement = () => {
         className="w-0 border-gray-50/30 border-b h-[0.5px] max-w-7xl mx-auto"
       ></div>
 
-      <div className="max-w-7xl mx-auto mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
+      {/* Two-column layout stays on mobile */}
+      <div className="max-w-7xl mx-auto mt-10 sm:mt-12 grid grid-cols-2 gap-x-4 gap-y-6 sm:gap-x-8 md:gap-16">
         <div className="column">
           <h3
             ref={columnOneRef}
-            className="text-xl md:text-2xl font-light mb-6"
+            className="text-base sm:text-lg md:text-2xl font-light"
           >
             Design that converts.
           </h3>
         </div>
-        <div className="column flex flex-col gap-6 w-full md:w-4/5 lg:w-[75%] tracking-tight">
-          <p ref={addParaRef} className="text-lg font-light leading-relaxed">
-            We are the brand catalyst.
-          </p>
-          <p ref={addParaRef} className="text-lg font-light leading-relaxed">
+
+        <div className="column flex flex-col gap-4 sm:gap-6 tracking-tight col-span-1">
+          <p
+            ref={addParaRef}
+            className="text-sm sm:text-base md:text-lg font-light leading-relaxed"
+          >
             Since day one, Zenvok has helped businesses launch, scale, and stay
             sharp — through strategy, design, and clean engineering.
           </p>
-          <p ref={addParaRef} className="text-lg font-light leading-relaxed">
+          <p
+            ref={addParaRef}
+            className="text-sm sm:text-base md:text-lg font-light leading-relaxed"
+          >
             In 2025, we introduced our selective model — partnering with a few
             bold teams at a time to go deep, not wide.
           </p>
-          <p ref={addParaRef} className="text-lg font-light leading-relaxed">
-            No noise. Just focus, precision, and digital built to perform.
-          </p>
+
+          <a
+            href="#"
+            className="underline underline-offset-4 text-sm sm:text-base font-light mt-2"
+          >
+            Learn more ↗
+          </a>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
