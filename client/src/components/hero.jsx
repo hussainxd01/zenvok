@@ -96,12 +96,12 @@ export default function HeroComponent() {
     <div ref={outerDivRef}>
       <div
         ref={heroRef}
-        className="w-full h-[700px] bg-black flex flex-col items-center text-white overflow-hidden pt-20"
+        className="w-full sm:h-[700px] bg-black flex flex-col h-[94vh] items-center text-white overflow-hidden pt-20 relative"
         data-theme="dark"
       >
         <div className="w-full flex flex-col gap-32">
           {" "}
-          <div className="logo-wrapper w-full sm:px-10 mt-10 overflow-hidden">
+          <div className="logo-wrapper w-full sm:px-10 md:mt-10 overflow-hidden px-1">
             <svg
               ref={svgRef}
               width="100%"
@@ -144,10 +144,10 @@ export default function HeroComponent() {
               />
             </svg>
           </div>
-          <div className="hero-title sm:px-10 flex gap-40">
+          <div className="hero-title sm:px-10 flex sm:gap-40 text-[10px] sm:text-base gap-5 px-1 absolute sm:relative bottom-2">
             <div>
-              <p>Design. Engineering. Execution</p>
-              <p>Built for what’s next.</p>
+              <p>Design. Engineering.</p>
+              <p>Execution.</p>
             </div>
             <div>
               <p>Two Engagement</p>
@@ -156,10 +156,10 @@ export default function HeroComponent() {
           </div>
         </div>
 
-        <div className="controls absolute bottom-20 right-10">
+        <div className="controls sm:absolute bottom-20 right-10 hidden sm:block">
           <div
             ref={arrowRef}
-            className="icon-wrapper p-4 cursor-pointer hover:opacity-70 transition-opacity"
+            className="icon-wrapper p-4 cursor-pointer hover:opacity-70 transition-opacity "
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

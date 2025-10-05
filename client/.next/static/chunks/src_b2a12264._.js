@@ -290,7 +290,7 @@ function MobileMenu({ isOpen, onClose }) {
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                 onClick: onClose,
                 className: "mt-4 text-sm  hover:opacity-100 transition",
-                children: "Let's Talk↗"
+                children: "Let's Talk ↗"
             }, void 0, false, {
                 fileName: "[project]/src/components/navbar.jsx",
                 lineNumber: 151,
@@ -487,7 +487,7 @@ function Navbar({ initialColor = "white", adaptiveMode = true, blendMode = "diff
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
                 ref: navbarRef,
-                className: `fixed top-0 left-0 w-full h-[80px] z-[90] flex items-center justify-between px-2 sm:px-10 transition-colors duration-500 ${menuOpen ? "bg-black" : "bg-transparent md:bg-transparent"}`,
+                className: `fixed top-0 left-0 w-full py-5  z-[90] flex items-center justify-between px-2 sm:px-10 transition-colors duration-500 ${menuOpen ? "bg-black" : "bg-transparent md:bg-transparent"}`,
                 style: navbarStyle,
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -639,29 +639,8 @@ function Navbar({ initialColor = "white", adaptiveMode = true, blendMode = "diff
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "cursor-pointer px-4 py-2 flex gap-1 items-center transition-all duration-200 hover:mix-blend-difference",
-                                children: [
-                                    "Let's Talk",
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
-                                        xmlns: "http://www.w3.org/2000/svg",
-                                        viewBox: "0 0 20 20",
-                                        fill: "currentColor",
-                                        className: "size-5",
-                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
-                                            fillRule: "evenodd",
-                                            d: "M5.22 14.78a.75.75 0 0 0 1.06 0l7.22-7.22v5.69a.75.75 0 0 0 1.5 0v-7.5a.75.75 0 0 0-.75-.75h-7.5a.75.75 0 0 0 0 1.5h5.69l-7.22 7.22a.75.75 0 0 0 0 1.06Z",
-                                            clipRule: "evenodd"
-                                        }, void 0, false, {
-                                            fileName: "[project]/src/components/navbar.jsx",
-                                            lineNumber: 391,
-                                            columnNumber: 15
-                                        }, this)
-                                    }, void 0, false, {
-                                        fileName: "[project]/src/components/navbar.jsx",
-                                        lineNumber: 385,
-                                        columnNumber: 13
-                                    }, this)
-                                ]
-                            }, void 0, true, {
+                                children: "Let's Talk ↗"
+                            }, void 0, false, {
                                 fileName: "[project]/src/components/navbar.jsx",
                                 lineNumber: 383,
                                 columnNumber: 11
@@ -681,12 +660,12 @@ function Navbar({ initialColor = "white", adaptiveMode = true, blendMode = "diff
                             children: menuOpen ? "Close" : "Menu"
                         }, void 0, false, {
                             fileName: "[project]/src/components/navbar.jsx",
-                            lineNumber: 401,
+                            lineNumber: 389,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/navbar.jsx",
-                        lineNumber: 400,
+                        lineNumber: 388,
                         columnNumber: 9
                     }, this)
                 ]
@@ -700,7 +679,7 @@ function Navbar({ initialColor = "white", adaptiveMode = true, blendMode = "diff
                 onClose: ()=>setMenuOpen(false)
             }, void 0, false, {
                 fileName: "[project]/src/components/navbar.jsx",
-                lineNumber: 411,
+                lineNumber: 399,
                 columnNumber: 7
             }, this)
         ]

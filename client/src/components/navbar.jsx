@@ -152,7 +152,7 @@ function MobileMenu({ isOpen, onClose }) {
         onClick={onClose}
         className="mt-4 text-sm  hover:opacity-100 transition"
       >
-        Let&apos;s Talk↗
+        Let&apos;s Talk ↗
       </button>
       <section className="flex flex-col w-full text-5xl">
         {navItems.map((item, index) => (
@@ -288,7 +288,7 @@ export default function Navbar({
     <>
       <section
         ref={navbarRef}
-        className={`fixed top-0 left-0 w-full h-[80px] z-[90] flex items-center justify-between px-2 sm:px-10 transition-colors duration-500 ${
+        className={`fixed top-0 left-0 w-full py-5  z-[90] flex items-center justify-between px-2 sm:px-10 transition-colors duration-500 ${
           menuOpen ? "bg-black" : "bg-transparent md:bg-transparent"
         }`}
         style={navbarStyle}
@@ -381,19 +381,7 @@ export default function Navbar({
             Contact
           </Link>
           <div className="cursor-pointer px-4 py-2 flex gap-1 items-center transition-all duration-200 hover:mix-blend-difference">
-            Let&apos;s Talk
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              className="size-5"
-            >
-              <path
-                fillRule="evenodd"
-                d="M5.22 14.78a.75.75 0 0 0 1.06 0l7.22-7.22v5.69a.75.75 0 0 0 1.5 0v-7.5a.75.75 0 0 0-.75-.75h-7.5a.75.75 0 0 0 0 1.5h5.69l-7.22 7.22a.75.75 0 0 0 0 1.06Z"
-                clipRule="evenodd"
-              />
-            </svg>
+            Let&apos;s Talk ↗
           </div>
         </div>
 
