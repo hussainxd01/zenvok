@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 16, "column": 0}, "map": {"version":3,"sources":["file://C%3A/Users/User/Desktop/ZENVOK/client/src/app/work/page.js"],"sourcesContent":["\"use client\";\r\nimport WorkShowcase from \"@/components/work-showcase\";\r\nexport default function Work() {\r\n  return (\r\n    <>\r\n      <WorkShowcase />\r\n    </>\r\n  );\r\n}\r\n"],"names":[],"mappings":";;;;AACA;AADA;;;AAEe,SAAS;IACtB,qBACE;kBACE,cAAA,6LAAC,yIAAA,CAAA,UAAY;;;;;;AAGnB;KANwB","debugId":null}}]
-}
