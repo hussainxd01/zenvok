@@ -297,7 +297,7 @@ export default function Navbar({
           <div ref={logoContainerRef} className="relative overflow-hidden">
             <p
               ref={textRef}
-              className="text text-sm sm:text-normal font-medium whitespace-nowrap"
+              className="text text-sm sm:text-normal font-bold sm:font-medium whitespace-nowrap"
             >
               The Brand Catalyst
             </p>

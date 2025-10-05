@@ -96,7 +96,7 @@ export default function HeroComponent() {
     <div ref={outerDivRef}>
       <div
         ref={heroRef}
-        className="w-full sm:h-[700px] bg-black flex flex-col h-[94vh] items-center text-white overflow-hidden pt-20 relative"
+        className="w-full sm:h-[700px] bg-black flex flex-col h-[80vh] items-center text-white overflow-hidden pt-20 relative"
         data-theme="dark"
       >
         <div className="w-full flex flex-col gap-32">
@@ -144,7 +144,7 @@ export default function HeroComponent() {
               />
             </svg>
           </div>
-          <div className="hero-title sm:px-10 flex sm:gap-40 text-[10px] sm:text-base gap-5 px-1 absolute sm:relative bottom-2">
+          <div className="hero-title sm:px-10 flex sm:gap-40 text-[12px] sm:text-base gap-5 px-1 absolute sm:relative bottom-2">
             <div>
               <p>Design. Engineering.</p>
               <p>Execution.</p>
