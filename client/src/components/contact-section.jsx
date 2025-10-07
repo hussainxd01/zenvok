@@ -202,18 +202,18 @@ export default function ContactSection() {
   }, []);
 
   return (
-    <div className="bg-black text-white py-16 px-16">
+    <div className="bg-black text-white py-16 px-2 sm:px-16">
       <div className="w-full mx-auto">
         {/* First Row */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-16 mb-16">
-          <div>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-8 md:gap-16 mb-16">
+          <div className="col-span-2 md:col-span-1">
             <MaskedText
               text="Get in touch"
               className="text-2xl md:text-3xl tracking-tight"
               delay={0.1}
             />
           </div>
-          <div>
+          <div className="col-span-2 md:col-span-1">
             <MaskedText
               text="New Project?"
               className="text-2xl md:text-3xl font-light  tracking-tight mb-2"
@@ -225,7 +225,7 @@ export default function ContactSection() {
               delay={0.3}
             />
           </div>
-          <div>
+          <div className="col-span-2 md:col-span-1">
             <MaskedText
               text="Join the Team."
               className="text-2xl md:text-3xl font-light tracking-tight mb-2"
