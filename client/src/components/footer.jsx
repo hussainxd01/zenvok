@@ -70,7 +70,7 @@ export default function Footer() {
   return (
     <footer
       ref={footerRef}
-      className="w-full bg-black flex flex-col text-white overflow-hidden p-10"
+      className="w-full bg-black flex flex-col text-white overflow-hidden py-10 sm:px-10 px-2"
       data-theme="dark"
     >
       <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 mb-20">

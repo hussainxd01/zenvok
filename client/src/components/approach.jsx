@@ -71,7 +71,7 @@ const Approach = () => {
   return (
     <section
       ref={sectionRef}
-      className="w-full mx-auto px-6 md:px-10 py-20 md:py-28 bg-white text-black"
+      className="w-full mx-auto px-4 md:px-10 py-20 md:py-28 bg-white text-black"
     >
       {/* Heading with MaskedText */}
       <div ref={headingRef}>

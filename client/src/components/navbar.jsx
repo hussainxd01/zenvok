@@ -389,7 +389,7 @@ export default function Navbar({
           <button
             type="button"
             onClick={() => setMenuOpen(!menuOpen)}
-            className="text-white bg-[#2e2e2e] px-4 py-1 text-xs  active:scale-95 transition-all"
+            className="text-white bg-[#2e2e2e] px-4 py-2 text-xs  active:scale-95 transition-all"
           >
             {menuOpen ? "Close" : "Menu"}
           </button>

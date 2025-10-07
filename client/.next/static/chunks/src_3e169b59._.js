@@ -1397,7 +1397,7 @@ function Footer() {
     }["Footer.useEffect"], []);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("footer", {
         ref: footerRef,
-        className: "w-full bg-black flex flex-col text-white overflow-hidden p-10",
+        className: "w-full bg-black flex flex-col text-white overflow-hidden py-10 sm:px-10 px-2",
         "data-theme": "dark",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2029,7 +2029,7 @@ const Approach = ()=>{
     }["Approach.useEffect"], []);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
         ref: sectionRef,
-        className: "w-full mx-auto px-6 md:px-10 py-20 md:py-28 bg-white text-black",
+        className: "w-full mx-auto px-4 md:px-10 py-20 md:py-28 bg-white text-black",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 ref: headingRef,
