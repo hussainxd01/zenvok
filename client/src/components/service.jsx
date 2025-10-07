@@ -261,40 +261,40 @@ export default function Service() {
 
   return (
     <div ref={containerRef} className="min-h-screen bg-white">
-      <div className="max-w-7xl mx-auto px-8 py-16">
-        <div className="grid grid-cols-12 gap-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 py-8 sm:py-16">
+        <div className="grid grid-cols-12 gap-4 sm:gap-16">
           {/* Left Column - Fixed Title */}
-          <div className="col-span-3">
-            <div ref={leftColumnRef} className="sticky top-16">
+          <div className="col-span-4 sm:col-span-3">
+            <div ref={leftColumnRef} className="sticky top-8 sm:top-16">
               <MaskedText
                 text="Capabilities"
-                className="text-2xl font-light text-black tracking-tight"
+                className="text-base sm:text-2xl font-light text-black tracking-tight"
                 delay={0.2}
               />
             </div>
           </div>
 
           {/* Right Column - Scrollable Content */}
-          <div ref={rightColumnRef} className="col-span-9 w-full">
-            <div className="space-y-16">
+          <div ref={rightColumnRef} className="col-span-8 sm:col-span-9 w-full">
+            <div className="space-y-8 sm:space-y-16">
               {capabilities.map((section, sectionIndex) => (
                 <React.Fragment key={section.category}>
                   <AnimatedHR delay={sectionIndex * 0.1 + 0.5} />
-                  <div className="space-y-8 flex gap-40">
-                    <div className="space-y-6 min-w-[200px]">
+                  <div className="space-y-4 sm:space-y-8 flex flex-col sm:flex-row gap-4 sm:gap-40">
+                    <div className="space-y-4 sm:space-y-6 sm:min-w-[200px]">
                       <MaskedText
                         text={section.category}
-                        className="text-lg font-light text-black tracking-tight"
+                        className="text-sm sm:text-lg font-light text-black tracking-tight"
                         delay={sectionIndex * 0.1 + 0.3}
                       />
                     </div>
 
-                    <div className="grid grid-cols-1 gap-3">
+                    <div className="grid grid-cols-1 gap-2 sm:gap-3">
                       {section.items.map((item, itemIndex) => (
                         <MaskedText
                           key={item}
                           text={item}
-                          className="text-lg font-light text-black tracking-tight leading-relaxed"
+                          className="text-sm sm:text-lg font-light text-black tracking-tight leading-relaxed"
                           delay={sectionIndex * 0.1 + itemIndex * 0.02 + 0.7}
                         />
                       ))}
