@@ -111,6 +111,41 @@ export default function WorkShowcase() {
     setIsPaused(false);
   };
 
+  // ✅ TOUCH SUPPORT for mobile
+  useEffect(() => {
+    const scrollContainer = scrollRef.current;
+    if (!scrollContainer) return;
+
+    let touchStartX = 0;
+    let touchScrollLeft = 0;
+
+    const handleTouchStart = (e) => {
+      setIsPaused(true);
+      touchStartX = e.touches[0].pageX - scrollContainer.offsetLeft;
+      touchScrollLeft = scrollContainer.scrollLeft;
+    };
+
+    const handleTouchMove = (e) => {
+      const x = e.touches[0].pageX - scrollContainer.offsetLeft;
+      const walk = (x - touchStartX) * 1.5; // slight resistance for smooth feel
+      scrollContainer.scrollLeft = touchScrollLeft - walk;
+    };
+
+    const handleTouchEnd = () => {
+      setIsPaused(false);
+    };
+
+    scrollContainer.addEventListener("touchstart", handleTouchStart);
+    scrollContainer.addEventListener("touchmove", handleTouchMove);
+    scrollContainer.addEventListener("touchend", handleTouchEnd);
+
+    return () => {
+      scrollContainer.removeEventListener("touchstart", handleTouchStart);
+      scrollContainer.removeEventListener("touchmove", handleTouchMove);
+      scrollContainer.removeEventListener("touchend", handleTouchEnd);
+    };
+  }, []);
+
   const duplicatedData = [...portfolioData, ...portfolioData];
 
   return (
@@ -126,7 +161,7 @@ export default function WorkShowcase() {
 
       <div
         ref={scrollRef}
-        className="flex gap-6 overflow-x-hidden scrollbar-hide pl-6 cursor-grab active:cursor-grabbing"
+        className="flex gap-6 overflow-x-hidden scrollbar-hide pl-6 cursor-grab active:cursor-grabbing touch-pan-x"
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
         onMouseMove={handleMouseMove}
@@ -135,6 +170,8 @@ export default function WorkShowcase() {
           scrollbarWidth: "none",
           msOverflowStyle: "none",
           userSelect: "none",
+          WebkitOverflowScrolling: "touch", // ✅ smooth scroll for iOS
+          scrollBehavior: "smooth", // ✅ smooth for modern browsers
         }}
       >
         {duplicatedData.map((item, index) => (

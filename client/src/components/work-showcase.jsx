@@ -13,7 +13,7 @@ const WorkShowcase = () => {
   const slidesRef = useRef([]);
   const heroRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isListView, setIsListView] = useState(false); // ✅ NEW
+  const [isListView, setIsListView] = useState(false);
 
   const projects = [
     {
@@ -47,9 +47,18 @@ const WorkShowcase = () => {
   ];
 
   useEffect(() => {
-    if (isListView) return; // ✅ skip GSAP logic in list mode
-
     gsap.registerPlugin(ScrollTrigger);
+
+    // ✅ Only skip setting height when it's list view *and* mobile
+    const isMobile = window.innerWidth < 768;
+
+    if (isListView && isMobile) {
+      if (containerRef.current) {
+        gsap.set(containerRef.current, { height: "auto" });
+      }
+      return; // don't apply GSAP scroll logic
+    }
+
     const totalHeight = projects.length * 100;
     gsap.set(containerRef.current, { height: `${totalHeight}vh` });
 
@@ -107,10 +116,10 @@ const WorkShowcase = () => {
       {/* HERO SECTION */}
       <div
         ref={heroRef}
-        className="sm:min-h-[80vh] h-[90dvh] w-full bg-white z-40 relative flex  md:flex-row items-end justify-between px-2 md:px-10 py-10"
+        className="sm:min-h-[80vh] h-[90dvh] w-full bg-white z-40 relative flex md:flex-row items-end justify-between px-2 md:px-10 py-10"
         data-theme="light"
       >
-        <div className="max-w-[720px] sm:max-w-[1400px] mx-auto px-4  sm:px-12">
+        <div className="max-w-[720px] sm:max-w-[1400px] mx-auto px-4 sm:px-12">
           <MaskedText
             text="We are a collective of seasoned creatives, strategists, growth marketers, and technologists, dedicated to transforming ambitious visions into high-performing brands."
             className="font-light text-[20px] sm:text-6xl text-left leading-[1.3] sm:leading-[0.9] tracking-tight sm:tracking-tighter"
@@ -118,7 +127,7 @@ const WorkShowcase = () => {
             positioning="w-full"
           />
 
-          {/* ✅ Toggle Button */}
+          {/* Toggle Button */}
           <button
             onClick={() => setIsListView((prev) => !prev)}
             className="mt-6 md:mt-0 md:absolute bottom-10 left-10 z-50 flex items-center gap-2 text-black/70 hover:text-black transition-colors text-sm md:text-base"
@@ -133,7 +142,7 @@ const WorkShowcase = () => {
 
       {/* MAIN SECTION */}
       {!isListView ? (
-        // ✅ Original cinematic scroll view
+        // Cinematic scroll view (for all devices)
         <div
           ref={containerRef}
           className="relative w-full overflow-hidden bg-black"
@@ -187,8 +196,12 @@ const WorkShowcase = () => {
           ))}
         </div>
       ) : (
-        // ✅ List view (minimal and clean)
-        <div className="w-full bg-black  sm:py-16">
+        // List view (mobile-friendly)
+        <div
+          ref={containerRef}
+          className="w-full bg-black sm:py-16"
+          data-theme="dark"
+        >
           {projects.map((project) => (
             <Link
               key={project.id}

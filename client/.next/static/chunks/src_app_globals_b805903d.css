@@ -10,6 +10,9 @@
       --tw-rotate-z: initial;
       --tw-skew-x: initial;
       --tw-skew-y: initial;
+      --tw-pan-x: initial;
+      --tw-pan-y: initial;
+      --tw-pinch-zoom: initial;
       --tw-space-y-reverse: 0;
       --tw-border-style: solid;
       --tw-gradient-position: initial;
@@ -625,6 +628,10 @@
     margin-inline: auto;
   }
 
+  .my-12 {
+    margin-block: calc(var(--spacing) * 12);
+  }
+
   .my-16 {
     margin-block: calc(var(--spacing) * 16);
   }
@@ -959,6 +966,11 @@
     cursor: pointer;
   }
 
+  .touch-pan-x {
+    --tw-pan-x: pan-x;
+    touch-action: var(--tw-pan-x, ) var(--tw-pan-y, ) var(--tw-pinch-zoom, );
+  }
+
   .resize {
     resize: both;
   }
@@ -969,6 +981,10 @@
 
   .grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .grid-cols-12 {
@@ -2068,6 +2084,12 @@
   }
 
   @media (width >= 40rem) {
+    .sm\:hidden {
+      display: none;
+    }
+  }
+
+  @media (width >= 40rem) {
     .sm\:h-\[40vh\] {
       height: 40vh;
     }
@@ -2124,12 +2146,6 @@
   @media (width >= 40rem) {
     .sm\:gap-6 {
       gap: calc(var(--spacing) * 6);
-    }
-  }
-
-  @media (width >= 40rem) {
-    .sm\:gap-8 {
-      gap: calc(var(--spacing) * 8);
     }
   }
 
@@ -2210,12 +2226,6 @@
   @media (width >= 40rem) {
     .sm\:px-12 {
       padding-inline: calc(var(--spacing) * 12);
-    }
-  }
-
-  @media (width >= 40rem) {
-    .sm\:px-16 {
-      padding-inline: calc(var(--spacing) * 16);
     }
   }
 
@@ -2341,12 +2351,6 @@
   @media (width >= 48rem) {
     .md\:right-\[-1rem\] {
       right: -1rem;
-    }
-  }
-
-  @media (width >= 48rem) {
-    .md\:col-span-1 {
-      grid-column: span 1 / span 1;
     }
   }
 
@@ -2683,6 +2687,21 @@ body {
 }
 
 @property --tw-skew-y {
+  syntax: "*";
+  inherits: false
+}
+
+@property --tw-pan-x {
+  syntax: "*";
+  inherits: false
+}
+
+@property --tw-pan-y {
+  syntax: "*";
+  inherits: false
+}
+
+@property --tw-pinch-zoom {
   syntax: "*";
   inherits: false
 }

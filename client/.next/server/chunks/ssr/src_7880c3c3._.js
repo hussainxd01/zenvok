@@ -990,6 +990,153 @@ onOpen = ()=>{}, onClose = ()=>{}, onPlay = ()=>{}, onPause = ()=>{} })=>{
 };
 const __TURBOPACK__default__export__ = MediaShowcase;
 }}),
+"[project]/src/components/masked-text.jsx [app-ssr] (ecmascript)": ((__turbopack_context__) => {
+"use strict";
+
+var { g: global, __dirname } = __turbopack_context__;
+{
+__turbopack_context__.s({
+    "default": (()=>__TURBOPACK__default__export__)
+});
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react-jsx-dev-runtime.js [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react.js [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/node_modules/gsap/index.js [app-ssr] (ecmascript) <locals>");
+"use client";
+;
+;
+;
+const MaskedText = ({ text, className = "", indent = true, positioning = "" })=>{
+    const containerRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
+    const textRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
+    const wordContainersRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])([]);
+    const wordRefs = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])([]);
+    const [isInView, setIsInView] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
+    const animationExecuted = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(false);
+    const createMaskedWords = ()=>{
+        const element = textRef.current;
+        if (!element) return;
+        const words = text.split(" ");
+        element.innerHTML = ""; // Clear any content
+        wordRefs.current = [];
+        wordContainersRef.current = [];
+        const wrapper = document.createElement("div");
+        wrapper.style.display = "flex";
+        wrapper.style.flexWrap = "wrap";
+        wrapper.style.alignItems = "flex-start";
+        wrapper.style.justifyContent = "flex-start";
+        wrapper.style.lineHeight = "1"; // Tighter line height for better control
+        if (indent) {
+            const indentDiv = document.createElement("div");
+            indentDiv.style.width = "3em";
+            indentDiv.style.display = "inline-block";
+            indentDiv.style.height = "1px";
+            wrapper.appendChild(indentDiv);
+        }
+        words.forEach((word, index)=>{
+            // Create container with overflow hidden
+            const container = document.createElement("div");
+            container.style.display = "inline-block";
+            container.style.overflow = "hidden";
+            container.style.position = "relative";
+            container.style.verticalAlign = "top";
+            container.style.paddingBottom = "5px";
+            container.style.paddingRight = "2px";
+            container.style.marginRight = index < words.length - 1 ? "0.20em" : "0"; // Better word spacing
+            // Create word span that will be animated
+            const wordSpan = document.createElement("span");
+            wordSpan.textContent = word;
+            wordSpan.style.display = "inline-block";
+            wordSpan.style.transform = "translateY(100%)";
+            wordSpan.style.willChange = "transform";
+            container.appendChild(wordSpan);
+            wrapper.appendChild(container);
+            // Store references for animation
+            wordContainersRef.current.push(container);
+            wordRefs.current.push(wordSpan);
+        });
+        element.appendChild(wrapper);
+        // Force layout calculation to ensure proper sizing
+        wordContainersRef.current.forEach((container, i)=>{
+            const wordHeight = wordRefs.current[i].offsetHeight;
+            container.style.height = `${wordHeight + 2}px`;
+        });
+    };
+    // Setup Intersection Observer
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        const options = {
+            root: null,
+            rootMargin: "0px",
+            threshold: 0.1
+        };
+        const observer = new IntersectionObserver((entries)=>{
+            entries.forEach((entry)=>{
+                if (entry.isIntersecting) {
+                    setIsInView(true);
+                    observer.disconnect();
+                }
+            });
+        }, options);
+        if (containerRef.current) {
+            observer.observe(containerRef.current);
+        }
+        return ()=>{
+            if (observer) {
+                observer.disconnect();
+            }
+        };
+    }, []);
+    // Handle creating masked words
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useLayoutEffect"])(()=>{
+        createMaskedWords();
+        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].set(wordRefs.current, {
+            y: "100%",
+            immediateRender: true
+        });
+    }, [
+        text
+    ]);
+    // Handle animation when in view
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        if (isInView && !animationExecuted.current && wordRefs.current.length > 0) {
+            setTimeout(()=>{
+                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].to(wordRefs.current, {
+                    y: "0%",
+                    duration: 0.6,
+                    ease: "power3.out",
+                    stagger: 0.05,
+                    onComplete: ()=>{
+                        animationExecuted.current = true;
+                        wordContainersRef.current.forEach((container, i)=>{
+                            const wordHeight = wordRefs.current[i].offsetHeight;
+                            container.style.height = `${wordHeight + 6}px`;
+                        });
+                    }
+                });
+            }, 100);
+        }
+    }, [
+        isInView
+    ]);
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        ref: containerRef,
+        className: positioning,
+        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
+            ref: textRef,
+            className: `text-black font-light tracking-tight ${className}`,
+            children: text
+        }, void 0, false, {
+            fileName: "[project]/src/components/masked-text.jsx",
+            lineNumber: 139,
+            columnNumber: 7
+        }, this)
+    }, void 0, false, {
+        fileName: "[project]/src/components/masked-text.jsx",
+        lineNumber: 138,
+        columnNumber: 5
+    }, this);
+};
+const __TURBOPACK__default__export__ = MaskedText;
+}}),
 "[project]/src/components/statement.jsx [app-ssr] (ecmascript)": ((__turbopack_context__) => {
 "use strict";
 
@@ -1001,174 +1148,52 @@ __turbopack_context__.s({
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react-jsx-dev-runtime.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/node_modules/gsap/index.js [app-ssr] (ecmascript) <locals>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$ScrollTrigger$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/gsap/ScrollTrigger.js [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$masked$2d$text$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/masked-text.jsx [app-ssr] (ecmascript)");
 "use client";
 ;
 ;
 ;
 ;
 const Statement = ()=>{
-    const statementRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
-    const statementSectionRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
     const hrRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
-    const textContainersRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])([]);
-    const columnOneRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
-    const columnTwoParaRefs = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])([]);
-    const columnOneContainersRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])([]);
-    const columnTwoContainersRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])([]);
-    // ✅ Conditionally apply indent only for md+ screens
-    const shouldIndent = ()=>{
-        if ("TURBOPACK compile-time truthy", 1) return false;
-        "TURBOPACK unreachable";
-    };
-    const createMaskedTextAnimation = (element, text, containersRef, indent = false)=>{
-        if (!element) return;
-        const words = text.split(" ");
-        element.innerHTML = "";
-        const textWrapper = document.createElement("div");
-        textWrapper.style.display = "inline";
-        textWrapper.style.lineHeight = "inherit";
-        // ✅ Only indent on larger screens
-        if (indent && shouldIndent()) {
-            const indentSpan = document.createElement("span");
-            indentSpan.style.display = "inline-block";
-            indentSpan.style.width = "3em";
-            indentSpan.innerHTML = "&nbsp;";
-            textWrapper.appendChild(indentSpan);
-        }
-        words.forEach((word, index)=>{
-            const container = document.createElement("span");
-            container.style.display = "inline-block";
-            container.style.overflow = "hidden";
-            container.style.verticalAlign = "top";
-            container.style.position = "relative";
-            const wordSpan = document.createElement("span");
-            wordSpan.innerHTML = word;
-            wordSpan.style.display = "inline-block";
-            wordSpan.style.transform = "translateY(100%)";
-            wordSpan.style.willChange = "transform";
-            container.appendChild(wordSpan);
-            containersRef.current.push({
-                container,
-                wordSpan
-            });
-            textWrapper.appendChild(container);
-            if (index < words.length - 1) {
-                const space = document.createElement("span");
-                space.innerHTML = "&nbsp;";
-                space.style.display = "inline";
-                textWrapper.appendChild(space);
-            }
-        });
-        element.appendChild(textWrapper);
-    };
-    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useLayoutEffect"])(()=>{
-        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].registerPlugin(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$ScrollTrigger$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ScrollTrigger"]);
-        textContainersRef.current = [];
-        columnOneContainersRef.current = [];
-        columnTwoContainersRef.current = [];
-        const ctx = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].context(()=>{
-            createMaskedTextAnimation(statementRef.current, statementRef.current.textContent, textContainersRef, true // keep indent logic dynamic
-            );
-            createMaskedTextAnimation(columnOneRef.current, columnOneRef.current.textContent, columnOneContainersRef, false);
-            const columnTwoWordSpans = [];
-            columnTwoParaRefs.current.forEach((paraRef)=>{
-                if (paraRef) {
-                    const paraContainers = [];
-                    const tempRef = {
-                        current: paraContainers
-                    };
-                    createMaskedTextAnimation(paraRef, paraRef.textContent, tempRef, false);
-                    paraContainers.forEach((item)=>columnTwoWordSpans.push(item.wordSpan));
-                }
-            });
-            textContainersRef.current.forEach(({ wordSpan }, index)=>{
-                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].to(wordSpan, {
-                    y: 0,
-                    duration: 0.3,
-                    ease: "power2.out",
-                    delay: index * 0.05,
-                    scrollTrigger: {
-                        trigger: statementSectionRef.current,
-                        start: "top 80%",
-                        end: "bottom 90%"
-                    }
-                });
-            });
-            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].fromTo(hrRef.current, {
-                width: "0%"
-            }, {
-                width: "100%",
-                duration: 1,
-                ease: "power2.out",
-                scrollTrigger: {
-                    trigger: hrRef.current,
-                    start: "top 90%",
-                    end: "bottom 90%"
-                }
-            });
-            const timeline = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].timeline({
-                scrollTrigger: {
-                    trigger: statementSectionRef.current,
-                    start: "top 90%",
-                    end: "bottom 20%"
-                }
-            });
-            columnOneContainersRef.current.forEach(({ wordSpan }, index)=>{
-                timeline.to(wordSpan, {
-                    y: 0,
-                    duration: 0.4,
-                    ease: "power2.out"
-                }, index * 0.05);
-            });
-            timeline.to(columnTwoWordSpans, {
-                y: 0,
-                duration: 0.3,
-                ease: "power2.out",
-                stagger: 0.03
-            }, "+=0.2");
-        }, statementSectionRef);
-        return ()=>ctx.revert();
-    }, []);
-    const addParaRef = (el)=>{
-        if (el && !columnTwoParaRefs.current.includes(el)) {
-            columnTwoParaRefs.current.push(el);
-        }
-    };
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
-        columnTwoParaRefs.current = [];
+        // Animate the HR line when it comes into view
+        const observer = new IntersectionObserver((entries)=>{
+            entries.forEach((entry)=>{
+                if (entry.isIntersecting) {
+                    __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].fromTo(hrRef.current, {
+                        width: "0%"
+                    }, {
+                        width: "100%",
+                        duration: 1,
+                        ease: "power2.out"
+                    });
+                    observer.disconnect();
+                }
+            });
+        }, {
+            threshold: 0.2
+        });
+        if (hrRef.current) observer.observe(hrRef.current);
+        return ()=>observer.disconnect();
     }, []);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
-        ref: statementSectionRef,
         className: "bg-black text-white py-12 px-4 sm:py-16 sm:px-6 md:px-8 lg:px-16 w-full",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "max-w-7xl mx-auto",
-                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
-                    ref: statementRef,
-                    className: "text-[1.5rem] sm:text-3xl md:text-5xl lg:text-6xl font-extralight leading-snug sm:leading-tight tracking-tight sm:tracking-tighter mb-8 sm:mb-12",
-                    children: [
-                        "We blend the power of strategy, design, and performance marketing to transform founders' visions into remarkable brands. See",
-                        " ",
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
-                            href: "#services",
-                            className: "underline",
-                            children: "our services"
-                        }, void 0, false, {
-                            fileName: "[project]/src/components/statement.jsx",
-                            lineNumber: 200,
-                            columnNumber: 11
-                        }, this),
-                        "."
-                    ]
-                }, void 0, true, {
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$masked$2d$text$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
+                    text: `We blend the power of strategy, design, and performance marketing to transform founders' visions into remarkable brands. See our services.`,
+                    className: "text-[1.5rem] sm:text-3xl md:text-5xl lg:text-6xl font-extralight leading-snug sm:leading-tight tracking-tight sm:tracking-tighter mb-8 sm:mb-12 text-white",
+                    indent: true
+                }, void 0, false, {
                     fileName: "[project]/src/components/statement.jsx",
-                    lineNumber: 194,
+                    lineNumber: 39,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/statement.jsx",
-                lineNumber: 193,
+                lineNumber: 38,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1176,7 +1201,7 @@ const Statement = ()=>{
                 className: "w-0 border-gray-50/30 border-b h-[0.5px] max-w-7xl mx-auto"
             }, void 0, false, {
                 fileName: "[project]/src/components/statement.jsx",
-                lineNumber: 207,
+                lineNumber: 47,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1184,66 +1209,66 @@ const Statement = ()=>{
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "column",
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                            ref: columnOneRef,
-                            className: "text-base sm:text-lg md:text-2xl font-light",
-                            children: "Design that converts."
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$masked$2d$text$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
+                            text: "Design that converts.",
+                            className: "text-base sm:text-lg md:text-2xl font-light text-white",
+                            indent: false
                         }, void 0, false, {
                             fileName: "[project]/src/components/statement.jsx",
-                            lineNumber: 215,
+                            lineNumber: 56,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/statement.jsx",
-                        lineNumber: 214,
+                        lineNumber: 55,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "column flex flex-col gap-4 sm:gap-6 tracking-tight col-span-1",
                         children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                ref: addParaRef,
-                                className: "text-sm sm:text-base md:text-lg font-light leading-relaxed",
-                                children: "Since day one, Zenvok has helped businesses launch, scale, and stay sharp — through strategy, design, and clean engineering."
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$masked$2d$text$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
+                                text: "Since day one, Zenvok has helped businesses launch, scale, and stay sharp — through strategy, design, and clean engineering.",
+                                className: "text-sm sm:text-base md:text-lg font-light leading-relaxed text-white",
+                                indent: false
                             }, void 0, false, {
                                 fileName: "[project]/src/components/statement.jsx",
-                                lineNumber: 224,
+                                lineNumber: 65,
                                 columnNumber: 11
                             }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                ref: addParaRef,
-                                className: "text-sm sm:text-base md:text-lg font-light leading-relaxed",
-                                children: "In 2025, we introduced our selective model — partnering with a few bold teams at a time to go deep, not wide."
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$masked$2d$text$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
+                                text: "In 2025, we introduced our selective model — partnering with a few bold teams at a time to go deep, not wide.",
+                                className: "text-sm sm:text-base md:text-lg font-light leading-relaxed text-white",
+                                indent: false
                             }, void 0, false, {
                                 fileName: "[project]/src/components/statement.jsx",
-                                lineNumber: 231,
+                                lineNumber: 70,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
                                 href: "#",
-                                className: "underline underline-offset-4 text-sm sm:text-base font-light mt-2",
+                                className: "underline underline-offset-4 text-sm sm:text-base font-light mt-2 text-white",
                                 children: "Learn more ↗"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/statement.jsx",
-                                lineNumber: 239,
+                                lineNumber: 76,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/statement.jsx",
-                        lineNumber: 223,
+                        lineNumber: 64,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/statement.jsx",
-                lineNumber: 213,
+                lineNumber: 53,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/statement.jsx",
-        lineNumber: 189,
+        lineNumber: 36,
         columnNumber: 5
     }, this);
 };
@@ -1694,143 +1719,6 @@ function Footer() {
     }, this);
 }
 }}),
-"[project]/src/components/masked-text.jsx [app-ssr] (ecmascript)": ((__turbopack_context__) => {
-"use strict";
-
-var { g: global, __dirname } = __turbopack_context__;
-{
-__turbopack_context__.s({
-    "default": (()=>__TURBOPACK__default__export__)
-});
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react-jsx-dev-runtime.js [app-ssr] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react.js [app-ssr] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/node_modules/gsap/index.js [app-ssr] (ecmascript) <locals>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$masked$2d$text$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/masked-text.jsx [app-ssr] (ecmascript)");
-"use client";
-;
-;
-;
-;
-const Statement = ()=>{
-    const hrRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
-    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
-        // Animate the HR line when it comes into view
-        const observer = new IntersectionObserver((entries)=>{
-            entries.forEach((entry)=>{
-                if (entry.isIntersecting) {
-                    __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].fromTo(hrRef.current, {
-                        width: "0%"
-                    }, {
-                        width: "100%",
-                        duration: 1,
-                        ease: "power2.out"
-                    });
-                    observer.disconnect();
-                }
-            });
-        }, {
-            threshold: 0.2
-        });
-        if (hrRef.current) observer.observe(hrRef.current);
-        return ()=>observer.disconnect();
-    }, []);
-    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
-        className: "bg-black text-white py-12 px-4 sm:py-16 sm:px-6 md:px-8 lg:px-16 w-full",
-        children: [
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "max-w-7xl mx-auto",
-                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$masked$2d$text$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
-                    text: `We blend the power of strategy, design, and performance marketing to transform founders' visions into remarkable brands. See our services.`,
-                    className: "text-[1.5rem] sm:text-3xl md:text-5xl lg:text-6xl font-extralight leading-snug sm:leading-tight tracking-tight sm:tracking-tighter mb-8 sm:mb-12 text-white",
-                    indent: true
-                }, void 0, false, {
-                    fileName: "[project]/src/components/masked-text.jsx",
-                    lineNumber: 39,
-                    columnNumber: 9
-                }, this)
-            }, void 0, false, {
-                fileName: "[project]/src/components/masked-text.jsx",
-                lineNumber: 38,
-                columnNumber: 7
-            }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                ref: hrRef,
-                className: "w-0 border-gray-50/30 border-b h-[0.5px] max-w-7xl mx-auto"
-            }, void 0, false, {
-                fileName: "[project]/src/components/masked-text.jsx",
-                lineNumber: 47,
-                columnNumber: 7
-            }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "max-w-7xl mx-auto mt-10 sm:mt-12 grid grid-cols-2 gap-x-4 gap-y-6 sm:gap-x-8 md:gap-16",
-                children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "column",
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$masked$2d$text$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
-                            text: "Design that converts.",
-                            className: "text-base sm:text-lg md:text-2xl font-light text-white",
-                            indent: false
-                        }, void 0, false, {
-                            fileName: "[project]/src/components/masked-text.jsx",
-                            lineNumber: 56,
-                            columnNumber: 11
-                        }, this)
-                    }, void 0, false, {
-                        fileName: "[project]/src/components/masked-text.jsx",
-                        lineNumber: 55,
-                        columnNumber: 9
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "column flex flex-col gap-4 sm:gap-6 tracking-tight col-span-1",
-                        children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$masked$2d$text$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
-                                text: "Since day one, Zenvok has helped businesses launch, scale, and stay sharp — through strategy, design, and clean engineering.",
-                                className: "text-sm sm:text-base md:text-lg font-light leading-relaxed text-white",
-                                indent: false
-                            }, void 0, false, {
-                                fileName: "[project]/src/components/masked-text.jsx",
-                                lineNumber: 65,
-                                columnNumber: 11
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$masked$2d$text$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
-                                text: "In 2025, we introduced our selective model — partnering with a few bold teams at a time to go deep, not wide.",
-                                className: "text-sm sm:text-base md:text-lg font-light leading-relaxed text-white",
-                                indent: false
-                            }, void 0, false, {
-                                fileName: "[project]/src/components/masked-text.jsx",
-                                lineNumber: 70,
-                                columnNumber: 11
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
-                                href: "#",
-                                className: "underline underline-offset-4 text-sm sm:text-base font-light mt-2 text-white",
-                                children: "Learn more ↗"
-                            }, void 0, false, {
-                                fileName: "[project]/src/components/masked-text.jsx",
-                                lineNumber: 76,
-                                columnNumber: 11
-                            }, this)
-                        ]
-                    }, void 0, true, {
-                        fileName: "[project]/src/components/masked-text.jsx",
-                        lineNumber: 64,
-                        columnNumber: 9
-                    }, this)
-                ]
-            }, void 0, true, {
-                fileName: "[project]/src/components/masked-text.jsx",
-                lineNumber: 53,
-                columnNumber: 7
-            }, this)
-        ]
-    }, void 0, true, {
-        fileName: "[project]/src/components/masked-text.jsx",
-        lineNumber: 36,
-        columnNumber: 5
-    }, this);
-};
-const __TURBOPACK__default__export__ = Statement;
-}}),
 "[project]/src/components/approach.jsx [app-ssr] (ecmascript)": ((__turbopack_context__) => {
 "use strict";
 
@@ -2153,6 +2041,34 @@ function WorkShowcase() {
         }
         setIsPaused(false);
     };
+    // ✅ TOUCH SUPPORT for mobile
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        const scrollContainer = scrollRef.current;
+        if (!scrollContainer) return;
+        let touchStartX = 0;
+        let touchScrollLeft = 0;
+        const handleTouchStart = (e)=>{
+            setIsPaused(true);
+            touchStartX = e.touches[0].pageX - scrollContainer.offsetLeft;
+            touchScrollLeft = scrollContainer.scrollLeft;
+        };
+        const handleTouchMove = (e)=>{
+            const x = e.touches[0].pageX - scrollContainer.offsetLeft;
+            const walk = (x - touchStartX) * 1.5; // slight resistance for smooth feel
+            scrollContainer.scrollLeft = touchScrollLeft - walk;
+        };
+        const handleTouchEnd = ()=>{
+            setIsPaused(false);
+        };
+        scrollContainer.addEventListener("touchstart", handleTouchStart);
+        scrollContainer.addEventListener("touchmove", handleTouchMove);
+        scrollContainer.addEventListener("touchend", handleTouchEnd);
+        return ()=>{
+            scrollContainer.removeEventListener("touchstart", handleTouchStart);
+            scrollContainer.removeEventListener("touchmove", handleTouchMove);
+            scrollContainer.removeEventListener("touchend", handleTouchEnd);
+        };
+    }, []);
     const duplicatedData = [
         ...portfolioData,
         ...portfolioData
@@ -2168,7 +2084,7 @@ function WorkShowcase() {
                         children: "Selected Works"
                     }, void 0, false, {
                         fileName: "[project]/src/components/showcase.jsx",
-                        lineNumber: 119,
+                        lineNumber: 154,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2176,18 +2092,18 @@ function WorkShowcase() {
                         children: "Crafting digital experiences that inspire and engage"
                     }, void 0, false, {
                         fileName: "[project]/src/components/showcase.jsx",
-                        lineNumber: 122,
+                        lineNumber: 157,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/showcase.jsx",
-                lineNumber: 118,
+                lineNumber: 153,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 ref: scrollRef,
-                className: "flex gap-6 overflow-x-hidden scrollbar-hide pl-6 cursor-grab active:cursor-grabbing",
+                className: "flex gap-6 overflow-x-hidden scrollbar-hide pl-6 cursor-grab active:cursor-grabbing touch-pan-x",
                 onMouseDown: handleMouseDown,
                 onMouseUp: handleMouseUp,
                 onMouseMove: handleMouseMove,
@@ -2195,7 +2111,9 @@ function WorkShowcase() {
                 style: {
                     scrollbarWidth: "none",
                     msOverflowStyle: "none",
-                    userSelect: "none"
+                    userSelect: "none",
+                    WebkitOverflowScrolling: "touch",
+                    scrollBehavior: "smooth"
                 },
                 children: duplicatedData.map((item, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "flex-shrink-0 w-64 group cursor-pointer",
@@ -2211,7 +2129,7 @@ function WorkShowcase() {
                                         className: "absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-black rounded-b-2xl z-20"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/showcase.jsx",
-                                        lineNumber: 151,
+                                        lineNumber: 188,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2224,14 +2142,14 @@ function WorkShowcase() {
                                                 loading: "lazy"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/showcase.jsx",
-                                                lineNumber: 155,
+                                                lineNumber: 192,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 className: "absolute inset-0 bg-black opacity-0 group-hover:opacity-30 transition-opacity duration-300 z-10"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/showcase.jsx",
-                                                lineNumber: 163,
+                                                lineNumber: 200,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2244,7 +2162,7 @@ function WorkShowcase() {
                                                             children: item.category
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/showcase.jsx",
-                                                            lineNumber: 166,
+                                                            lineNumber: 203,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -2252,37 +2170,37 @@ function WorkShowcase() {
                                                             children: item.title
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/showcase.jsx",
-                                                            lineNumber: 167,
+                                                            lineNumber: 204,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/showcase.jsx",
-                                                    lineNumber: 165,
+                                                    lineNumber: 202,
                                                     columnNumber: 19
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/showcase.jsx",
-                                                lineNumber: 164,
+                                                lineNumber: 201,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/showcase.jsx",
-                                        lineNumber: 154,
+                                        lineNumber: 191,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "absolute bottom-1 left-1/2 -translate-x-1/2 w-24 h-1 bg-white rounded-full opacity-60"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/showcase.jsx",
-                                        lineNumber: 173,
+                                        lineNumber: 210,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/showcase.jsx",
-                                lineNumber: 146,
+                                lineNumber: 183,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2293,7 +2211,7 @@ function WorkShowcase() {
                                         children: item.category
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/showcase.jsx",
-                                        lineNumber: 178,
+                                        lineNumber: 215,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -2301,30 +2219,30 @@ function WorkShowcase() {
                                         children: item.title
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/showcase.jsx",
-                                        lineNumber: 179,
+                                        lineNumber: 216,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/showcase.jsx",
-                                lineNumber: 177,
+                                lineNumber: 214,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, `${item.id}-${index}`, true, {
                         fileName: "[project]/src/components/showcase.jsx",
-                        lineNumber: 141,
+                        lineNumber: 178,
                         columnNumber: 11
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/src/components/showcase.jsx",
-                lineNumber: 127,
+                lineNumber: 162,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/showcase.jsx",
-        lineNumber: 117,
+        lineNumber: 152,
         columnNumber: 5
     }, this);
 }
@@ -2405,4 +2323,4 @@ function Home() {
 
 };
 
-//# sourceMappingURL=src_e2d23130._.js.map
+//# sourceMappingURL=src_7880c3c3._.js.map
