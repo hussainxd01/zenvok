@@ -1983,90 +1983,165 @@ const portfolioData = [
 ];
 function WorkShowcase() {
     const scrollRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
+    // keep UI state (so you can still style depending on drag/pause)
     const [isPaused, setIsPaused] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     const [isDragging, setIsDragging] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
-    const [startX, setStartX] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(0);
-    const [scrollLeft, setScrollLeft] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(0);
+    // internal refs to avoid stale closures inside RAF
+    const isPausedRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(isPaused);
+    const isDraggingRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(isDragging);
+    const startXRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(0);
+    const dragStartScrollLeftRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(0);
+    const scrollPositionRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(0);
+    const rafIdRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
+    const resumeTimeoutRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
+    // keep refs in sync with state so UI updates still work
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        isPausedRef.current = isPaused;
+    }, [
+        isPaused
+    ]);
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        isDraggingRef.current = isDragging;
+    }, [
+        isDragging
+    ]);
+    // Smooth auto scroll using RAF — improved infinite loop handling
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
         const scrollContainer = scrollRef.current;
         if (!scrollContainer) return;
-        let animationId;
-        let scrollPosition = scrollContainer.scrollLeft;
-        const scrollSpeed = 0.5;
-        const scroll = ()=>{
-            if (!isPaused && !isDragging && scrollContainer) {
-                scrollPosition += scrollSpeed;
-                if (scrollPosition >= scrollContainer.scrollWidth / 2) {
-                    scrollPosition = 0;
+        // initialize scrollPosition to current scrollLeft
+        scrollPositionRef.current = scrollContainer.scrollLeft;
+        const scrollSpeed = 0.5; // px per frame — tweak if you want faster/slower
+        const step = ()=>{
+            if (!scrollContainer) return;
+            const halfWidth = scrollContainer.scrollWidth / 2 || 0;
+            // when not paused and not dragging, advance continuously
+            if (!isPausedRef.current && !isDraggingRef.current) {
+                scrollPositionRef.current += scrollSpeed;
+                // wrap-around smoothly by subtracting half width (since data is duplicated)
+                if (halfWidth > 0 && scrollPositionRef.current >= halfWidth) {
+                    scrollPositionRef.current -= halfWidth;
+                } else if (halfWidth > 0 && scrollPositionRef.current < 0) {
+                    scrollPositionRef.current += halfWidth;
                 }
-                scrollContainer.scrollLeft = scrollPosition;
-            } else if (!isDragging) {
-                scrollPosition = scrollContainer.scrollLeft;
+                scrollContainer.scrollLeft = scrollPositionRef.current;
+            } else if (!isDraggingRef.current) {
+                // if paused but not dragging, keep our internal pointer in sync
+                scrollPositionRef.current = scrollContainer.scrollLeft;
             }
-            animationId = requestAnimationFrame(scroll);
+            rafIdRef.current = requestAnimationFrame(step);
         };
-        animationId = requestAnimationFrame(scroll);
+        rafIdRef.current = requestAnimationFrame(step);
+        const handleResize = ()=>{
+            // keep the internal pointer in sync after layout changes
+            scrollPositionRef.current = scrollContainer.scrollLeft;
+        };
+        window.addEventListener("resize", handleResize);
         return ()=>{
-            if (animationId) {
-                cancelAnimationFrame(animationId);
-            }
+            if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
+            window.removeEventListener("resize", handleResize);
+            if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current);
         };
-    }, [
-        isPaused,
-        isDragging
-    ]);
+    // we intentionally do not depend on isPaused/isDragging here because we use refs
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+    // Mouse handlers (desktop)
     const handleMouseDown = (e)=>{
+        if (!scrollRef.current) return;
+        if (resumeTimeoutRef.current) {
+            clearTimeout(resumeTimeoutRef.current);
+            resumeTimeoutRef.current = null;
+        }
         setIsDragging(true);
         setIsPaused(true);
-        setStartX(e.pageX - scrollRef.current.offsetLeft);
-        setScrollLeft(scrollRef.current.scrollLeft);
+        isDraggingRef.current = true;
+        isPausedRef.current = true;
+        startXRef.current = e.pageX - scrollRef.current.offsetLeft;
+        dragStartScrollLeftRef.current = scrollRef.current.scrollLeft;
         scrollRef.current.style.cursor = "grabbing";
     };
     const handleMouseUp = ()=>{
+        if (!scrollRef.current) return;
         setIsDragging(false);
-        setIsPaused(false);
+        isDraggingRef.current = false;
         scrollRef.current.style.cursor = "grab";
+        // resume auto-scroll after a short delay so user can do another touch without fight
+        if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current);
+        resumeTimeoutRef.current = setTimeout(()=>{
+            setIsPaused(false);
+            isPausedRef.current = false;
+            resumeTimeoutRef.current = null;
+        }, 900);
     };
     const handleMouseMove = (e)=>{
-        if (!isDragging) return;
+        if (!isDraggingRef.current || !scrollRef.current) return;
         e.preventDefault();
         const x = e.pageX - scrollRef.current.offsetLeft;
-        const walk = (x - startX) * 2;
-        scrollRef.current.scrollLeft = scrollLeft - walk;
+        const walk = (x - startXRef.current) * 2; // same multiplier as before
+        scrollRef.current.scrollLeft = dragStartScrollLeftRef.current - walk;
     };
     const handleMouseLeave = ()=>{
-        if (isDragging) {
+        if (!scrollRef.current) return;
+        if (isDraggingRef.current) {
             setIsDragging(false);
+            isDraggingRef.current = false;
             scrollRef.current.style.cursor = "grab";
         }
-        setIsPaused(false);
+        // resume like mouseup
+        if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current);
+        resumeTimeoutRef.current = setTimeout(()=>{
+            setIsPaused(false);
+            isPausedRef.current = false;
+            resumeTimeoutRef.current = null;
+        }, 900);
     };
-    // ✅ TOUCH SUPPORT for mobile
+    // ✅ TOUCH SUPPORT for mobile — improved: treat touch as dragging and delay resume
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
         const scrollContainer = scrollRef.current;
         if (!scrollContainer) return;
-        let touchStartX = 0;
-        let touchScrollLeft = 0;
         const handleTouchStart = (e)=>{
+            if (resumeTimeoutRef.current) {
+                clearTimeout(resumeTimeoutRef.current);
+                resumeTimeoutRef.current = null;
+            }
+            setIsDragging(true);
             setIsPaused(true);
-            touchStartX = e.touches[0].pageX - scrollContainer.offsetLeft;
-            touchScrollLeft = scrollContainer.scrollLeft;
+            isDraggingRef.current = true;
+            isPausedRef.current = true;
+            const touchX = e.touches[0].pageX - scrollContainer.offsetLeft;
+            startXRef.current = touchX;
+            dragStartScrollLeftRef.current = scrollContainer.scrollLeft;
         };
         const handleTouchMove = (e)=>{
+            if (!isDraggingRef.current) return;
             const x = e.touches[0].pageX - scrollContainer.offsetLeft;
-            const walk = (x - touchStartX) * 1.5; // slight resistance for smooth feel
-            scrollContainer.scrollLeft = touchScrollLeft - walk;
+            const walk = (x - startXRef.current) * 1.5; // slight resistance for smooth feel
+            scrollContainer.scrollLeft = dragStartScrollLeftRef.current - walk;
         };
         const handleTouchEnd = ()=>{
-            setIsPaused(false);
+            setIsDragging(false);
+            isDraggingRef.current = false;
+            // small timeout before resuming auto-scroll so user's momentum/tap interactions don't fight the auto-scroll
+            if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current);
+            resumeTimeoutRef.current = setTimeout(()=>{
+                setIsPaused(false);
+                isPausedRef.current = false;
+                resumeTimeoutRef.current = null;
+            }, 900);
         };
-        scrollContainer.addEventListener("touchstart", handleTouchStart);
-        scrollContainer.addEventListener("touchmove", handleTouchMove);
+        scrollContainer.addEventListener("touchstart", handleTouchStart, {
+            passive: true
+        });
+        scrollContainer.addEventListener("touchmove", handleTouchMove, {
+            passive: false
+        });
         scrollContainer.addEventListener("touchend", handleTouchEnd);
+        scrollContainer.addEventListener("touchcancel", handleTouchEnd);
         return ()=>{
             scrollContainer.removeEventListener("touchstart", handleTouchStart);
             scrollContainer.removeEventListener("touchmove", handleTouchMove);
             scrollContainer.removeEventListener("touchend", handleTouchEnd);
+            scrollContainer.removeEventListener("touchcancel", handleTouchEnd);
         };
     }, []);
     const duplicatedData = [
@@ -2084,7 +2159,7 @@ function WorkShowcase() {
                         children: "Selected Works"
                     }, void 0, false, {
                         fileName: "[project]/src/components/showcase.jsx",
-                        lineNumber: 154,
+                        lineNumber: 244,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2092,13 +2167,13 @@ function WorkShowcase() {
                         children: "Crafting digital experiences that inspire and engage"
                     }, void 0, false, {
                         fileName: "[project]/src/components/showcase.jsx",
-                        lineNumber: 157,
+                        lineNumber: 247,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/showcase.jsx",
-                lineNumber: 153,
+                lineNumber: 243,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2129,7 +2204,7 @@ function WorkShowcase() {
                                         className: "absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-black rounded-b-2xl z-20"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/showcase.jsx",
-                                        lineNumber: 188,
+                                        lineNumber: 278,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2142,14 +2217,14 @@ function WorkShowcase() {
                                                 loading: "lazy"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/showcase.jsx",
-                                                lineNumber: 192,
+                                                lineNumber: 282,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 className: "absolute inset-0 bg-black opacity-0 group-hover:opacity-30 transition-opacity duration-300 z-10"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/showcase.jsx",
-                                                lineNumber: 200,
+                                                lineNumber: 290,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2162,7 +2237,7 @@ function WorkShowcase() {
                                                             children: item.category
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/showcase.jsx",
-                                                            lineNumber: 203,
+                                                            lineNumber: 293,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -2170,37 +2245,37 @@ function WorkShowcase() {
                                                             children: item.title
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/showcase.jsx",
-                                                            lineNumber: 204,
+                                                            lineNumber: 294,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/showcase.jsx",
-                                                    lineNumber: 202,
+                                                    lineNumber: 292,
                                                     columnNumber: 19
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/showcase.jsx",
-                                                lineNumber: 201,
+                                                lineNumber: 291,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/showcase.jsx",
-                                        lineNumber: 191,
+                                        lineNumber: 281,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "absolute bottom-1 left-1/2 -translate-x-1/2 w-24 h-1 bg-white rounded-full opacity-60"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/showcase.jsx",
-                                        lineNumber: 210,
+                                        lineNumber: 300,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/showcase.jsx",
-                                lineNumber: 183,
+                                lineNumber: 273,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2211,7 +2286,7 @@ function WorkShowcase() {
                                         children: item.category
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/showcase.jsx",
-                                        lineNumber: 215,
+                                        lineNumber: 305,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -2219,30 +2294,30 @@ function WorkShowcase() {
                                         children: item.title
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/showcase.jsx",
-                                        lineNumber: 216,
+                                        lineNumber: 306,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/showcase.jsx",
-                                lineNumber: 214,
+                                lineNumber: 304,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, `${item.id}-${index}`, true, {
                         fileName: "[project]/src/components/showcase.jsx",
-                        lineNumber: 178,
+                        lineNumber: 268,
                         columnNumber: 11
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/src/components/showcase.jsx",
-                lineNumber: 162,
+                lineNumber: 252,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/showcase.jsx",
-        lineNumber: 152,
+        lineNumber: 242,
         columnNumber: 5
     }, this);
 }

@@ -44,105 +44,195 @@ const portfolioData = [
 
 export default function WorkShowcase() {
   const scrollRef = useRef(null);
+
+  // keep UI state (so you can still style depending on drag/pause)
   const [isPaused, setIsPaused] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
 
+  // internal refs to avoid stale closures inside RAF
+  const isPausedRef = useRef(isPaused);
+  const isDraggingRef = useRef(isDragging);
+  const startXRef = useRef(0);
+  const dragStartScrollLeftRef = useRef(0);
+  const scrollPositionRef = useRef(0);
+  const rafIdRef = useRef(null);
+  const resumeTimeoutRef = useRef(null);
+
+  // keep refs in sync with state so UI updates still work
+  useEffect(() => {
+    isPausedRef.current = isPaused;
+  }, [isPaused]);
+  useEffect(() => {
+    isDraggingRef.current = isDragging;
+  }, [isDragging]);
+
+  // Smooth auto scroll using RAF — improved infinite loop handling
   useEffect(() => {
     const scrollContainer = scrollRef.current;
     if (!scrollContainer) return;
 
-    let animationId;
-    let scrollPosition = scrollContainer.scrollLeft;
-    const scrollSpeed = 0.5;
+    // initialize scrollPosition to current scrollLeft
+    scrollPositionRef.current = scrollContainer.scrollLeft;
 
-    const scroll = () => {
-      if (!isPaused && !isDragging && scrollContainer) {
-        scrollPosition += scrollSpeed;
+    const scrollSpeed = 0.5; // px per frame — tweak if you want faster/slower
 
-        if (scrollPosition >= scrollContainer.scrollWidth / 2) {
-          scrollPosition = 0;
+    const step = () => {
+      if (!scrollContainer) return;
+
+      const halfWidth = scrollContainer.scrollWidth / 2 || 0;
+
+      // when not paused and not dragging, advance continuously
+      if (!isPausedRef.current && !isDraggingRef.current) {
+        scrollPositionRef.current += scrollSpeed;
+
+        // wrap-around smoothly by subtracting half width (since data is duplicated)
+        if (halfWidth > 0 && scrollPositionRef.current >= halfWidth) {
+          scrollPositionRef.current -= halfWidth;
+        } else if (halfWidth > 0 && scrollPositionRef.current < 0) {
+          scrollPositionRef.current += halfWidth;
         }
 
-        scrollContainer.scrollLeft = scrollPosition;
-      } else if (!isDragging) {
-        scrollPosition = scrollContainer.scrollLeft;
+        scrollContainer.scrollLeft = scrollPositionRef.current;
+      } else if (!isDraggingRef.current) {
+        // if paused but not dragging, keep our internal pointer in sync
+        scrollPositionRef.current = scrollContainer.scrollLeft;
       }
-      animationId = requestAnimationFrame(scroll);
+
+      rafIdRef.current = requestAnimationFrame(step);
     };
 
-    animationId = requestAnimationFrame(scroll);
+    rafIdRef.current = requestAnimationFrame(step);
+
+    const handleResize = () => {
+      // keep the internal pointer in sync after layout changes
+      scrollPositionRef.current = scrollContainer.scrollLeft;
+    };
+
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      if (animationId) {
-        cancelAnimationFrame(animationId);
-      }
+      if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
+      window.removeEventListener("resize", handleResize);
+      if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current);
     };
-  }, [isPaused, isDragging]);
+    // we intentionally do not depend on isPaused/isDragging here because we use refs
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
+  // Mouse handlers (desktop)
   const handleMouseDown = (e) => {
+    if (!scrollRef.current) return;
+    if (resumeTimeoutRef.current) {
+      clearTimeout(resumeTimeoutRef.current);
+      resumeTimeoutRef.current = null;
+    }
+
     setIsDragging(true);
     setIsPaused(true);
-    setStartX(e.pageX - scrollRef.current.offsetLeft);
-    setScrollLeft(scrollRef.current.scrollLeft);
+    isDraggingRef.current = true;
+    isPausedRef.current = true;
+
+    startXRef.current = e.pageX - scrollRef.current.offsetLeft;
+    dragStartScrollLeftRef.current = scrollRef.current.scrollLeft;
     scrollRef.current.style.cursor = "grabbing";
   };
 
   const handleMouseUp = () => {
+    if (!scrollRef.current) return;
+
     setIsDragging(false);
-    setIsPaused(false);
+    isDraggingRef.current = false;
     scrollRef.current.style.cursor = "grab";
+
+    // resume auto-scroll after a short delay so user can do another touch without fight
+    if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current);
+    resumeTimeoutRef.current = setTimeout(() => {
+      setIsPaused(false);
+      isPausedRef.current = false;
+      resumeTimeoutRef.current = null;
+    }, 900);
   };
 
   const handleMouseMove = (e) => {
-    if (!isDragging) return;
+    if (!isDraggingRef.current || !scrollRef.current) return;
     e.preventDefault();
     const x = e.pageX - scrollRef.current.offsetLeft;
-    const walk = (x - startX) * 2;
-    scrollRef.current.scrollLeft = scrollLeft - walk;
+    const walk = (x - startXRef.current) * 2; // same multiplier as before
+    scrollRef.current.scrollLeft = dragStartScrollLeftRef.current - walk;
   };
 
   const handleMouseLeave = () => {
-    if (isDragging) {
+    if (!scrollRef.current) return;
+    if (isDraggingRef.current) {
       setIsDragging(false);
+      isDraggingRef.current = false;
       scrollRef.current.style.cursor = "grab";
     }
-    setIsPaused(false);
+
+    // resume like mouseup
+    if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current);
+    resumeTimeoutRef.current = setTimeout(() => {
+      setIsPaused(false);
+      isPausedRef.current = false;
+      resumeTimeoutRef.current = null;
+    }, 900);
   };
 
-  // ✅ TOUCH SUPPORT for mobile
+  // ✅ TOUCH SUPPORT for mobile — improved: treat touch as dragging and delay resume
   useEffect(() => {
     const scrollContainer = scrollRef.current;
     if (!scrollContainer) return;
 
-    let touchStartX = 0;
-    let touchScrollLeft = 0;
-
     const handleTouchStart = (e) => {
+      if (resumeTimeoutRef.current) {
+        clearTimeout(resumeTimeoutRef.current);
+        resumeTimeoutRef.current = null;
+      }
+
+      setIsDragging(true);
       setIsPaused(true);
-      touchStartX = e.touches[0].pageX - scrollContainer.offsetLeft;
-      touchScrollLeft = scrollContainer.scrollLeft;
+      isDraggingRef.current = true;
+      isPausedRef.current = true;
+
+      const touchX = e.touches[0].pageX - scrollContainer.offsetLeft;
+      startXRef.current = touchX;
+      dragStartScrollLeftRef.current = scrollContainer.scrollLeft;
     };
 
     const handleTouchMove = (e) => {
+      if (!isDraggingRef.current) return;
       const x = e.touches[0].pageX - scrollContainer.offsetLeft;
-      const walk = (x - touchStartX) * 1.5; // slight resistance for smooth feel
-      scrollContainer.scrollLeft = touchScrollLeft - walk;
+      const walk = (x - startXRef.current) * 1.5; // slight resistance for smooth feel
+      scrollContainer.scrollLeft = dragStartScrollLeftRef.current - walk;
     };
 
     const handleTouchEnd = () => {
-      setIsPaused(false);
+      setIsDragging(false);
+      isDraggingRef.current = false;
+
+      // small timeout before resuming auto-scroll so user's momentum/tap interactions don't fight the auto-scroll
+      if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current);
+      resumeTimeoutRef.current = setTimeout(() => {
+        setIsPaused(false);
+        isPausedRef.current = false;
+        resumeTimeoutRef.current = null;
+      }, 900);
     };
 
-    scrollContainer.addEventListener("touchstart", handleTouchStart);
-    scrollContainer.addEventListener("touchmove", handleTouchMove);
+    scrollContainer.addEventListener("touchstart", handleTouchStart, {
+      passive: true,
+    });
+    scrollContainer.addEventListener("touchmove", handleTouchMove, {
+      passive: false,
+    });
     scrollContainer.addEventListener("touchend", handleTouchEnd);
+    scrollContainer.addEventListener("touchcancel", handleTouchEnd);
 
     return () => {
       scrollContainer.removeEventListener("touchstart", handleTouchStart);
       scrollContainer.removeEventListener("touchmove", handleTouchMove);
       scrollContainer.removeEventListener("touchend", handleTouchEnd);
+      scrollContainer.removeEventListener("touchcancel", handleTouchEnd);
     };
   }, []);
 
