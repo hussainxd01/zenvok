@@ -1,35 +1,38 @@
 "use client";
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import MaskedText from "@/components/masked-text";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Statement = () => {
   const hrRef = useRef(null);
 
   useEffect(() => {
-    // Animate the HR line when it comes into view
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            gsap.fromTo(
-              hrRef.current,
-              { width: "0%" },
-              {
-                width: "100%",
-                duration: 1,
-                ease: "power2.out",
-              }
-            );
-            observer.disconnect();
-          }
-        });
-      },
-      { threshold: 0.2 }
-    );
+    const hr = hrRef.current;
+    if (!hr) return;
 
-    if (hrRef.current) observer.observe(hrRef.current);
-    return () => observer.disconnect();
+    // kill any previous triggers if re-rendered (Next.js dev mode)
+    ScrollTrigger.getAll().forEach((t) => t.kill());
+
+    // prepare HR line
+    gsap.set(hr, { width: "0%", willChange: "width" });
+
+    // animation
+    gsap.to(hr, {
+      width: "100%",
+      duration: 1.2,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: hr,
+        start: "top 85%", // start slightly before it enters viewport
+        toggleActions: "play none none none",
+      },
+    });
+
+    // cleanup
+    return () => ScrollTrigger.kill();
   }, []);
 
   return (

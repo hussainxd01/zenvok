@@ -1219,6 +1219,7 @@ __turbopack_context__.s({
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/node_modules/gsap/index.js [app-client] (ecmascript) <locals>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$ScrollTrigger$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/gsap/ScrollTrigger.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$masked$2d$text$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/masked-text.jsx [app-client] (ecmascript)");
 ;
 var _s = __turbopack_context__.k.signature();
@@ -1226,35 +1227,38 @@ var _s = __turbopack_context__.k.signature();
 ;
 ;
 ;
+;
+__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].registerPlugin(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$ScrollTrigger$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["ScrollTrigger"]);
 const Statement = ()=>{
     _s();
     const hrRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "Statement.useEffect": ()=>{
-            // Animate the HR line when it comes into view
-            const observer = new IntersectionObserver({
-                "Statement.useEffect": (entries)=>{
-                    entries.forEach({
-                        "Statement.useEffect": (entry)=>{
-                            if (entry.isIntersecting) {
-                                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].fromTo(hrRef.current, {
-                                    width: "0%"
-                                }, {
-                                    width: "100%",
-                                    duration: 1,
-                                    ease: "power2.out"
-                                });
-                                observer.disconnect();
-                            }
-                        }
-                    }["Statement.useEffect"]);
-                }
-            }["Statement.useEffect"], {
-                threshold: 0.2
+            const hr = hrRef.current;
+            if (!hr) return;
+            // kill any previous triggers if re-rendered (Next.js dev mode)
+            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$ScrollTrigger$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["ScrollTrigger"].getAll().forEach({
+                "Statement.useEffect": (t)=>t.kill()
+            }["Statement.useEffect"]);
+            // prepare HR line
+            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].set(hr, {
+                width: "0%",
+                willChange: "width"
             });
-            if (hrRef.current) observer.observe(hrRef.current);
+            // animation
+            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].to(hr, {
+                width: "100%",
+                duration: 1.2,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: hr,
+                    start: "top 85%",
+                    toggleActions: "play none none none"
+                }
+            });
+            // cleanup
             return ({
-                "Statement.useEffect": ()=>observer.disconnect()
+                "Statement.useEffect": ()=>__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$ScrollTrigger$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["ScrollTrigger"].kill()
             })["Statement.useEffect"];
         }
     }["Statement.useEffect"], []);
@@ -1269,12 +1273,12 @@ const Statement = ()=>{
                     indent: true
                 }, void 0, false, {
                     fileName: "[project]/src/components/statement.jsx",
-                    lineNumber: 39,
+                    lineNumber: 42,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/statement.jsx",
-                lineNumber: 38,
+                lineNumber: 41,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1282,7 +1286,7 @@ const Statement = ()=>{
                 className: "w-0 border-gray-50/30 border-b h-[0.5px] max-w-7xl mx-auto"
             }, void 0, false, {
                 fileName: "[project]/src/components/statement.jsx",
-                lineNumber: 47,
+                lineNumber: 50,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1296,12 +1300,12 @@ const Statement = ()=>{
                             indent: false
                         }, void 0, false, {
                             fileName: "[project]/src/components/statement.jsx",
-                            lineNumber: 56,
+                            lineNumber: 59,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/statement.jsx",
-                        lineNumber: 55,
+                        lineNumber: 58,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1313,7 +1317,7 @@ const Statement = ()=>{
                                 indent: false
                             }, void 0, false, {
                                 fileName: "[project]/src/components/statement.jsx",
-                                lineNumber: 65,
+                                lineNumber: 68,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$masked$2d$text$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -1322,7 +1326,7 @@ const Statement = ()=>{
                                 indent: false
                             }, void 0, false, {
                                 fileName: "[project]/src/components/statement.jsx",
-                                lineNumber: 70,
+                                lineNumber: 73,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
@@ -1331,25 +1335,25 @@ const Statement = ()=>{
                                 children: "Learn more ↗"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/statement.jsx",
-                                lineNumber: 76,
+                                lineNumber: 79,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/statement.jsx",
-                        lineNumber: 64,
+                        lineNumber: 67,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/statement.jsx",
-                lineNumber: 53,
+                lineNumber: 56,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/statement.jsx",
-        lineNumber: 36,
+        lineNumber: 39,
         columnNumber: 5
     }, this);
 };
@@ -2061,7 +2065,7 @@ if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelper
 var { g: global, __dirname, k: __turbopack_refresh__, m: module } = __turbopack_context__;
 {
 __turbopack_context__.s({
-    "default": (()=>WorkShowcase)
+    "default": (()=>WorkShowcaseAutoSlide)
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
@@ -2074,110 +2078,101 @@ const portfolioData = [
         id: 1,
         title: "E-Commerce Platform",
         category: "Web Design",
-        image: "/ecommerce.jpeg",
-        color: "bg-blue-50"
+        image: "/ecommerce.jpeg"
     },
     {
         id: 2,
         title: "Fashion Blog",
         category: "UI/UX Design",
-        image: "/blog.jpeg",
-        color: "bg-pink-50"
+        image: "/blog.jpeg"
     },
     {
         id: 3,
         title: "News Portal",
         category: "Editorial Design",
-        image: "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=400&h=800&fit=crop",
-        color: "bg-gray-50"
+        image: "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=400&h=800&fit=crop"
     },
     {
         id: 4,
         title: "Travel App",
         category: "Mobile Design",
-        image: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=400&h=800&fit=crop",
-        color: "bg-green-50"
+        image: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=400&h=800&fit=crop"
     },
     {
         id: 5,
         title: "Music Streaming",
         category: "App Design",
-        image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400&h=800&fit=crop",
-        color: "bg-purple-50"
+        image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400&h=800&fit=crop"
     }
 ];
-function WorkShowcase() {
+function WorkShowcaseAutoSlide() {
     _s();
-    const containerRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
-    const [isPaused, setIsPaused] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
-    const [isDragging, setIsDragging] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
-    const [startX, setStartX] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(0);
-    const [translateX, setTranslateX] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(0);
-    const [lastTranslateX, setLastTranslateX] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(0);
-    const speed = 0.3; // continuous scroll speed
+    const trackRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
+    const rafRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
+    const lastTimeRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(0);
+    const positionRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(0); // current translateX (px)
+    const halfWidthRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(0);
+    // px per second. Increase for faster scroll, decrease for slower.
+    const SPEED_PX_PER_SEC = 80;
     const duplicatedData = [
         ...portfolioData,
         ...portfolioData
     ];
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
-        "WorkShowcase.useEffect": ()=>{
-            let rafId;
-            let position = translateX;
-            const animate = {
-                "WorkShowcase.useEffect.animate": ()=>{
-                    if (!isPaused && !isDragging) {
-                        position -= speed;
-                        if (Math.abs(position) >= containerRef.current.scrollWidth / 2) {
-                            position = 0;
-                        }
-                        containerRef.current.style.transform = `translateX(${position}px)`;
-                    }
-                    rafId = requestAnimationFrame(animate);
+        "WorkShowcaseAutoSlide.useEffect": ()=>{
+            const track = trackRef.current;
+            if (!track) return;
+            // compute half width (content duplicated => half = original content width)
+            const updateSizes = {
+                "WorkShowcaseAutoSlide.useEffect.updateSizes": ()=>{
+                    // track.scrollWidth is the full duplicated width
+                    halfWidthRef.current = track.scrollWidth / 2 || 0;
                 }
-            }["WorkShowcase.useEffect.animate"];
-            rafId = requestAnimationFrame(animate);
+            }["WorkShowcaseAutoSlide.useEffect.updateSizes"];
+            // ResizeObserver will recalc when images load / layout changes
+            const ro = new ResizeObserver({
+                "WorkShowcaseAutoSlide.useEffect": ()=>updateSizes()
+            }["WorkShowcaseAutoSlide.useEffect"]);
+            ro.observe(track);
+            updateSizes();
+            // RAF tick with time-delta for stable speed across framerates
+            const start = {
+                "WorkShowcaseAutoSlide.useEffect.start": (time)=>{
+                    lastTimeRef.current = time;
+                    rafRef.current = requestAnimationFrame(tick);
+                }
+            }["WorkShowcaseAutoSlide.useEffect.start"];
+            const tick = {
+                "WorkShowcaseAutoSlide.useEffect.tick": (time)=>{
+                    const dt = (time - lastTimeRef.current) / 1000; // seconds
+                    lastTimeRef.current = time;
+                    // advance position to the left
+                    positionRef.current -= SPEED_PX_PER_SEC * dt;
+                    const half = halfWidthRef.current;
+                    // seamless wrap: when we've moved by half (the original width), jump forward by half
+                    if (half > 0 && Math.abs(positionRef.current) >= half) {
+                        positionRef.current += half;
+                    }
+                    // apply transform (GPU-accelerated)
+                    track.style.transform = `translate3d(${positionRef.current}px, 0, 0)`;
+                    rafRef.current = requestAnimationFrame(tick);
+                }
+            }["WorkShowcaseAutoSlide.useEffect.tick"];
+            // start loop after a tiny delay to allow layout settle (helps when images still loading)
+            const startTimeout = setTimeout({
+                "WorkShowcaseAutoSlide.useEffect.startTimeout": ()=>{
+                    rafRef.current = requestAnimationFrame(start);
+                }
+            }["WorkShowcaseAutoSlide.useEffect.startTimeout"], 50);
             return ({
-                "WorkShowcase.useEffect": ()=>cancelAnimationFrame(rafId)
-            })["WorkShowcase.useEffect"];
+                "WorkShowcaseAutoSlide.useEffect": ()=>{
+                    clearTimeout(startTimeout);
+                    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+                    ro.disconnect();
+                }
+            })["WorkShowcaseAutoSlide.useEffect"];
         }
-    }["WorkShowcase.useEffect"], [
-        isPaused,
-        isDragging
-    ]);
-    const handleMouseDown = (e)=>{
-        setIsDragging(true);
-        setIsPaused(true);
-        setStartX(e.clientX);
-        setLastTranslateX(translateX);
-    };
-    const handleMouseMove = (e)=>{
-        if (!isDragging) return;
-        const delta = e.clientX - startX;
-        const newTranslate = lastTranslateX + delta;
-        containerRef.current.style.transform = `translateX(${newTranslate}px)`;
-        setTranslateX(newTranslate);
-    };
-    const handleMouseUp = ()=>{
-        setIsDragging(false);
-        setIsPaused(false);
-    };
-    const handleTouchStart = (e)=>{
-        setIsDragging(true);
-        setIsPaused(true);
-        setStartX(e.touches[0].clientX);
-        setLastTranslateX(translateX);
-    };
-    const handleTouchMove = (e)=>{
-        if (!isDragging) return;
-        const delta = e.touches[0].clientX - startX;
-        const newTranslate = lastTranslateX + delta;
-        containerRef.current.style.transform = `translateX(${newTranslate}px)`;
-        setTranslateX(newTranslate);
-    };
-    const handleTouchEnd = ()=>{
-        setIsDragging(false);
-        setIsPaused(false);
-    };
+    }["WorkShowcaseAutoSlide.useEffect"], []);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "w-full py-20 bg-white overflow-hidden",
         children: [
@@ -2189,7 +2184,7 @@ function WorkShowcase() {
                         children: "Selected Works"
                     }, void 0, false, {
                         fileName: "[project]/src/components/showcase.jsx",
-                        lineNumber: 119,
+                        lineNumber: 107,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2197,31 +2192,23 @@ function WorkShowcase() {
                         children: "Crafting digital experiences that inspire and engage"
                     }, void 0, false, {
                         fileName: "[project]/src/components/showcase.jsx",
-                        lineNumber: 122,
+                        lineNumber: 110,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/showcase.jsx",
-                lineNumber: 118,
+                lineNumber: 106,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "relative overflow-hidden pl-6",
-                onMouseDown: handleMouseDown,
-                onMouseMove: handleMouseMove,
-                onMouseUp: handleMouseUp,
-                onMouseLeave: handleMouseUp,
-                onTouchStart: handleTouchStart,
-                onTouchMove: handleTouchMove,
-                onTouchEnd: handleTouchEnd,
-                style: {
-                    userSelect: "none",
-                    cursor: isDragging ? "grabbing" : "grab"
-                },
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    ref: containerRef,
-                    className: "flex gap-6 will-change-transform",
+                    ref: trackRef,
+                    className: "flex gap-6 will-change-transform transition-transform",
+                    style: {
+                        transform: "translate3d(0,0,0)"
+                    },
                     children: duplicatedData.map((item, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "flex-shrink-0 w-64 group cursor-pointer",
                             children: [
@@ -2236,7 +2223,7 @@ function WorkShowcase() {
                                             className: "absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-black rounded-b-2xl z-20"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/showcase.jsx",
-                                            lineNumber: 148,
+                                            lineNumber: 131,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2249,14 +2236,14 @@ function WorkShowcase() {
                                                     loading: "lazy"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/showcase.jsx",
-                                                    lineNumber: 150,
+                                                    lineNumber: 133,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                     className: "absolute inset-0 bg-black opacity-0 group-hover:opacity-30 transition-opacity duration-300 z-10"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/showcase.jsx",
-                                                    lineNumber: 156,
+                                                    lineNumber: 139,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2269,7 +2256,7 @@ function WorkShowcase() {
                                                                 children: item.category
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/showcase.jsx",
-                                                                lineNumber: 159,
+                                                                lineNumber: 142,
                                                                 columnNumber: 23
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -2277,37 +2264,37 @@ function WorkShowcase() {
                                                                 children: item.title
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/showcase.jsx",
-                                                                lineNumber: 162,
+                                                                lineNumber: 145,
                                                                 columnNumber: 23
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/showcase.jsx",
-                                                        lineNumber: 158,
+                                                        lineNumber: 141,
                                                         columnNumber: 21
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/showcase.jsx",
-                                                    lineNumber: 157,
+                                                    lineNumber: 140,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/showcase.jsx",
-                                            lineNumber: 149,
+                                            lineNumber: 132,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "absolute bottom-1 left-1/2 -translate-x-1/2 w-24 h-1 bg-white rounded-full opacity-60"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/showcase.jsx",
-                                            lineNumber: 166,
+                                            lineNumber: 149,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/showcase.jsx",
-                                    lineNumber: 144,
+                                    lineNumber: 127,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2318,7 +2305,7 @@ function WorkShowcase() {
                                             children: item.category
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/showcase.jsx",
-                                            lineNumber: 169,
+                                            lineNumber: 153,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -2326,42 +2313,42 @@ function WorkShowcase() {
                                             children: item.title
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/showcase.jsx",
-                                            lineNumber: 170,
+                                            lineNumber: 154,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/showcase.jsx",
-                                    lineNumber: 168,
+                                    lineNumber: 152,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, `${item.id}-${index}`, true, {
                             fileName: "[project]/src/components/showcase.jsx",
-                            lineNumber: 140,
+                            lineNumber: 123,
                             columnNumber: 13
                         }, this))
                 }, void 0, false, {
                     fileName: "[project]/src/components/showcase.jsx",
-                    lineNumber: 138,
+                    lineNumber: 117,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/showcase.jsx",
-                lineNumber: 127,
+                lineNumber: 115,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/showcase.jsx",
-        lineNumber: 117,
+        lineNumber: 105,
         columnNumber: 5
     }, this);
 }
-_s(WorkShowcase, "HPX2sRh83yA3M2RCUsJueqQCz8M=");
-_c = WorkShowcase;
+_s(WorkShowcaseAutoSlide, "pzDOzQTJnSdZYZMZUDcWHu+xK7A=");
+_c = WorkShowcaseAutoSlide;
 var _c;
-__turbopack_context__.k.register(_c, "WorkShowcase");
+__turbopack_context__.k.register(_c, "WorkShowcaseAutoSlide");
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
     __turbopack_context__.k.registerExports(module, globalThis.$RefreshHelpers$);
 }

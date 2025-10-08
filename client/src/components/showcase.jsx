@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 // Mock API data - replace with your actual API
 const portfolioData = [
@@ -7,14 +7,12 @@ const portfolioData = [
     title: "E-Commerce Platform",
     category: "Web Design",
     image: "/ecommerce.jpeg",
-    color: "bg-blue-50",
   },
   {
     id: 2,
     title: "Fashion Blog",
     category: "UI/UX Design",
     image: "/blog.jpeg",
-    color: "bg-pink-50",
   },
   {
     id: 3,
@@ -22,7 +20,6 @@ const portfolioData = [
     category: "Editorial Design",
     image:
       "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=400&h=800&fit=crop",
-    color: "bg-gray-50",
   },
   {
     id: 4,
@@ -30,7 +27,6 @@ const portfolioData = [
     category: "Mobile Design",
     image:
       "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=400&h=800&fit=crop",
-    color: "bg-green-50",
   },
   {
     id: 5,
@@ -38,80 +34,72 @@ const portfolioData = [
     category: "App Design",
     image:
       "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400&h=800&fit=crop",
-    color: "bg-purple-50",
   },
 ];
 
-export default function WorkShowcase() {
-  const containerRef = useRef(null);
-  const [isPaused, setIsPaused] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [translateX, setTranslateX] = useState(0);
-  const [lastTranslateX, setLastTranslateX] = useState(0);
+export default function WorkShowcaseAutoSlide() {
+  const trackRef = useRef(null);
+  const rafRef = useRef(null);
+  const lastTimeRef = useRef(0);
+  const positionRef = useRef(0); // current translateX (px)
+  const halfWidthRef = useRef(0);
 
-  const speed = 0.3; // continuous scroll speed
+  // px per second. Increase for faster scroll, decrease for slower.
+  const SPEED_PX_PER_SEC = 80;
+
   const duplicatedData = [...portfolioData, ...portfolioData];
 
   useEffect(() => {
-    let rafId;
-    let position = translateX;
+    const track = trackRef.current;
+    if (!track) return;
 
-    const animate = () => {
-      if (!isPaused && !isDragging) {
-        position -= speed;
-        if (Math.abs(position) >= containerRef.current.scrollWidth / 2) {
-          position = 0;
-        }
-        containerRef.current.style.transform = `translateX(${position}px)`;
-      }
-      rafId = requestAnimationFrame(animate);
+    // compute half width (content duplicated => half = original content width)
+    const updateSizes = () => {
+      // track.scrollWidth is the full duplicated width
+      halfWidthRef.current = track.scrollWidth / 2 || 0;
     };
 
-    rafId = requestAnimationFrame(animate);
+    // ResizeObserver will recalc when images load / layout changes
+    const ro = new ResizeObserver(() => updateSizes());
+    ro.observe(track);
+    updateSizes();
 
-    return () => cancelAnimationFrame(rafId);
-  }, [isPaused, isDragging]);
+    // RAF tick with time-delta for stable speed across framerates
+    const start = (time) => {
+      lastTimeRef.current = time;
+      rafRef.current = requestAnimationFrame(tick);
+    };
 
-  const handleMouseDown = (e) => {
-    setIsDragging(true);
-    setIsPaused(true);
-    setStartX(e.clientX);
-    setLastTranslateX(translateX);
-  };
+    const tick = (time) => {
+      const dt = (time - lastTimeRef.current) / 1000; // seconds
+      lastTimeRef.current = time;
 
-  const handleMouseMove = (e) => {
-    if (!isDragging) return;
-    const delta = e.clientX - startX;
-    const newTranslate = lastTranslateX + delta;
-    containerRef.current.style.transform = `translateX(${newTranslate}px)`;
-    setTranslateX(newTranslate);
-  };
+      // advance position to the left
+      positionRef.current -= SPEED_PX_PER_SEC * dt;
 
-  const handleMouseUp = () => {
-    setIsDragging(false);
-    setIsPaused(false);
-  };
+      const half = halfWidthRef.current;
+      // seamless wrap: when we've moved by half (the original width), jump forward by half
+      if (half > 0 && Math.abs(positionRef.current) >= half) {
+        positionRef.current += half;
+      }
 
-  const handleTouchStart = (e) => {
-    setIsDragging(true);
-    setIsPaused(true);
-    setStartX(e.touches[0].clientX);
-    setLastTranslateX(translateX);
-  };
+      // apply transform (GPU-accelerated)
+      track.style.transform = `translate3d(${positionRef.current}px, 0, 0)`;
 
-  const handleTouchMove = (e) => {
-    if (!isDragging) return;
-    const delta = e.touches[0].clientX - startX;
-    const newTranslate = lastTranslateX + delta;
-    containerRef.current.style.transform = `translateX(${newTranslate}px)`;
-    setTranslateX(newTranslate);
-  };
+      rafRef.current = requestAnimationFrame(tick);
+    };
 
-  const handleTouchEnd = () => {
-    setIsDragging(false);
-    setIsPaused(false);
-  };
+    // start loop after a tiny delay to allow layout settle (helps when images still loading)
+    const startTimeout = setTimeout(() => {
+      rafRef.current = requestAnimationFrame(start);
+    }, 50);
+
+    return () => {
+      clearTimeout(startTimeout);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      ro.disconnect();
+    };
+  }, []);
 
   return (
     <div className="w-full py-20 bg-white overflow-hidden">
@@ -124,18 +112,13 @@ export default function WorkShowcase() {
         </p>
       </div>
 
-      <div
-        className="relative overflow-hidden pl-6"
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseUp}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-        style={{ userSelect: "none", cursor: isDragging ? "grabbing" : "grab" }}
-      >
-        <div ref={containerRef} className="flex gap-6 will-change-transform">
+      <div className="relative overflow-hidden pl-6">
+        {/* track: duplicated items side-by-side */}
+        <div
+          ref={trackRef}
+          className="flex gap-6 will-change-transform transition-transform"
+          style={{ transform: "translate3d(0,0,0)" }}
+        >
           {duplicatedData.map((item, index) => (
             <div
               key={`${item.id}-${index}`}
@@ -145,7 +128,7 @@ export default function WorkShowcase() {
                 className="relative bg-black rounded-3xl p-2 shadow-2xl transition-transform duration-300"
                 style={{ width: "256px", height: "520px" }}
               >
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-black rounded-b-2xl z-20"></div>
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-black rounded-b-2xl z-20" />
                 <div className="relative w-full h-full rounded-2xl overflow-hidden bg-white">
                   <img
                     src={item.image}
@@ -153,7 +136,7 @@ export default function WorkShowcase() {
                     className="w-full h-full object-cover"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-30 transition-opacity duration-300 z-10"></div>
+                  <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-30 transition-opacity duration-300 z-10" />
                   <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
                     <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white text-center px-4">
                       <p className="text-xs font-medium mb-1">
@@ -163,8 +146,9 @@ export default function WorkShowcase() {
                     </div>
                   </div>
                 </div>
-                <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-24 h-1 bg-white rounded-full opacity-60"></div>
+                <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-24 h-1 bg-white rounded-full opacity-60" />
               </div>
+
               <div className="mt-4 px-2">
                 <p className="text-xs text-gray-500 mb-1">{item.category}</p>
                 <h3 className="text-base font-semibold text-gray-900">
