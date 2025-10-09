@@ -4,36 +4,33 @@ import { useEffect, useRef } from "react";
 const portfolioData = [
   {
     id: 1,
-    title: "E-Commerce Platform",
-    category: "Web Design",
-    image: "/ecommerce.jpeg",
+    title: "Clothing Store E-Commerce",
+    category: "Web Development",
+    image: "/Ecommerce Clothing Store.png",
   },
   {
     id: 2,
-    title: "Fashion Blog",
+    title: "Minimal Skincare Website",
     category: "UI/UX Design",
-    image: "/blog.jpeg",
+    image: "/Skincare Minimal Website.png",
   },
   {
     id: 3,
-    title: "News Portal",
-    category: "Editorial Design",
-    image:
-      "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=400&h=800&fit=crop",
+    title: "Food Delivery Web App",
+    category: "Product Design",
+    image: "/Web App - Food Delivery App.png",
   },
   {
     id: 4,
-    title: "Travel App",
-    category: "Mobile Design",
-    image:
-      "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=400&h=800&fit=crop",
+    title: "Music Streaming Mobile App",
+    category: "App Interface",
+    image: "/Music Streaming App.png",
   },
   {
     id: 5,
-    title: "Music Streaming",
-    category: "App Design",
-    image:
-      "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400&h=800&fit=crop",
+    title: "Abaya Store Web Experience",
+    category: "E-Commerce Design",
+    image: "/Abaya Store Web App.png",
   },
 ];
 

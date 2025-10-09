@@ -1313,7 +1313,7 @@ const Statement = ()=>{
                         className: "flex-1 min-w-[150px] max-w-[600px] flex flex-col gap-4 sm:gap-6 tracking-tight",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$masked$2d$text$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                text: "Since day one, Zenvok has helped businesses launch, scale, and stay sharp — through strategy, design, and clean engineering.",
+                                text: "We turn digital ideas into living systems — adaptable, intentional, and built to evolve.",
                                 className: "text-sm sm:text-base md:text-lg font-light leading-relaxed text-white",
                                 indent: false
                             }, void 0, false, {
@@ -1322,7 +1322,7 @@ const Statement = ()=>{
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$masked$2d$text$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                text: "In 2025, we introduced our selective model — partnering with a few bold teams at a time to go deep, not wide.",
+                                text: "Our approach merges design clarity with technical precision, so your brand doesn’t just launch — it lasts.",
                                 className: "text-sm sm:text-base md:text-lg font-light leading-relaxed text-white",
                                 indent: false
                             }, void 0, false, {
@@ -2077,33 +2077,33 @@ var _s = __turbopack_context__.k.signature();
 const portfolioData = [
     {
         id: 1,
-        title: "E-Commerce Platform",
-        category: "Web Design",
-        image: "/ecommerce.jpeg"
+        title: "Clothing Store E-Commerce",
+        category: "Web Development",
+        image: "/Ecommerce Clothing Store.png"
     },
     {
         id: 2,
-        title: "Fashion Blog",
+        title: "Minimal Skincare Website",
         category: "UI/UX Design",
-        image: "/blog.jpeg"
+        image: "/Skincare Minimal Website.png"
     },
     {
         id: 3,
-        title: "News Portal",
-        category: "Editorial Design",
-        image: "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=400&h=800&fit=crop"
+        title: "Food Delivery Web App",
+        category: "Product Design",
+        image: "/Web App - Food Delivery App.png"
     },
     {
         id: 4,
-        title: "Travel App",
-        category: "Mobile Design",
-        image: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=400&h=800&fit=crop"
+        title: "Music Streaming Mobile App",
+        category: "App Interface",
+        image: "/Music Streaming App.png"
     },
     {
         id: 5,
-        title: "Music Streaming",
-        category: "App Design",
-        image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400&h=800&fit=crop"
+        title: "Abaya Store Web Experience",
+        category: "E-Commerce Design",
+        image: "/Abaya Store Web App.png"
     }
 ];
 function WorkShowcaseAutoSlide() {
@@ -2185,7 +2185,7 @@ function WorkShowcaseAutoSlide() {
                         children: "Selected Works"
                     }, void 0, false, {
                         fileName: "[project]/src/components/showcase.jsx",
-                        lineNumber: 107,
+                        lineNumber: 104,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2193,13 +2193,13 @@ function WorkShowcaseAutoSlide() {
                         children: "Crafting digital experiences that inspire and engage"
                     }, void 0, false, {
                         fileName: "[project]/src/components/showcase.jsx",
-                        lineNumber: 110,
+                        lineNumber: 107,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/showcase.jsx",
-                lineNumber: 106,
+                lineNumber: 103,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2224,7 +2224,7 @@ function WorkShowcaseAutoSlide() {
                                             className: "absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-black rounded-b-2xl z-20"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/showcase.jsx",
-                                            lineNumber: 131,
+                                            lineNumber: 128,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2237,14 +2237,14 @@ function WorkShowcaseAutoSlide() {
                                                     loading: "lazy"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/showcase.jsx",
-                                                    lineNumber: 133,
+                                                    lineNumber: 130,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                     className: "absolute inset-0 bg-black opacity-0 group-hover:opacity-30 transition-opacity duration-300 z-10"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/showcase.jsx",
-                                                    lineNumber: 139,
+                                                    lineNumber: 136,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2257,7 +2257,7 @@ function WorkShowcaseAutoSlide() {
                                                                 children: item.category
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/showcase.jsx",
-                                                                lineNumber: 142,
+                                                                lineNumber: 139,
                                                                 columnNumber: 23
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -2265,37 +2265,37 @@ function WorkShowcaseAutoSlide() {
                                                                 children: item.title
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/showcase.jsx",
-                                                                lineNumber: 145,
+                                                                lineNumber: 142,
                                                                 columnNumber: 23
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/showcase.jsx",
-                                                        lineNumber: 141,
+                                                        lineNumber: 138,
                                                         columnNumber: 21
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/showcase.jsx",
-                                                    lineNumber: 140,
+                                                    lineNumber: 137,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/showcase.jsx",
-                                            lineNumber: 132,
+                                            lineNumber: 129,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "absolute bottom-1 left-1/2 -translate-x-1/2 w-24 h-1 bg-white rounded-full opacity-60"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/showcase.jsx",
-                                            lineNumber: 149,
+                                            lineNumber: 146,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/showcase.jsx",
-                                    lineNumber: 127,
+                                    lineNumber: 124,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2306,7 +2306,7 @@ function WorkShowcaseAutoSlide() {
                                             children: item.category
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/showcase.jsx",
-                                            lineNumber: 153,
+                                            lineNumber: 150,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -2314,35 +2314,35 @@ function WorkShowcaseAutoSlide() {
                                             children: item.title
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/showcase.jsx",
-                                            lineNumber: 154,
+                                            lineNumber: 151,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/showcase.jsx",
-                                    lineNumber: 152,
+                                    lineNumber: 149,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, `${item.id}-${index}`, true, {
                             fileName: "[project]/src/components/showcase.jsx",
-                            lineNumber: 123,
+                            lineNumber: 120,
                             columnNumber: 13
                         }, this))
                 }, void 0, false, {
                     fileName: "[project]/src/components/showcase.jsx",
-                    lineNumber: 117,
+                    lineNumber: 114,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/showcase.jsx",
-                lineNumber: 115,
+                lineNumber: 112,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/showcase.jsx",
-        lineNumber: 105,
+        lineNumber: 102,
         columnNumber: 5
     }, this);
 }

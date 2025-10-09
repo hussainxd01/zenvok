@@ -70,12 +70,12 @@ const Statement = () => {
         {/* Right column */}
         <div className="flex-1 min-w-[150px] max-w-[600px] flex flex-col gap-4 sm:gap-6 tracking-tight">
           <MaskedText
-            text="Since day one, Zenvok has helped businesses launch, scale, and stay sharp — through strategy, design, and clean engineering."
+            text="We turn digital ideas into living systems — adaptable, intentional, and built to evolve."
             className="text-sm sm:text-base md:text-lg font-light leading-relaxed text-white"
             indent={false}
           />
           <MaskedText
-            text="In 2025, we introduced our selective model — partnering with a few bold teams at a time to go deep, not wide."
+            text="Our approach merges design clarity with technical precision, so your brand doesn’t just launch — it lasts."
             className="text-sm sm:text-base md:text-lg font-light leading-relaxed text-white"
             indent={false}
           />
