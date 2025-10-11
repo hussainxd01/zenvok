@@ -276,6 +276,10 @@ function MobileMenu({ isOpen, onClose }) {
             href: "/service"
         },
         {
+            text: "Pricing",
+            href: "/pricing"
+        },
+        {
             text: "Contact",
             href: "/contact"
         }
@@ -293,7 +297,7 @@ function MobileMenu({ isOpen, onClose }) {
                 children: "Let's Talk ↗"
             }, void 0, false, {
                 fileName: "[project]/src/components/navbar.jsx",
-                lineNumber: 151,
+                lineNumber: 152,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
@@ -307,12 +311,12 @@ function MobileMenu({ isOpen, onClose }) {
                         isActive: pathname === item.href
                     }, item.text, false, {
                         fileName: "[project]/src/components/navbar.jsx",
-                        lineNumber: 159,
+                        lineNumber: 160,
                         columnNumber: 11
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/src/components/navbar.jsx",
-                lineNumber: 157,
+                lineNumber: 158,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
@@ -322,26 +326,26 @@ function MobileMenu({ isOpen, onClose }) {
                         children: "Instagram"
                     }, void 0, false, {
                         fileName: "[project]/src/components/navbar.jsx",
-                        lineNumber: 171,
+                        lineNumber: 172,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                         children: "Email"
                     }, void 0, false, {
                         fileName: "[project]/src/components/navbar.jsx",
-                        lineNumber: 172,
+                        lineNumber: 173,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/navbar.jsx",
-                lineNumber: 170,
+                lineNumber: 171,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/navbar.jsx",
-        lineNumber: 146,
+        lineNumber: 147,
         columnNumber: 5
     }, this);
 }
@@ -502,7 +506,7 @@ function Navbar({ initialColor = "white", adaptiveMode = true, blendMode = "diff
                                     children: "The Brand Catalyst"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/navbar.jsx",
-                                    lineNumber: 298,
+                                    lineNumber: 299,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
@@ -523,7 +527,7 @@ function Navbar({ initialColor = "white", adaptiveMode = true, blendMode = "diff
                                             fill: "currentColor"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/navbar.jsx",
-                                            lineNumber: 314,
+                                            lineNumber: 315,
                                             columnNumber: 15
                                         }, this),
                                         " ",
@@ -532,7 +536,7 @@ function Navbar({ initialColor = "white", adaptiveMode = true, blendMode = "diff
                                             fill: "currentColor"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/navbar.jsx",
-                                            lineNumber: 318,
+                                            lineNumber: 319,
                                             columnNumber: 15
                                         }, this),
                                         " ",
@@ -541,7 +545,7 @@ function Navbar({ initialColor = "white", adaptiveMode = true, blendMode = "diff
                                             fill: "currentColor"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/navbar.jsx",
-                                            lineNumber: 322,
+                                            lineNumber: 323,
                                             columnNumber: 15
                                         }, this),
                                         " ",
@@ -550,7 +554,7 @@ function Navbar({ initialColor = "white", adaptiveMode = true, blendMode = "diff
                                             fill: "currentColor"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/navbar.jsx",
-                                            lineNumber: 326,
+                                            lineNumber: 327,
                                             columnNumber: 15
                                         }, this),
                                         " ",
@@ -559,7 +563,7 @@ function Navbar({ initialColor = "white", adaptiveMode = true, blendMode = "diff
                                             fill: "currentColor"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/navbar.jsx",
-                                            lineNumber: 330,
+                                            lineNumber: 331,
                                             columnNumber: 15
                                         }, this),
                                         " ",
@@ -568,29 +572,29 @@ function Navbar({ initialColor = "white", adaptiveMode = true, blendMode = "diff
                                             fill: "currentColor"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/navbar.jsx",
-                                            lineNumber: 334,
+                                            lineNumber: 335,
                                             columnNumber: 15
                                         }, this),
                                         " "
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/navbar.jsx",
-                                    lineNumber: 304,
+                                    lineNumber: 305,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/navbar.jsx",
-                            lineNumber: 297,
+                            lineNumber: 298,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/navbar.jsx",
-                        lineNumber: 296,
+                        lineNumber: 297,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "hidden md:flex items-center gap-6 text-sm",
+                        className: "hidden md:flex items-center gap-4 text-sm",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                 href: "/",
@@ -598,7 +602,7 @@ function Navbar({ initialColor = "white", adaptiveMode = true, blendMode = "diff
                                 children: "Home"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/navbar.jsx",
-                                lineNumber: 343,
+                                lineNumber: 344,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -607,7 +611,7 @@ function Navbar({ initialColor = "white", adaptiveMode = true, blendMode = "diff
                                 children: "About"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/navbar.jsx",
-                                lineNumber: 351,
+                                lineNumber: 352,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -616,7 +620,7 @@ function Navbar({ initialColor = "white", adaptiveMode = true, blendMode = "diff
                                 children: "Works"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/navbar.jsx",
-                                lineNumber: 359,
+                                lineNumber: 360,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -625,7 +629,16 @@ function Navbar({ initialColor = "white", adaptiveMode = true, blendMode = "diff
                                 children: "Service"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/navbar.jsx",
-                                lineNumber: 367,
+                                lineNumber: 368,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                                href: "/pricing",
+                                className: `hover:opacity-70 transition-opacity ${pathname === "/service" ? "opacity-70" : ""}`,
+                                children: "Pricing"
+                            }, void 0, false, {
+                                fileName: "[project]/src/components/navbar.jsx",
+                                lineNumber: 376,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -634,7 +647,7 @@ function Navbar({ initialColor = "white", adaptiveMode = true, blendMode = "diff
                                 children: "Contact"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/navbar.jsx",
-                                lineNumber: 375,
+                                lineNumber: 384,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -642,13 +655,13 @@ function Navbar({ initialColor = "white", adaptiveMode = true, blendMode = "diff
                                 children: "Let's Talk ↗"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/navbar.jsx",
-                                lineNumber: 383,
+                                lineNumber: 392,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/navbar.jsx",
-                        lineNumber: 342,
+                        lineNumber: 343,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -660,18 +673,18 @@ function Navbar({ initialColor = "white", adaptiveMode = true, blendMode = "diff
                             children: menuOpen ? "Close" : "Menu"
                         }, void 0, false, {
                             fileName: "[project]/src/components/navbar.jsx",
-                            lineNumber: 389,
+                            lineNumber: 398,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/navbar.jsx",
-                        lineNumber: 388,
+                        lineNumber: 397,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/navbar.jsx",
-                lineNumber: 289,
+                lineNumber: 290,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(MobileMenu, {
@@ -679,7 +692,7 @@ function Navbar({ initialColor = "white", adaptiveMode = true, blendMode = "diff
                 onClose: ()=>setMenuOpen(false)
             }, void 0, false, {
                 fileName: "[project]/src/components/navbar.jsx",
-                lineNumber: 399,
+                lineNumber: 408,
                 columnNumber: 7
             }, this)
         ]

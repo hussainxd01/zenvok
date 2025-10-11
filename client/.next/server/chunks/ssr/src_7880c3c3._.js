@@ -332,6 +332,8 @@ onOpen = ()=>{}, onClose = ()=>{}, onPlay = ()=>{}, onPause = ()=>{} })=>{
     const [currentSlide, setCurrentSlide] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(0);
     const [progress, setProgress] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(0);
     const [isScrubbing, setIsScrubbing] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
+    // NEW: whether cursor is currently over the modal video area
+    const [isCursorOverModal, setIsCursorOverModal] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     // Refs
     const sectionRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
     const mediaContainerRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
@@ -462,6 +464,11 @@ onOpen = ()=>{}, onClose = ()=>{}, onPlay = ()=>{}, onPause = ()=>{} })=>{
                 }
                 onClose();
             });
+        } else {
+            setIsOpen(false);
+            if (type === "video" && mediaRef.current) {
+                pauseVideo();
+            }
         }
     };
     const toggleMute = (e)=>{
@@ -530,13 +537,15 @@ onOpen = ()=>{}, onClose = ()=>{}, onPlay = ()=>{}, onPause = ()=>{} })=>{
         const followCursor = ()=>{
             cursor.current.x += (cursor.current.targetX - cursor.current.x) * 0.1;
             cursor.current.y += (cursor.current.targetY - cursor.current.y) * 0.1;
+            // place the followers slightly beside the actual cursor for that flowing look
             if (showreelFollower && modalFollower) {
-                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].set([
-                    showreelFollower,
-                    modalFollower
-                ], {
-                    x: cursor.current.x,
-                    y: cursor.current.y
+                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].set(showreelFollower, {
+                    x: cursor.current.x + 12,
+                    y: cursor.current.y + 8
+                });
+                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].set(modalFollower, {
+                    x: cursor.current.x + 12,
+                    y: cursor.current.y + 8
                 });
             }
             requestAnimationFrame(followCursor);
@@ -588,13 +597,33 @@ onOpen = ()=>{}, onClose = ()=>{}, onPlay = ()=>{}, onPause = ()=>{} })=>{
                 }
             });
             timelineRef.current = tl;
-            // Show the modal cursor follower
+            // Show the modal cursor follower (but visibility will be controlled by hover state)
             __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].to(modalCursorRef.current, {
                 opacity: 1,
                 scale: 1,
                 duration: 0.3,
                 ease: "power3.out"
             });
+            // Also hide the showreel follower when modal opens
+            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].to(showreelCursorRef.current, {
+                opacity: 0,
+                scale: 0.5,
+                duration: 0.2,
+                ease: "power1.out"
+            });
+            // Attach mouseenter/mouseleave on modal area to toggle isCursorOverModal
+            const modalEl = modalRef.current;
+            if (modalEl) {
+                const onModalEnter = ()=>setIsCursorOverModal(true);
+                const onModalLeave = ()=>setIsCursorOverModal(false);
+                modalEl.addEventListener("mouseenter", onModalEnter);
+                modalEl.addEventListener("mouseleave", onModalLeave);
+                // cleanup for these listeners when modal closes or effect re-runs
+                return ()=>{
+                    modalEl.removeEventListener("mouseenter", onModalEnter);
+                    modalEl.removeEventListener("mouseleave", onModalLeave);
+                };
+            }
         } else {
             // Hide the modal cursor follower when modal is closed
             if (modalCursorRef.current) {
@@ -605,10 +634,52 @@ onOpen = ()=>{}, onClose = ()=>{}, onPlay = ()=>{}, onPause = ()=>{} })=>{
                     ease: "power3.out"
                 });
             }
+            // restore showreel cursor visibility state depending on hover
+            if (isHovering && showreelCursorRef.current) {
+                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].to(showreelCursorRef.current, {
+                    opacity: 1,
+                    scale: 1,
+                    duration: 0.25,
+                    ease: "power3.out"
+                });
+            }
         }
     }, [
         isOpen,
-        type
+        type,
+        isHovering
+    ]);
+    // NEW effect: when the cursor enters/leaves the modal area, toggle modal follower visibility
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        if (!modalCursorRef.current) return;
+        if (isOpen) {
+            if (isCursorOverModal) {
+                // hide the modal cursor when over the modal area
+                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].to(modalCursorRef.current, {
+                    opacity: 0,
+                    scale: 0.5,
+                    duration: 0.15,
+                    ease: "power1.out"
+                });
+            } else {
+                // show the modal cursor when not over the modal (i.e., on overlay)
+                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].to(modalCursorRef.current, {
+                    opacity: 1,
+                    scale: 1,
+                    duration: 0.15,
+                    ease: "power1.out"
+                });
+            }
+        } else {
+            // when modal not open, keep it hidden
+            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].set(modalCursorRef.current, {
+                opacity: 0,
+                scale: 0.5
+            });
+        }
+    }, [
+        isCursorOverModal,
+        isOpen
     ]);
     // Hover state management
     const handleMouseEnter = ()=>{
@@ -669,7 +740,7 @@ onOpen = ()=>{}, onClose = ()=>{}, onPlay = ()=>{}, onPause = ()=>{} })=>{
                 className: "w-full h-full object-cover"
             }, void 0, false, {
                 fileName: "[project]/src/components/media-showcase.jsx",
-                lineNumber: 425,
+                lineNumber: 499,
                 columnNumber: 9
             }, this);
         } else {
@@ -680,7 +751,7 @@ onOpen = ()=>{}, onClose = ()=>{}, onPlay = ()=>{}, onPause = ()=>{} })=>{
                 className: "w-full h-full object-cover"
             }, void 0, false, {
                 fileName: "[project]/src/components/media-showcase.jsx",
-                lineNumber: 438,
+                lineNumber: 512,
                 columnNumber: 9
             }, this);
         }
@@ -703,12 +774,12 @@ onOpen = ()=>{}, onClose = ()=>{}, onPlay = ()=>{}, onPause = ()=>{} })=>{
                     type: "video/mp4"
                 }, void 0, false, {
                     fileName: "[project]/src/components/media-showcase.jsx",
-                    lineNumber: 464,
+                    lineNumber: 538,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/media-showcase.jsx",
-                lineNumber: 456,
+                lineNumber: 530,
                 columnNumber: 9
             }, this);
         } else {
@@ -719,7 +790,7 @@ onOpen = ()=>{}, onClose = ()=>{}, onPlay = ()=>{}, onPause = ()=>{} })=>{
                 className: "w-full h-full object-cover"
             }, void 0, false, {
                 fileName: "[project]/src/components/media-showcase.jsx",
-                lineNumber: 469,
+                lineNumber: 543,
                 columnNumber: 9
             }, this);
         }
@@ -745,17 +816,17 @@ onOpen = ()=>{}, onClose = ()=>{}, onPlay = ()=>{}, onPause = ()=>{} })=>{
                                 d: "M8 5v14l11-7z"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/media-showcase.jsx",
-                                lineNumber: 499,
+                                lineNumber: 574,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/components/media-showcase.jsx",
-                            lineNumber: 493,
+                            lineNumber: 568,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/media-showcase.jsx",
-                        lineNumber: 492,
+                        lineNumber: 566,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -763,13 +834,50 @@ onOpen = ()=>{}, onClose = ()=>{}, onPlay = ()=>{}, onPause = ()=>{} })=>{
                         children: playText
                     }, void 0, false, {
                         fileName: "[project]/src/components/media-showcase.jsx",
-                        lineNumber: 502,
+                        lineNumber: 577,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/media-showcase.jsx",
-                lineNumber: 484,
+                lineNumber: 558,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                ref: modalCursorRef,
+                className: "pointer-events-none fixed top-0 left-0 w-auto h-20 flex items-center justify-center gap-2 bg-opacity-20 rounded-full z-[9999]",
+                style: {
+                    opacity: 0,
+                    transform: "translate(-50%, -50%)"
+                },
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "w-6 h-6 flex items-center justify-center",
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__["X"], {
+                            size: 20,
+                            color: "white"
+                        }, void 0, false, {
+                            fileName: "[project]/src/components/media-showcase.jsx",
+                            lineNumber: 590,
+                            columnNumber: 11
+                        }, this)
+                    }, void 0, false, {
+                        fileName: "[project]/src/components/media-showcase.jsx",
+                        lineNumber: 589,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                        className: "text-white",
+                        children: closeText
+                    }, void 0, false, {
+                        fileName: "[project]/src/components/media-showcase.jsx",
+                        lineNumber: 592,
+                        columnNumber: 9
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/src/components/media-showcase.jsx",
+                lineNumber: 581,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
@@ -793,23 +901,23 @@ onOpen = ()=>{}, onClose = ()=>{}, onPlay = ()=>{}, onPause = ()=>{} })=>{
                                 children: title
                             }, void 0, false, {
                                 fileName: "[project]/src/components/media-showcase.jsx",
-                                lineNumber: 536,
+                                lineNumber: 611,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/components/media-showcase.jsx",
-                            lineNumber: 535,
+                            lineNumber: 610,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/media-showcase.jsx",
-                    lineNumber: 527,
+                    lineNumber: 602,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/media-showcase.jsx",
-                lineNumber: 521,
+                lineNumber: 596,
                 columnNumber: 7
             }, this),
             isOpen && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -824,18 +932,19 @@ onOpen = ()=>{}, onClose = ()=>{}, onPlay = ()=>{}, onPause = ()=>{} })=>{
                         renderModalMedia(),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                             onClick: closeModal,
-                            className: "absolute top-4 right-4 w-8 h-8 flex items-center justify-center text-white/60 hover:text-white transition-colors z-10 cursor-pointer",
+                            // <-- RAISED the z-index so it sits above the modal cursor follower (fixes unclickable X)
+                            className: "absolute top-4 right-4 w-8 h-8 flex items-center justify-center text-white/60 hover:text-white transition-colors z-[10005] cursor-pointer",
                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__["X"], {
                                 size: 20,
                                 strokeWidth: 1.5
                             }, void 0, false, {
                                 fileName: "[project]/src/components/media-showcase.jsx",
-                                lineNumber: 562,
+                                lineNumber: 638,
                                 columnNumber: 15
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/components/media-showcase.jsx",
-                            lineNumber: 558,
+                            lineNumber: 633,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -853,12 +962,12 @@ onOpen = ()=>{}, onClose = ()=>{}, onPlay = ()=>{}, onPause = ()=>{} })=>{
                                         }
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/media-showcase.jsx",
-                                        lineNumber: 575,
+                                        lineNumber: 651,
                                         columnNumber: 19
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/media-showcase.jsx",
-                                    lineNumber: 569,
+                                    lineNumber: 645,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -874,19 +983,19 @@ onOpen = ()=>{}, onClose = ()=>{}, onPlay = ()=>{}, onPause = ()=>{} })=>{
                                                         strokeWidth: 1.5
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/media-showcase.jsx",
-                                                        lineNumber: 592,
+                                                        lineNumber: 668,
                                                         columnNumber: 25
                                                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$play$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Play$3e$__["Play"], {
                                                         size: 16,
                                                         strokeWidth: 1.5
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/media-showcase.jsx",
-                                                        lineNumber: 594,
+                                                        lineNumber: 670,
                                                         columnNumber: 25
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/media-showcase.jsx",
-                                                    lineNumber: 587,
+                                                    lineNumber: 663,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -897,19 +1006,19 @@ onOpen = ()=>{}, onClose = ()=>{}, onPlay = ()=>{}, onPause = ()=>{} })=>{
                                                         strokeWidth: 1.5
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/media-showcase.jsx",
-                                                        lineNumber: 603,
+                                                        lineNumber: 679,
                                                         columnNumber: 25
                                                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$volume$2d$2$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Volume2$3e$__["Volume2"], {
                                                         size: 16,
                                                         strokeWidth: 1.5
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/media-showcase.jsx",
-                                                        lineNumber: 605,
+                                                        lineNumber: 681,
                                                         columnNumber: 25
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/media-showcase.jsx",
-                                                    lineNumber: 598,
+                                                    lineNumber: 674,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
@@ -924,12 +1033,12 @@ onOpen = ()=>{}, onClose = ()=>{}, onPlay = ()=>{}, onPause = ()=>{} })=>{
                                                         strokeWidth: 1.5
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/media-showcase.jsx",
-                                                        lineNumber: 618,
+                                                        lineNumber: 694,
                                                         columnNumber: 23
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/media-showcase.jsx",
-                                                    lineNumber: 614,
+                                                    lineNumber: 690,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -941,7 +1050,7 @@ onOpen = ()=>{}, onClose = ()=>{}, onPlay = ()=>{}, onPause = ()=>{} })=>{
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/media-showcase.jsx",
-                                                    lineNumber: 621,
+                                                    lineNumber: 697,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -952,12 +1061,12 @@ onOpen = ()=>{}, onClose = ()=>{}, onPlay = ()=>{}, onPause = ()=>{} })=>{
                                                         strokeWidth: 1.5
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/media-showcase.jsx",
-                                                        lineNumber: 629,
+                                                        lineNumber: 705,
                                                         columnNumber: 23
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/media-showcase.jsx",
-                                                    lineNumber: 625,
+                                                    lineNumber: 701,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
@@ -965,24 +1074,24 @@ onOpen = ()=>{}, onClose = ()=>{}, onPlay = ()=>{}, onPause = ()=>{} })=>{
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/media-showcase.jsx",
-                                    lineNumber: 583,
+                                    lineNumber: 659,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/media-showcase.jsx",
-                            lineNumber: 566,
+                            lineNumber: 642,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/media-showcase.jsx",
-                    lineNumber: 550,
+                    lineNumber: 625,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/media-showcase.jsx",
-                lineNumber: 545,
+                lineNumber: 620,
                 columnNumber: 9
             }, this)
         ]

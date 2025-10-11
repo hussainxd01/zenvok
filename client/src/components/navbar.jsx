@@ -139,6 +139,7 @@ function MobileMenu({ isOpen, onClose }) {
     { text: "About", href: "/about" },
     { text: "Works", href: "/works" },
     { text: "Service", href: "/service" },
+    { text: "Pricing", href: "/pricing" },
     { text: "Contact", href: "/contact" },
   ];
 
@@ -339,7 +340,7 @@ export default function Navbar({
           </div>
         </div>
 
-        <div className="hidden md:flex items-center gap-6 text-sm">
+        <div className="hidden md:flex items-center gap-4 text-sm">
           <Link
             href="/"
             className={`hover:opacity-70 transition-opacity ${
@@ -371,6 +372,14 @@ export default function Navbar({
             }`}
           >
             Service
+          </Link>
+          <Link
+            href="/pricing"
+            className={`hover:opacity-70 transition-opacity ${
+              pathname === "/service" ? "opacity-70" : ""
+            }`}
+          >
+            Pricing
           </Link>
           <Link
             href="/contact"

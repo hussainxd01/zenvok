@@ -59,6 +59,9 @@ const MediaShowcase = ({
   const [progress, setProgress] = useState(0);
   const [isScrubbing, setIsScrubbing] = useState(false);
 
+  // NEW: whether cursor is currently over the modal video area
+  const [isCursorOverModal, setIsCursorOverModal] = useState(false);
+
   // Refs
   const sectionRef = useRef(null);
   const mediaContainerRef = useRef(null);
@@ -213,6 +216,11 @@ const MediaShowcase = ({
         }
         onClose();
       });
+    } else {
+      setIsOpen(false);
+      if (type === "video" && mediaRef.current) {
+        pauseVideo();
+      }
     }
   };
 
@@ -288,10 +296,15 @@ const MediaShowcase = ({
       cursor.current.x += (cursor.current.targetX - cursor.current.x) * 0.1;
       cursor.current.y += (cursor.current.targetY - cursor.current.y) * 0.1;
 
+      // place the followers slightly beside the actual cursor for that flowing look
       if (showreelFollower && modalFollower) {
-        gsap.set([showreelFollower, modalFollower], {
-          x: cursor.current.x,
-          y: cursor.current.y,
+        gsap.set(showreelFollower, {
+          x: cursor.current.x + 12,
+          y: cursor.current.y + 8,
+        });
+        gsap.set(modalFollower, {
+          x: cursor.current.x + 12,
+          y: cursor.current.y + 8,
         });
       }
 
@@ -348,13 +361,36 @@ const MediaShowcase = ({
 
       timelineRef.current = tl;
 
-      // Show the modal cursor follower
+      // Show the modal cursor follower (but visibility will be controlled by hover state)
       gsap.to(modalCursorRef.current, {
         opacity: 1,
         scale: 1,
         duration: 0.3,
         ease: "power3.out",
       });
+
+      // Also hide the showreel follower when modal opens
+      gsap.to(showreelCursorRef.current, {
+        opacity: 0,
+        scale: 0.5,
+        duration: 0.2,
+        ease: "power1.out",
+      });
+
+      // Attach mouseenter/mouseleave on modal area to toggle isCursorOverModal
+      const modalEl = modalRef.current;
+      if (modalEl) {
+        const onModalEnter = () => setIsCursorOverModal(true);
+        const onModalLeave = () => setIsCursorOverModal(false);
+        modalEl.addEventListener("mouseenter", onModalEnter);
+        modalEl.addEventListener("mouseleave", onModalLeave);
+
+        // cleanup for these listeners when modal closes or effect re-runs
+        return () => {
+          modalEl.removeEventListener("mouseenter", onModalEnter);
+          modalEl.removeEventListener("mouseleave", onModalLeave);
+        };
+      }
     } else {
       // Hide the modal cursor follower when modal is closed
       if (modalCursorRef.current) {
@@ -365,8 +401,46 @@ const MediaShowcase = ({
           ease: "power3.out",
         });
       }
+
+      // restore showreel cursor visibility state depending on hover
+      if (isHovering && showreelCursorRef.current) {
+        gsap.to(showreelCursorRef.current, {
+          opacity: 1,
+          scale: 1,
+          duration: 0.25,
+          ease: "power3.out",
+        });
+      }
     }
-  }, [isOpen, type]);
+  }, [isOpen, type, isHovering]);
+
+  // NEW effect: when the cursor enters/leaves the modal area, toggle modal follower visibility
+  useEffect(() => {
+    if (!modalCursorRef.current) return;
+
+    if (isOpen) {
+      if (isCursorOverModal) {
+        // hide the modal cursor when over the modal area
+        gsap.to(modalCursorRef.current, {
+          opacity: 0,
+          scale: 0.5,
+          duration: 0.15,
+          ease: "power1.out",
+        });
+      } else {
+        // show the modal cursor when not over the modal (i.e., on overlay)
+        gsap.to(modalCursorRef.current, {
+          opacity: 1,
+          scale: 1,
+          duration: 0.15,
+          ease: "power1.out",
+        });
+      }
+    } else {
+      // when modal not open, keep it hidden
+      gsap.set(modalCursorRef.current, { opacity: 0, scale: 0.5 });
+    }
+  }, [isCursorOverModal, isOpen]);
 
   // Hover state management
   const handleMouseEnter = () => {
@@ -490,6 +564,7 @@ const MediaShowcase = ({
         }}
       >
         <div className="w-6 h-6 flex items-center justify-center">
+          {/* KEEP original play SVG exactly as you had it */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -503,7 +578,7 @@ const MediaShowcase = ({
       </div>
 
       {/* Close cursor follower */}
-      {/* <div
+      <div
         ref={modalCursorRef}
         className="pointer-events-none fixed top-0 left-0 w-auto h-20 flex items-center justify-center gap-2 bg-opacity-20 rounded-full z-[9999]"
         style={{
@@ -515,7 +590,7 @@ const MediaShowcase = ({
           <X size={20} color="white" />
         </div>
         <p className="text-white">{closeText}</p>
-      </div> */}
+      </div>
 
       {/* Media Section */}
       <section
@@ -557,7 +632,8 @@ const MediaShowcase = ({
             {/* Close Button */}
             <button
               onClick={closeModal}
-              className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center text-white/60 hover:text-white transition-colors z-10 cursor-pointer"
+              // <-- RAISED the z-index so it sits above the modal cursor follower (fixes unclickable X)
+              className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center text-white/60 hover:text-white transition-colors z-[10005] cursor-pointer"
             >
               <X size={20} strokeWidth={1.5} />
             </button>
