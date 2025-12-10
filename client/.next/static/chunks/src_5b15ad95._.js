@@ -11,145 +11,165 @@ __turbopack_context__.s({
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/node_modules/gsap/index.js [app-client] (ecmascript) <locals>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$masked$2d$text$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/masked-text.jsx [app-client] (ecmascript)");
 ;
 var _s = __turbopack_context__.k.signature();
 "use client";
 ;
 ;
-;
-const Statement = ()=>{
+const MaskedText = ({ text, className = "", indent = true, positioning = "" })=>{
     _s();
-    const hrRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
+    const containerRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
+    const textRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
+    const wordContainersRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])([]);
+    const wordRefs = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])([]);
+    const [isInView, setIsInView] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    const animationExecuted = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(false);
+    const createMaskedWords = ()=>{
+        const element = textRef.current;
+        if (!element) return;
+        const words = text.split(" ");
+        element.innerHTML = ""; // Clear any content
+        wordRefs.current = [];
+        wordContainersRef.current = [];
+        const wrapper = document.createElement("div");
+        wrapper.style.display = "flex";
+        wrapper.style.flexWrap = "wrap";
+        wrapper.style.alignItems = "flex-start";
+        wrapper.style.justifyContent = "flex-start";
+        wrapper.style.lineHeight = "1"; // Tighter line height for better control
+        if (indent) {
+            const indentDiv = document.createElement("div");
+            indentDiv.style.width = "3em";
+            indentDiv.style.display = "inline-block";
+            indentDiv.style.height = "1px";
+            wrapper.appendChild(indentDiv);
+        }
+        words.forEach((word, index)=>{
+            // Create container with overflow hidden
+            const container = document.createElement("div");
+            container.style.display = "inline-block";
+            container.style.overflow = "hidden";
+            container.style.position = "relative";
+            container.style.verticalAlign = "top";
+            container.style.paddingBottom = "5px";
+            container.style.paddingRight = "2px";
+            container.style.marginRight = index < words.length - 1 ? "0.20em" : "0"; // Better word spacing
+            // Create word span that will be animated
+            const wordSpan = document.createElement("span");
+            wordSpan.textContent = word;
+            wordSpan.style.display = "inline-block";
+            wordSpan.style.transform = "translateY(100%)";
+            wordSpan.style.willChange = "transform";
+            container.appendChild(wordSpan);
+            wrapper.appendChild(container);
+            // Store references for animation
+            wordContainersRef.current.push(container);
+            wordRefs.current.push(wordSpan);
+        });
+        element.appendChild(wrapper);
+        // Force layout calculation to ensure proper sizing
+        wordContainersRef.current.forEach((container, i)=>{
+            const wordHeight = wordRefs.current[i].offsetHeight;
+            container.style.height = `${wordHeight + 2}px`;
+        });
+    };
+    // Setup Intersection Observer
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
-        "Statement.useEffect": ()=>{
-            // Animate the HR line when it comes into view
+        "MaskedText.useEffect": ()=>{
+            const options = {
+                root: null,
+                rootMargin: "0px",
+                threshold: 0.1
+            };
             const observer = new IntersectionObserver({
-                "Statement.useEffect": (entries)=>{
+                "MaskedText.useEffect": (entries)=>{
                     entries.forEach({
-                        "Statement.useEffect": (entry)=>{
+                        "MaskedText.useEffect": (entry)=>{
                             if (entry.isIntersecting) {
-                                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].fromTo(hrRef.current, {
-                                    width: "0%"
-                                }, {
-                                    width: "100%",
-                                    duration: 1,
-                                    ease: "power2.out"
-                                });
+                                setIsInView(true);
                                 observer.disconnect();
                             }
                         }
-                    }["Statement.useEffect"]);
+                    }["MaskedText.useEffect"]);
                 }
-            }["Statement.useEffect"], {
-                threshold: 0.2
-            });
-            if (hrRef.current) observer.observe(hrRef.current);
+            }["MaskedText.useEffect"], options);
+            if (containerRef.current) {
+                observer.observe(containerRef.current);
+            }
             return ({
-                "Statement.useEffect": ()=>observer.disconnect()
-            })["Statement.useEffect"];
+                "MaskedText.useEffect": ()=>{
+                    if (observer) {
+                        observer.disconnect();
+                    }
+                }
+            })["MaskedText.useEffect"];
         }
-    }["Statement.useEffect"], []);
-    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
-        className: "bg-black text-white py-12 px-4 sm:py-16 sm:px-6 md:px-8 lg:px-16 w-full",
-        children: [
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "max-w-7xl mx-auto",
-                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$masked$2d$text$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                    text: `We blend the power of strategy, design, and performance marketing to transform founders' visions into remarkable brands. See our services.`,
-                    className: "text-[1.5rem] sm:text-3xl md:text-5xl lg:text-6xl font-extralight leading-snug sm:leading-tight tracking-tight sm:tracking-tighter mb-8 sm:mb-12 text-white",
-                    indent: true
-                }, void 0, false, {
-                    fileName: "[project]/src/components/masked-text.jsx",
-                    lineNumber: 39,
-                    columnNumber: 9
-                }, this)
-            }, void 0, false, {
-                fileName: "[project]/src/components/masked-text.jsx",
-                lineNumber: 38,
-                columnNumber: 7
-            }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                ref: hrRef,
-                className: "w-0 border-gray-50/30 border-b h-[0.5px] max-w-7xl mx-auto"
-            }, void 0, false, {
-                fileName: "[project]/src/components/masked-text.jsx",
-                lineNumber: 47,
-                columnNumber: 7
-            }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "max-w-7xl mx-auto mt-10 sm:mt-12 grid grid-cols-2 gap-x-4 gap-y-6 sm:gap-x-8 md:gap-16",
-                children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "column",
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$masked$2d$text$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                            text: "Design that converts.",
-                            className: "text-base sm:text-lg md:text-2xl font-light text-white",
-                            indent: false
-                        }, void 0, false, {
-                            fileName: "[project]/src/components/masked-text.jsx",
-                            lineNumber: 56,
-                            columnNumber: 11
-                        }, this)
-                    }, void 0, false, {
-                        fileName: "[project]/src/components/masked-text.jsx",
-                        lineNumber: 55,
-                        columnNumber: 9
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "column flex flex-col gap-4 sm:gap-6 tracking-tight col-span-1",
-                        children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$masked$2d$text$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                text: "Since day one, Zenvok has helped businesses launch, scale, and stay sharp — through strategy, design, and clean engineering.",
-                                className: "text-sm sm:text-base md:text-lg font-light leading-relaxed text-white",
-                                indent: false
-                            }, void 0, false, {
-                                fileName: "[project]/src/components/masked-text.jsx",
-                                lineNumber: 65,
-                                columnNumber: 11
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$masked$2d$text$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                text: "In 2025, we introduced our selective model — partnering with a few bold teams at a time to go deep, not wide.",
-                                className: "text-sm sm:text-base md:text-lg font-light leading-relaxed text-white",
-                                indent: false
-                            }, void 0, false, {
-                                fileName: "[project]/src/components/masked-text.jsx",
-                                lineNumber: 70,
-                                columnNumber: 11
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
-                                href: "#",
-                                className: "underline underline-offset-4 text-sm sm:text-base font-light mt-2 text-white",
-                                children: "Learn more ↗"
-                            }, void 0, false, {
-                                fileName: "[project]/src/components/masked-text.jsx",
-                                lineNumber: 76,
-                                columnNumber: 11
-                            }, this)
-                        ]
-                    }, void 0, true, {
-                        fileName: "[project]/src/components/masked-text.jsx",
-                        lineNumber: 64,
-                        columnNumber: 9
-                    }, this)
-                ]
-            }, void 0, true, {
-                fileName: "[project]/src/components/masked-text.jsx",
-                lineNumber: 53,
-                columnNumber: 7
-            }, this)
-        ]
-    }, void 0, true, {
+    }["MaskedText.useEffect"], []);
+    // Handle creating masked words
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useLayoutEffect"])({
+        "MaskedText.useLayoutEffect": ()=>{
+            createMaskedWords();
+            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].set(wordRefs.current, {
+                y: "100%",
+                immediateRender: true
+            });
+        }
+    }["MaskedText.useLayoutEffect"], [
+        text
+    ]);
+    // Handle animation when in view
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "MaskedText.useEffect": ()=>{
+            if (isInView && !animationExecuted.current && wordRefs.current.length > 0) {
+                setTimeout({
+                    "MaskedText.useEffect": ()=>{
+                        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].to(wordRefs.current, {
+                            y: "0%",
+                            duration: 0.6,
+                            ease: "power3.out",
+                            stagger: 0.05,
+                            onComplete: {
+                                "MaskedText.useEffect": ()=>{
+                                    animationExecuted.current = true;
+                                    wordContainersRef.current.forEach({
+                                        "MaskedText.useEffect": (container, i)=>{
+                                            const wordHeight = wordRefs.current[i].offsetHeight;
+                                            container.style.height = `${wordHeight + 6}px`;
+                                        }
+                                    }["MaskedText.useEffect"]);
+                                }
+                            }["MaskedText.useEffect"]
+                        });
+                    }
+                }["MaskedText.useEffect"], 100);
+            }
+        }
+    }["MaskedText.useEffect"], [
+        isInView
+    ]);
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        ref: containerRef,
+        className: positioning,
+        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
+            ref: textRef,
+            className: `text-black font-light tracking-tight ${className}`,
+            children: text
+        }, void 0, false, {
+            fileName: "[project]/src/components/masked-text.jsx",
+            lineNumber: 139,
+            columnNumber: 7
+        }, this)
+    }, void 0, false, {
         fileName: "[project]/src/components/masked-text.jsx",
-        lineNumber: 36,
+        lineNumber: 138,
         columnNumber: 5
     }, this);
 };
-_s(Statement, "i5zpyJpWQ+DA6F3KHQ+sTsO7LFE=");
-_c = Statement;
-const __TURBOPACK__default__export__ = Statement;
+_s(MaskedText, "oBGb3CXPhwzMTkQ+KMFfIqc0ADM=");
+_c = MaskedText;
+const __TURBOPACK__default__export__ = MaskedText;
 var _c;
-__turbopack_context__.k.register(_c, "Statement");
+__turbopack_context__.k.register(_c, "MaskedText");
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
     __turbopack_context__.k.registerExports(module, globalThis.$RefreshHelpers$);
 }
