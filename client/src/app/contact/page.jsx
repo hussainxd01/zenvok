@@ -53,15 +53,42 @@ export default function Page() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSubmitted(true);
-    setTimeout(() => {
-      setFormData({ name: "", email: "", company: "", message: "" });
-      setIsSubmitted(false);
-    }, 3000);
-  };
 
+    try {
+      console.log("Submitting form data:", formData); // Debug log
+
+      const res = await fetch("http://localhost:5000/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      console.log("Response status:", res.status); // Debug log
+
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.message || "Failed to submit");
+      }
+
+      const data = await res.json();
+      console.log("Success:", data); // Debug log
+
+      setIsSubmitted(true);
+      setTimeout(() => {
+        setFormData({ name: "", email: "", company: "", message: "" });
+        setIsSubmitted(false);
+      }, 3000);
+    } catch (error) {
+      console.error("Error submitting:", error);
+      alert(
+        `Something went wrong: ${error.message}. Check console for details.`
+      );
+    }
+  };
   return (
     <main className="min-h-screen bg-white">
       <div
