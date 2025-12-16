@@ -1,4 +1,6 @@
-import { useEffect, useRef } from "react";
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -10,6 +12,11 @@ export default function Footer() {
   const letterRefs = useRef([]);
   const svgContainerRef = useRef(null);
   const animationInitialized = useRef(false);
+
+  // 🔌 newsletter state (NEW)
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState("idle");
+  const [feedback, setFeedback] = useState("");
 
   const setLetterRef = (el) => {
     if (el && !letterRefs.current.includes(el)) {
@@ -30,7 +37,6 @@ export default function Footer() {
 
     animationInitialized.current = true;
 
-    // Initial state
     gsap.set(letterRefs.current, {
       yPercent: 100,
       opacity: 0,
@@ -38,11 +44,10 @@ export default function Footer() {
       transformOrigin: "bottom",
     });
 
-    // Animate letters when footer enters view
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: footerRef.current,
-        start: "top 90%", // triggers when footer starts to appear
+        start: "top 90%",
         toggleActions: "play none none none",
         id: "footer-animation",
       },
@@ -67,6 +72,37 @@ export default function Footer() {
     };
   }, []);
 
+  // 🔌 submit handler (NEW)
+  const handleNewsletterSubmit = async (e) => {
+    e.preventDefault();
+    if (!email) return;
+
+    try {
+      setStatus("loading");
+
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/newsletter`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email }),
+        }
+      );
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message);
+
+      setFeedback("You're in. Welcome aboard ✨");
+      setStatus("success");
+      setEmail("");
+    } catch (err) {
+      setFeedback(err.message || "Something went wrong");
+      setStatus("error");
+    }
+  };
+
   return (
     <footer
       ref={footerRef}
@@ -84,15 +120,28 @@ export default function Footer() {
             </a>
           </div>
 
+          {/* 📨 Newsletter (wired, not redesigned) */}
           <div className="mb-8">
             <p className="mb-2">Sign up for our newsletter (No spam)</p>
-            <div className="flex border-b border-white pb-2 max-w-xs">
+
+            <form
+              onSubmit={handleNewsletterSubmit}
+              className="flex border-b border-white pb-2 max-w-xs"
+            >
               <input
                 type="email"
                 placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
                 className="bg-transparent outline-none flex-grow"
               />
-              <button className="ml-2">
+
+              <button
+                type="submit"
+                disabled={status === "loading"}
+                className="ml-2"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -107,7 +156,14 @@ export default function Footer() {
                   <path d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
               </button>
-            </div>
+            </form>
+
+            {status !== "idle" && (
+              <p className="mt-2 text-sm opacity-80">
+                {status === "loading" && "Subscribing…"}
+                {(status === "success" || status === "error") && feedback}
+              </p>
+            )}
           </div>
         </div>
 
@@ -164,7 +220,7 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* SVG animated logo */}
+      {/* SVG animated logo — untouched */}
       <div
         className="logo-wrapper w-full sm:px-10 mt-auto"
         ref={svgContainerRef}
