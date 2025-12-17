@@ -12,6 +12,7 @@ export default function Page() {
     message: "",
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // ✅ added
   const contactRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -55,10 +56,9 @@ export default function Page() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true); // ✅ start loader
 
     try {
-      console.log("Submitting form data:", formData); // Debug log
-
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/contact`,
         {
@@ -70,15 +70,12 @@ export default function Page() {
         }
       );
 
-      console.log("Response status:", res.status); // Debug log
-
       if (!res.ok) {
         const errorData = await res.json().catch(() => ({}));
         throw new Error(errorData.message || "Failed to submit");
       }
 
-      const data = await res.json();
-      console.log("Success:", data); // Debug log
+      await res.json();
 
       setIsSubmitted(true);
       setTimeout(() => {
@@ -86,12 +83,12 @@ export default function Page() {
         setIsSubmitted(false);
       }, 3000);
     } catch (error) {
-      console.error("Error submitting:", error);
-      alert(
-        `Something went wrong: ${error.message}. Check console for details.`
-      );
+      alert(`Something went wrong: ${error.message}`);
+    } finally {
+      setIsLoading(false); // ✅ stop loader
     }
   };
+
   return (
     <main className="min-h-screen bg-white">
       <div
@@ -119,7 +116,7 @@ export default function Page() {
       >
         <div className="max-w-[1400px] mx-auto sm:px-12 px-2 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
-            {/* Left Column - Contact Info */}
+            {/* Left Column */}
             <div
               className={`flex flex-col justify-center transition-all duration-1000 ${
                 isVisible
@@ -132,18 +129,11 @@ export default function Page() {
               </p>
 
               <h2 className="font-light text-[32px] sm:text-6xl leading-tight mb-12 text-white border-b border-white pb-8">
-                LET'S TALK
+                LET&apos;S TALK
               </h2>
 
               <div className="space-y-10">
-                {/* Address */}
-                <div
-                  className={`transition-all duration-1000 delay-100 ${
-                    isVisible
-                      ? "opacity-100 translate-y-0"
-                      : "opacity-0 translate-y-8"
-                  }`}
-                >
+                <div>
                   <p className="text-xs tracking-widest text-gray-400 mb-2">
                     Address
                   </p>
@@ -151,49 +141,6 @@ export default function Page() {
                   <p className="text-sm font-light text-white">
                     West Bengal, 7000
                   </p>
-                </div>
-
-                {/* Socials */}
-                <div
-                  className={`transition-all duration-1000 delay-200 ${
-                    isVisible
-                      ? "opacity-100 translate-y-0"
-                      : "opacity-0 translate-y-8"
-                  }`}
-                >
-                  <p className="text-xs tracking-widest text-gray-400 mb-3">
-                    Follow
-                  </p>
-                  <div className="flex gap-6">
-                    <a
-                      href="#"
-                      className="text-sm font-light text-white hover:text-gray-300 transition-colors"
-                    >
-                      Instagram
-                    </a>
-                    <a
-                      href="#"
-                      className="text-sm font-light text-white hover:text-gray-300 transition-colors"
-                    >
-                      LinkedIn
-                    </a>
-                  </div>
-                </div>
-
-                {/* Careers */}
-                <div
-                  className={`transition-all duration-1000 delay-300 ${
-                    isVisible
-                      ? "opacity-100 translate-y-0"
-                      : "opacity-0 translate-y-8"
-                  }`}
-                >
-                  <a
-                    href="/works"
-                    className="text-sm font-light text-white hover:text-gray-300 transition-colors"
-                  >
-                    Works
-                  </a>
                 </div>
               </div>
             </div>
@@ -207,8 +154,7 @@ export default function Page() {
               }`}
             >
               <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Name Input */}
-                <div className="border-b border-gray-600 pb-3 group focus-within:border-white transition-colors">
+                <div className="border-b border-gray-600 pb-3">
                   <input
                     type="text"
                     name="name"
@@ -220,8 +166,7 @@ export default function Page() {
                   />
                 </div>
 
-                {/* Email Input */}
-                <div className="border-b border-gray-600 pb-3 group focus-within:border-white transition-colors">
+                <div className="border-b border-gray-600 pb-3">
                   <input
                     type="email"
                     name="email"
@@ -233,8 +178,7 @@ export default function Page() {
                   />
                 </div>
 
-                {/* Company Input */}
-                <div className="border-b border-gray-600 pb-3 group focus-within:border-white transition-colors">
+                <div className="border-b border-gray-600 pb-3">
                   <input
                     type="text"
                     name="company"
@@ -245,8 +189,7 @@ export default function Page() {
                   />
                 </div>
 
-                {/* Message Input */}
-                <div className="border-b border-gray-600 pb-3 group focus-within:border-white transition-colors">
+                <div className="border-b border-gray-600 pb-3">
                   <textarea
                     name="message"
                     value={formData.message}
@@ -258,7 +201,7 @@ export default function Page() {
                   />
                 </div>
 
-                {/* Submit Button */}
+                {/* Submit */}
                 <div className="pt-2">
                   {isSubmitted ? (
                     <div className="text-gray-400 font-light text-sm">
@@ -267,9 +210,33 @@ export default function Page() {
                   ) : (
                     <button
                       type="submit"
-                      className="w-full bg-white text-black font-light py-3 hover:bg-gray-200 transition-colors duration-300 disabled:bg-gray-600 text-sm cursor-pointer"
+                      disabled={isLoading}
+                      className="relative w-full bg-white text-black font-light py-3 text-sm overflow-hidden group cursor-pointer disabled:cursor-not-allowed"
                     >
-                      Send Message
+                      {/* Button text */}
+                      <span
+                        className={`relative z-10 transition-opacity duration-300 ${
+                          isLoading ? "opacity-0" : "opacity-100"
+                        }`}
+                      >
+                        Send Message
+                      </span>
+
+                      {/* Sending text */}
+                      <span
+                        className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ${
+                          isLoading ? "opacity-100" : "opacity-0"
+                        }`}
+                      >
+                        Sending
+                      </span>
+
+                      {/* Minimal progress line */}
+                      {isLoading && (
+                        <span className="absolute bottom-0 left-0 h-[2px] w-full bg-black/10 overflow-hidden">
+                          <span className="absolute left-0 top-0 h-full w-1/3 bg-black animate-[slide_1.2s_linear_infinite]" />
+                        </span>
+                      )}
                     </button>
                   )}
                 </div>
