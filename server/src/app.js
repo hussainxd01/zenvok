@@ -6,7 +6,29 @@ import errorHandler from "./middlewares/error.middleware.js";
 
 const app = express();
 
-app.use(cors({ origin: "*" }));
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://zenvok.vercel.app",
+  "https://zenvok-api.onrender.com",
+  // change if you have custom domain
+];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // allow requests with no origin (Postman, curl)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("Not allowed by CORS"));
+    },
+    methods: ["GET", "POST"],
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 app.use("/api/contact", contactRoutes);
