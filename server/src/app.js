@@ -3,6 +3,7 @@ import cors from "cors";
 import contactRoutes from "./modules/contact/contact.routes.js";
 import newsletterRoutes from "./modules/newsletter/newsletter.routes.js";
 import errorHandler from "./middlewares/error.middleware.js";
+import adminRoutes from "./modules/admin/admin.routes.js";
 
 const app = express();
 
@@ -33,6 +34,7 @@ app.use(express.json());
 
 app.use("/api/contact", contactRoutes);
 app.use("/api/newsletter", newsletterRoutes);
+app.use("/api/admin", adminRoutes);
 
 app.use(errorHandler);
 
