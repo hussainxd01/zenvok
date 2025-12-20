@@ -34,8 +34,9 @@ export default function AdminLoginPage() {
 
       console.log("Admin logged in:", data);
 
-      // later → redirect to admin dashboard
-      // router.push("/admin");
+      // save token + redirect 👇
+      localStorage.setItem("adminToken", data.data.token);
+      window.location.href = "/admin";
     } catch (err) {
       console.error(err);
       setError(err.message || "Network error");
