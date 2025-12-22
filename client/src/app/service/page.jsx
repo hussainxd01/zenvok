@@ -13,7 +13,7 @@ export default function Home() {
         <div className="max-w-[1400px] mx-auto sm:px-12 px-2 w-full">
           <MaskedText
             text={
-              "One mission. Two engagement models. Undeniable transformation and growth."
+              "We create custom websites that blend creativity, strategy, and technology to elevate your digital presence."
             }
             className="font-light text-[20px] sm:text-6xl text-left leading-[1.3] sm:leading-[0.9] tracking-tight sm:tracking-tighter"
             indent={0}

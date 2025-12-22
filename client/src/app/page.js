@@ -1,13 +1,13 @@
 "use client";
 
+import Navbar from "@/components/navbar";
 import Hero from "@/components/hero";
 import MediaShowcase from "@/components/media-showcase";
-import Statement from "../components/statement";
-import Footer from "@/components/footer";
-import Approach from "@/components/approach";
-import Space from "@/components/space";
-import Navbar from "@/components/navbar";
+import Statement from "@/components/statement";
 import WorkShowcase from "@/components/showcase";
+import Approach from "@/components/approach";
+import Footer from "@/components/footer";
+
 export default function Home() {
   return (
     <>
@@ -15,7 +15,6 @@ export default function Home() {
       <Hero />
       <MediaShowcase enableScaleAnimation={false} />
       <Statement />
-      {/* <Space /> */}
       <WorkShowcase />
       <Approach />
       <Footer />

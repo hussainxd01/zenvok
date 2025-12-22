@@ -44,7 +44,7 @@ const Statement = () => {
       {/* Main heading */}
       <div className="max-w-7xl mx-auto">
         <MaskedText
-          text={`We blend the power of strategy, design, and performance marketing to transform founders' visions into remarkable brands. See our services.`}
+          text={`We design, develop, and optimize digital systems that attract customers, convert traffic, and sustain long-term growth.`}
           className="text-[1.5rem] sm:text-3xl md:text-5xl lg:text-6xl font-extralight leading-snug sm:leading-tight tracking-tight sm:tracking-tighter mb-12 text-white"
           indent={true}
         />
@@ -70,12 +70,12 @@ const Statement = () => {
         {/* Right column */}
         <div className="flex-1 min-w-[150px] max-w-[600px] flex flex-col gap-4 sm:gap-6 tracking-tight">
           <MaskedText
-            text="We turn digital ideas into living systems — adaptable, intentional, and built to evolve."
+            text="We design, develop, and optimize digital systems that attract customers, convert traffic, and sustain long-term growth."
             className="text-sm sm:text-base md:text-lg font-light leading-relaxed text-white"
             indent={false}
           />
           <MaskedText
-            text="Our approach merges design clarity with technical precision, so your brand doesn’t just launch — it lasts."
+            text="Our process blends creative excellence with technical precision for lasting impact."
             className="text-sm sm:text-base md:text-lg font-light leading-relaxed text-white"
             indent={false}
           />

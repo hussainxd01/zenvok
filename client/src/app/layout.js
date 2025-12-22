@@ -2,7 +2,6 @@
 import { useEffect } from "react";
 import Lenis from "lenis";
 import "./globals.css";
-import LoadingScreen from "@/components/loading-screen";
 import { usePathname } from "next/navigation";
 import Navbar from "@/components/navbar";
 

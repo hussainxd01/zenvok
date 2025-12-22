@@ -10,20 +10,20 @@ export default function PricingPage() {
       <Navbar adaptiveMode={true} />
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-6">
+      <section className="pt-20 pb-16 px-4 sm:pt-28 sm:pb-20 sm:px-6">
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-[8rem] leading-[0.9] font-light tracking-tight mb-12">
+          <h1 className="text-[clamp(3rem,12vw,8rem)] leading-[0.9] font-light tracking-tight mb-12">
             Pricing.
           </h1>
           <div className="h-px bg-gray-200 mb-12" />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 sm:gap-16">
             <div>
-              <p className="text-lg leading-relaxed">
+              <p className="text-lg leading-relaxed text-pretty">
                 Simple, transparent pricing.
               </p>
             </div>
             <div>
-              <p className="text-lg leading-relaxed">
+              <p className="text-lg leading-relaxed text-pretty">
                 Every project is unique, crafted with precision and care. We
                 believe in quality over quantity, working with select clients to
                 deliver transformative results.
@@ -34,11 +34,11 @@ export default function PricingPage() {
       </section>
 
       {/* Pricing Grid */}
-      <section className="py-20 px-6">
+      <section className="py-16 px-4 sm:px-6 sm:py-20">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-gray-200 border border-gray-200">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-gray-200 border border-gray-200">
             {/* Starter */}
-            <div className="bg-white p-12">
+            <div className="bg-white p-8 sm:p-10 lg:p-12">
               <div className="mb-8">
                 <h3 className="text-sm uppercase tracking-wider text-gray-500 mb-4">
                   Starter
@@ -49,7 +49,7 @@ export default function PricingPage() {
 
               <div className="h-px bg-gray-200 my-8" />
 
-              <ul className="space-y-4 text-sm leading-relaxed">
+              <ul className="space-y-4 text-sm leading-relaxed text-pretty">
                 <li>Functional Website</li>
                 <li>1 Page</li>
                 <li>Design Included</li>
@@ -58,13 +58,13 @@ export default function PricingPage() {
                 <li>Delivery in 5-7 days</li>
               </ul>
 
-              <button className="mt-12 w-full border border-black py-4 px-6 text-sm hover:bg-black hover:text-white transition-colors duration-300 cursor-pointer">
+              <button className="mt-12 w-full max-w-xs mx-auto border border-black py-4 px-6 text-sm hover:bg-black hover:text-white transition-colors duration-300 cursor-pointer block">
                 Get Started
               </button>
             </div>
 
-            {/* Partnership */}
-            <div className="bg-black text-white p-12">
+            {/* Ecommerce */}
+            <div className="bg-black text-white p-8 sm:p-10 lg:p-12">
               <div className="mb-8">
                 <h3 className="text-sm uppercase tracking-wider text-gray-400 mb-4">
                   Ecommerce
@@ -75,7 +75,7 @@ export default function PricingPage() {
 
               <div className="h-px bg-gray-800 my-8" />
 
-              <ul className="space-y-4 text-sm leading-relaxed">
+              <ul className="space-y-4 text-sm leading-relaxed text-pretty">
                 <li>10 Pages </li>
                 <li>Everything in Starter</li>
                 <li>E-Commerce Functionality</li>
@@ -85,13 +85,13 @@ export default function PricingPage() {
                 <li>14 Days Delivery</li>
               </ul>
 
-              <button className="mt-12 w-full border border-white py-4 px-6 text-sm hover:bg-white hover:text-black transition-colors duration-300 cursor-pointer">
+              <button className="mt-12 w-full max-w-xs mx-auto border border-white py-4 px-6 text-sm hover:bg-white hover:text-black transition-colors duration-300 cursor-pointer block">
                 Let&apos;s Talk
               </button>
             </div>
 
-            {/* Enterprise */}
-            <div className="bg-white p-12">
+            {/* Premium */}
+            <div className="bg-white p-8 sm:p-10 lg:p-12">
               <div className="mb-8">
                 <h3 className="text-sm uppercase tracking-wider text-gray-500 mb-4">
                   Premium
@@ -102,16 +102,16 @@ export default function PricingPage() {
 
               <div className="h-px bg-gray-200 my-8" />
 
-              <ul className="space-y-4 text-sm leading-relaxed">
+              <ul className="space-y-4 text-sm leading-relaxed text-pretty">
                 <li>Everything in Ecommerce</li>
                 <li>Fully Custom Design</li>
                 <li>Advanced SEO</li>
                 <li>Custom integrations</li>
                 <li>Advanced analytics</li>
-                <li>Multilingual Supoort</li>
+                <li>Multilingual Support</li>
               </ul>
 
-              <button className="mt-12 w-full border border-black py-4 px-6 text-sm hover:bg-black hover:text-white transition-colors duration-300 cursor-pointer">
+              <button className="mt-12 w-full max-w-xs mx-auto border border-black py-4 px-6 text-sm hover:bg-black hover:text-white transition-colors duration-300 cursor-pointer block">
                 Contact Us
               </button>
             </div>
@@ -120,21 +120,21 @@ export default function PricingPage() {
       </section>
 
       {/* Bottom Section */}
-      <section className="py-20 px-6">
+      <section className="py-16 px-4 sm:px-6 sm:py-20">
         <div className="max-w-7xl mx-auto">
           <div className="h-px bg-gray-200 mb-12" />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-12 sm:gap-16">
             <div>
-              <h3 className="text-3xl font-light mb-6">
+              <h3 className="text-3xl font-light mb-6 text-pretty">
                 Performance & emotion. You need both.
               </h3>
             </div>
             <div>
-              <p className="text-lg leading-relaxed mb-6">
+              <p className="text-lg leading-relaxed mb-6 text-pretty">
                 We build brands that are fast, reliable, and designed for
                 people—combining clean code with growth-focused design.
               </p>
-              <p className="text-lg leading-relaxed">
+              <p className="text-lg leading-relaxed text-pretty">
                 Every engagement includes strategic thinking, technical
                 precision, and a commitment to measurable results.
               </p>

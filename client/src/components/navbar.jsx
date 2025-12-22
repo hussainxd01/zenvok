@@ -342,7 +342,7 @@ export default function Navbar({
           </div>
         </Link>
 
-        <div className="hidden md:flex items-center gap-4 text-xs">
+        <div className="hidden md:flex items-center gap-2 font-semibold text-xs text-white">
           <Link
             href="/"
             className={`hover:opacity-70 transition-opacity uppercase ${
@@ -383,6 +383,9 @@ export default function Navbar({
           >
             Pricing
           </Link>
+        </div>
+
+        <div className="hidden md:flex items-center text-white font-semibold text-xs">
           <Link
             href="/contact"
             className={`hover:opacity-70 transition-opacity uppercase ${

@@ -16,7 +16,7 @@ export default function About() {
         <div className="max-w-[720px] sm:max-w-[1400px] mx-auto px-4  sm:px-12">
           <MaskedText
             text={
-              "We are a collective of seasoned creatives, strategists, growth marketers, and technologists, dedicated to transforming ambitious visions into category leaders."
+              "We are a team of experienced designers, strategists, and technologists passionate about crafting websites that turn bold ideas into industry-leading digital experiences."
             }
             className="font-light text-[20px] sm:text-6xl text-left leading-[1.3] sm:leading-[0.9] tracking-tight sm:tracking-tighter"
             indent={0}
