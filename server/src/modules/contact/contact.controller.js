@@ -3,7 +3,26 @@ import asyncHandler from "../../middlewares/async.middleware.js";
 import ApiResponse from "../../utils/apiResponse.js";
 
 export const createContact = asyncHandler(async (req, res) => {
-  const contact = await Contact.create(req.body);
+  const { name, email, company, message, selectedPlan } = req.body;
+
+  if (!name || !email || !message) {
+    res.status(400);
+    throw new Error("Missing required fields");
+  }
+
+  const allowedPlans = ["starter", "ecommerce", "premium"];
+
+  const plan = allowedPlans.includes(selectedPlan?.toLowerCase())
+    ? selectedPlan.toLowerCase()
+    : "not_selected";
+
+  const contact = await Contact.create({
+    name,
+    email,
+    company,
+    message,
+    selectedPlan: plan,
+  });
 
   res.status(201).json(new ApiResponse(true, "Message received", contact));
 });
