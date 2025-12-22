@@ -94,7 +94,7 @@ export default function Footer() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);
 
-      setFeedback("You're in. Welcome aboard ✨");
+      setFeedback("Subscribed! Thank you.");
       setStatus("success");
       setEmail("");
     } catch (err) {
@@ -113,16 +113,9 @@ export default function Footer() {
         <div>
           <h2 className="text-4xl font-bold mb-8">Do it once. Do it right.</h2>
 
-          <div className="mb-8">
-            <p className="font-medium">New Business:</p>
-            <a href="mailto:zenvok.inbox@gmail.com" className="hover:underline">
-              zenvok.inbox@gmail.com
-            </a>
-          </div>
-
           {/* 📨 Newsletter (wired, not redesigned) */}
           <div className="mb-8">
-            <p className="mb-2">Sign up for our newsletter (No spam)</p>
+            <p className="mb-2">Sign up for our newsletter</p>
 
             <form
               onSubmit={handleNewsletterSubmit}
@@ -140,7 +133,7 @@ export default function Footer() {
               <button
                 type="submit"
                 disabled={status === "loading"}
-                className="ml-2"
+                className="ml-2 cursor-pointer"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -160,7 +153,7 @@ export default function Footer() {
 
             {status !== "idle" && (
               <p className="mt-2 text-sm opacity-80">
-                {status === "loading" && "Subscribing…"}
+                {status === "loading" && "Subscribing"}
                 {(status === "success" || status === "error") && feedback}
               </p>
             )}

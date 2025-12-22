@@ -58,9 +58,12 @@ export default function PricingPage() {
                 <li>Delivery in 5-7 days</li>
               </ul>
 
-              <button className="mt-12 w-full max-w-xs mx-auto border border-black py-4 px-6 text-sm hover:bg-black hover:text-white transition-colors duration-300 cursor-pointer block">
+              <Link
+                href="/contact?plan=starter"
+                className="mt-12 w-full max-w-xs mx-auto text-center border border-black py-4 px-6 text-sm hover:bg-black hover:text-white transition-colors duration-300 block"
+              >
                 Get Started
-              </button>
+              </Link>
             </div>
 
             {/* Ecommerce */}
@@ -76,7 +79,7 @@ export default function PricingPage() {
               <div className="h-px bg-gray-800 my-8" />
 
               <ul className="space-y-4 text-sm leading-relaxed text-pretty">
-                <li>10 Pages </li>
+                <li>10 Pages</li>
                 <li>Everything in Starter</li>
                 <li>E-Commerce Functionality</li>
                 <li>Payment Integration</li>
@@ -85,9 +88,12 @@ export default function PricingPage() {
                 <li>14 Days Delivery</li>
               </ul>
 
-              <button className="mt-12 w-full max-w-xs mx-auto border border-white py-4 px-6 text-sm hover:bg-white hover:text-black transition-colors duration-300 cursor-pointer block">
+              <Link
+                href="/contact?plan=ecommerce"
+                className="mt-12 w-full max-w-xs mx-auto text-center border border-white py-4 px-6 text-sm hover:bg-white hover:text-black transition-colors duration-300 block"
+              >
                 Let&apos;s Talk
-              </button>
+              </Link>
             </div>
 
             {/* Premium */}
@@ -111,9 +117,12 @@ export default function PricingPage() {
                 <li>Multilingual Support</li>
               </ul>
 
-              <button className="mt-12 w-full max-w-xs mx-auto border border-black py-4 px-6 text-sm hover:bg-black hover:text-white transition-colors duration-300 cursor-pointer block">
+              <Link
+                href="/contact?plan=premium"
+                className="mt-12 w-full max-w-xs mx-auto text-center border border-black py-4 px-6 text-sm hover:bg-black hover:text-white transition-colors duration-300 block"
+              >
                 Contact Us
-              </button>
+              </Link>
             </div>
           </div>
         </div>

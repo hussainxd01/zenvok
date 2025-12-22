@@ -6,6 +6,12 @@ const contactSchema = new mongoose.Schema(
     email: { type: String, required: true },
     company: String,
     message: { type: String, required: true },
+
+    selectedPlan: {
+      type: String,
+      enum: ["starter", "ecommerce", "premium", "not_selected"],
+      default: "not_selected",
+    },
   },
   { timestamps: true }
 );
