@@ -184,7 +184,7 @@ export default function Footer() {
           <div className="flex flex-col justify-between">
             <div className="flex flex-col space-y-4">
               <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/zenvok.studio?igsh=djA3Y2JjcTJkMHhw"
                 className="flex items-center hover:underline"
               >
                 Instagram <span className="ml-1">↗</span>

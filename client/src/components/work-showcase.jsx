@@ -18,31 +18,17 @@ const WorkShowcase = () => {
   const projects = [
     {
       id: 1,
-      name: "Rivian",
-      image: "/van.jpg",
-      url: "/work/rivian",
+      name: "ELVN",
+      image: "/elvn.jpg",
+      url: "https://ecomstoree.vercel.app/",
       number: "01",
     },
     {
       id: 2,
-      name: "Du Chateau",
-      image: "/furniture.jpg",
-      url: "/work/du-chateau",
+      name: "Cinder & Crown",
+      image: "/cc.jpg",
+      url: "https://aliba-six.vercel.app/",
       number: "02",
-    },
-    {
-      id: 3,
-      name: "Oura Ring",
-      image: "/ring.png",
-      url: "/work/oura-ring",
-      number: "03",
-    },
-    {
-      id: 4,
-      name: "Tesla",
-      image: "/fashion.jpg",
-      url: "/work/tesla",
-      number: "04",
     },
   ];
 
