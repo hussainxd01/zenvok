@@ -150,20 +150,11 @@ export default function HeroComponent() {
         ref={heroRef}
         className="w-full h-[85vh] sm:h-screen flex flex-col items-stretch text-white overflow-hidden relative"
         data-theme="dark"
+        style={{
+          background:
+            "radial-gradient(ellipse 70% 60% at 65% 45%, #1a3a6e 0%, #0d2145 35%, #050f1e 70%, #020810 100%)",
+        }}
       >
-        {/* VIDEO BACKGROUND */}
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover z-0"
-        >
-          <source src="/background.webm" type="video/webm" />
-        </video>
-
-        {/* DARK OVERLAY (important for readability) */}
-        <div className="absolute inset-0 bg-black/50 z-0" />
         {/* Subtle noise/grain overlay for depth */}
         <div
           className="absolute inset-0 pointer-events-none"

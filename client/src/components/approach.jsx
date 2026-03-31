@@ -77,26 +77,26 @@ const Approach = () => {
       <div ref={headingRef}>
         <MaskedText
           text="Our approach."
-          className="text-5xl md:text-6xl lg:text-7xl font-normal mb-16 md:mb-20"
+          className="text-5xl md:text-6xl lg:text-7xl font-normal mb-16 md:mb-24"
           indent={false}
         />
       </div>
 
       {/* First horizontal line */}
-      <hr ref={hr1Ref} className="border-t border-gray-300 mb-12 md:mb-16" />
+      <hr ref={hr1Ref} className="border-t border-gray-300 mb-12 md:mb-6" />
 
       {/* First row of content with MaskedText */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 mb-12 md:mb-16">
         <div>
           <MaskedText
-            text="A simple philosophy: quality over quantity."
+            text="We don't specialize in one thing"
             className="text-xl leading-relaxed font-extralight"
             indent={false}
           />
         </div>
         <div className="max-w-[380px]">
           <MaskedText
-            text="We work with select clients to ensure focus, precision, and results. Every project is crafted to be strategic and transformative."
+            text="From landing pages to complex web apps, we handle the full stack. Design, development, performance all under one roof, built to your exact brief."
             className="text-lg md:text-xl font-normal"
             indent={false}
           />
@@ -104,20 +104,20 @@ const Approach = () => {
       </div>
 
       {/* Second horizontal line */}
-      <hr ref={hr2Ref} className="border-t border-gray-300 mb-12 md:mb-16" />
+      <hr ref={hr2Ref} className="border-t border-gray-300 mb-12 md:mb-6" />
 
       {/* Second row of content with MaskedText */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
         <div>
           <MaskedText
-            text="Performance & emotion. You need both."
+            text="No templates. No shortcuts."
             className="text-xl md:text-2xl font-normal leading-relaxed"
             indent={false}
           />
         </div>
         <div className="max-w-[380px]">
           <MaskedText
-            text="We build websites that are fast, reliable, and designed for people—combining clean code with growth-focused design."
+            text="Every project starts from scratch. We study your business, your users, and your goals. Then build something that actually works for all three."
             className="text-lg md:text-xl font-normal leading-relaxed"
             indent={false}
           />

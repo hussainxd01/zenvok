@@ -39,13 +39,13 @@ const Statement = () => {
   return (
     <section
       ref={sectionRef}
-      className="bg-black text-white py-16 px-4 sm:py-20 sm:px-6 md:px-8 lg:px-16 w-full"
+      className="bg-black text-white py-16 px-4 sm:py-20 sm:px-6 md:px-8 lg:px-8 w-full"
     >
       {/* Main heading */}
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-full mx-auto">
         <MaskedText
           text={`We design, develop, and optimize digital systems that attract customers, convert traffic, and sustain long-term growth.`}
-          className="text-[1.5rem] sm:text-3xl md:text-5xl lg:text-6xl font-extralight leading-snug sm:leading-tight tracking-tight sm:tracking-tighter mb-12 text-white"
+          className="text-[2rem] sm:text-3xl md:text-5xl lg:text-7xl font-extralight leading-snug sm:leading-tight tracking-tight sm:tracking-tighter mb-12 text-white"
           indent={true}
         />
       </div>
@@ -53,13 +53,13 @@ const Statement = () => {
       {/* HR Line */}
       <hr
         ref={hrRef}
-        className="border-t border-gray-50/30 mb-12 max-w-7xl mx-auto"
+        className="border-t border-gray-50/30 mb-8 max-w-full mx-auto"
       />
 
-      {/* Two-column layout (even on mobile) */}
-      <div className="max-w-7xl mx-auto flex flex-wrap gap-y-6 gap-x-8 md:gap-x-16">
+      {/* Two-column layout */}
+      <div className="max-w-full mx-auto flex flex-wrap gap-y-6 gap-x-8 md:grid md:grid-cols-2">
         {/* Left column */}
-        <div className="flex-1 min-w-[150px] max-w-[350px]">
+        <div className="flex-1 min-w-[150px] max-w-[350px] md:max-w-none">
           <MaskedText
             text="Design that converts."
             className="text-base sm:text-lg md:text-2xl font-light text-white"
@@ -68,7 +68,7 @@ const Statement = () => {
         </div>
 
         {/* Right column */}
-        <div className="flex-1 min-w-[150px] max-w-[600px] flex flex-col gap-4 sm:gap-6 tracking-tight">
+        <div className="flex-1 min-w-[150px] max-w-[400px] flex flex-col gap-4 sm:gap-6 tracking-tight">
           <MaskedText
             text="We design, develop, and optimize digital systems that attract customers, convert traffic, and sustain long-term growth."
             className="text-sm sm:text-base md:text-lg font-light leading-relaxed text-white"

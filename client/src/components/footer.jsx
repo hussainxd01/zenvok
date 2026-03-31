@@ -106,10 +106,10 @@ export default function Footer() {
   return (
     <footer
       ref={footerRef}
-      className="w-full bg-black flex flex-col text-white overflow-hidden py-10 sm:px-10 px-2"
+      className="w-full bg-black flex flex-col text-white overflow-hidden py-10 sm:px-2 px-2"
       data-theme="dark"
     >
-      <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 mb-20">
+      <div className="container sm:px-10 px-2 grid grid-cols-1 lg:grid-cols-2 gap-10 mb-20">
         <div>
           <h2 className="text-4xl font-bold mb-8">Do it once. Do it right.</h2>
 
