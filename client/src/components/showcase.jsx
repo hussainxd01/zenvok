@@ -9,9 +9,9 @@ const portfolioData = [
   },
   {
     id: 2,
-    title: "Minimal Skincare Website",
+    title: "Car Booking Website",
     category: "UI/UX Design",
-    image: "/Skincare Minimal Website.png",
+    image: "/car.png",
   },
   {
     id: 3,
@@ -93,9 +93,8 @@ export default function WorkShowcaseAutoSlide() {
       rafRef.current = requestAnimationFrame(tick);
     }, 50);
 
-    // --- Drag handlers ---
     const onMouseDown = (e) => {
-      e.preventDefault(); // 🔥 FIX
+      e.preventDefault();
       isDraggingRef.current = true;
       isPausedRef.current = true;
       dragStartXRef.current = e.clientX;
@@ -108,7 +107,7 @@ export default function WorkShowcaseAutoSlide() {
 
     const onMouseMove = (e) => {
       if (!isDraggingRef.current) return;
-      e.preventDefault(); // 🔥 FIX
+      e.preventDefault();
 
       const dx = e.clientX - dragStartXRef.current;
       positionRef.current = dragStartPosRef.current + dx;
@@ -172,6 +171,7 @@ export default function WorkShowcaseAutoSlide() {
     const onMouseEnter = () => {
       if (!isDraggingRef.current) isPausedRef.current = true;
     };
+
     const onMouseLeave = () => {
       if (!isDraggingRef.current) {
         isPausedRef.current = false;
@@ -208,8 +208,6 @@ export default function WorkShowcaseAutoSlide() {
 
   return (
     <div className="w-full py-20 bg-white overflow-hidden select-none">
-      {" "}
-      {/* 🔥 FIX */}
       <div className="max-w-7xl mx-auto px-4 mb-12">
         <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
           Selected Works
@@ -218,41 +216,33 @@ export default function WorkShowcaseAutoSlide() {
           Crafting digital experiences that inspire and engage
         </p>
       </div>
+
       <div className="relative overflow-hidden pl-6">
         <div
           ref={trackRef}
-          className="flex gap-6 will-change-transform select-none" // 🔥 FIX
+          className="flex gap-6 will-change-transform select-none"
           style={{ transform: "translate3d(0,0,0)" }}
         >
           {duplicatedData.map((item, index) => (
             <div
               key={`${item.id}-${index}`}
-              className="flex-shrink-0 w-64 group select-none" // 🔥 FIX
+              className="flex-shrink-0 w-64 group select-none"
             >
               <div
                 className="relative bg-black rounded-3xl p-2 shadow-2xl"
                 style={{ width: "256px", height: "520px" }}
               >
-                <div
-                  className="absolute bg-black rounded-full z-20"
-                  style={{
-                    top: "12px",
-                    left: "50%",
-                    transform: "translateX(-50%)",
-                    width: "80px",
-                    height: "20px",
-                  }}
-                />
-
-                <div className="relative w-full h-full rounded-2xl overflow-hidden bg-white pt-8">
+                <div className="relative w-full h-full rounded-2xl overflow-hidden bg-white">
                   <img
                     src={item.image}
                     alt={item.title}
-                    className="w-full h-full object-cover pointer-events-none select-none" // 🔥 FIX
+                    className="w-full h-full object-cover pointer-events-none select-none"
                     loading="lazy"
                     draggable={false}
                   />
+
                   <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-30 transition-opacity duration-300 z-10" />
+
                   <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
                     <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white text-center px-4">
                       <p className="text-xs font-medium mb-1">
