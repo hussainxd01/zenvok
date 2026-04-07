@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
@@ -13,6 +13,7 @@ export default function HeroComponent() {
   const arrowRef = useRef(null);
   const outerDivRef = useRef(null);
   const heroRef = useRef(null);
+  const vantaRef = useRef(null);
 
   const loaderRef = useRef(null);
   const loaderWordRefs = useRef([]);
@@ -40,6 +41,37 @@ export default function HeroComponent() {
     });
   };
 
+  // Vanta dots background
+  useEffect(() => {
+    let effect;
+    const initVanta = async () => {
+      if (typeof window === "undefined") return;
+      const THREE_MODULE = await import("three");
+      const THREE = THREE_MODULE.default || THREE_MODULE;
+      window.THREE = THREE;
+      const VANTA = await import("vanta/dist/vanta.dots.min");
+      if (vantaRef.current) {
+        effect = VANTA.default({
+          el: vantaRef.current,
+          mouseControls: true,
+          touchControls: true,
+          gyroControls: false,
+          minHeight: 200,
+          minWidth: 200,
+          scale: 1,
+          scaleMobile: 1,
+          backgroundColor: 0xffffff,
+          showLines: false,
+        });
+      }
+    };
+    initVanta();
+    return () => {
+      if (effect) effect.destroy();
+    };
+  }, []);
+
+  // GSAP animations — unchanged
   useLayoutEffect(() => {
     if (hasAnimated.current) return;
     hasAnimated.current = true;
@@ -150,14 +182,13 @@ export default function HeroComponent() {
         ref={heroRef}
         className="w-full h-[85vh] sm:h-screen flex flex-col items-stretch text-white overflow-hidden relative"
         data-theme="dark"
-        style={{
-          background:
-            "radial-gradient(ellipse 70% 60% at 65% 45%, #1a3a6e 0%, #0d2145 35%, #050f1e 70%, #020810 100%)",
-        }}
       >
+        {/* Vanta dots canvas — fills hero, sits behind everything */}
+        <div ref={vantaRef} className="absolute inset-0 z-0" />
+
         {/* Subtle noise/grain overlay for depth */}
         <div
-          className="absolute inset-0 pointer-events-none"
+          className="absolute inset-0 pointer-events-none z-[1]"
           style={{
             backgroundImage:
               "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E\")",
@@ -166,9 +197,9 @@ export default function HeroComponent() {
           }}
         />
 
-        {/* TOP-RIGHT: tagline text — mirrors reference */}
+        {/* TOP-RIGHT: tagline text */}
         <div className="absolute top-1/3 right-6 sm:right-12 md:right-16 max-w-[260px] sm:max-w-xs md:max-w-sm text-left z-10">
-          <p className="text-white/90 text-sm sm:text-base md:text-lg leading-snug font-light">
+          <p className="text-black/80 text-sm sm:text-base md:text-lg leading-snug font-light">
             Building standout
             <br />
             websites for bold brands.
@@ -180,7 +211,7 @@ export default function HeroComponent() {
         </div>
 
         {/* BOTTOM-LEFT: large ZENVOK SVG logo */}
-        <div className="absolute bottom-0 left-0 w-full sm:w-[75%] md:w-[70%] overflow-hidden px-2 sm:px-6 md:px-10 pb-6">
+        <div className="absolute bottom-0 left-0 w-full sm:w-[75%] md:w-[70%] overflow-hidden px-2 sm:px-6 md:px-10 pb-6 z-10">
           <svg
             ref={svgRef}
             width="100%"
@@ -194,32 +225,32 @@ export default function HeroComponent() {
             <path
               ref={setLetterRef}
               d="M0.05 196.5L113.8 56.5H0.05V4H183.45V56.5L69.7 196.5H183.45V249H0.05V196.5Z"
-              fill="white"
+              fill="black"
             />
             <path
               ref={setLetterRef}
               d="M369.059 99.55V153.45H260.909V194.75H389.359V249H250.409C221.009 249 201.409 229.4 201.409 200V161.85C201.409 141.9 215.059 127.9 235.359 128.25H237.459V124.75H235.359C215.059 124.75 201.409 111.1 201.409 91.15V53C201.409 23.6 221.009 4 250.409 4H389.359V58.25H260.909V99.55H369.059Z"
-              fill="white"
+              fill="black"
             />
             <path
               ref={setLetterRef}
               d="M468.38 103.4V249H408.88V102.7C408.88 35.85 451.23 0.5 516.33 0.5C579.68 0.5 622.03 35.85 622.03 102.7V249H562.53V103.4C562.53 71.9 540.13 56.5 515.28 56.5C490.08 56.5 468.38 71.9 468.38 103.4Z"
-              fill="white"
+              fill="black"
             />
             <path
               ref={setLetterRef}
               d="M641.986 249V4H701.486V193H705.686C751.536 193 781.636 153.8 781.636 94.3V4H841.136V91.5C841.136 193.7 784.786 249 680.136 249H641.986Z"
-              fill="white"
+              fill="black"
             />
             <path
               ref={setLetterRef}
               d="M861.427 126.5C861.427 50.9 912.527 0.5 988.827 0.5C1065.48 0.5 1116.23 50.9 1116.23 126.5C1116.23 202.1 1065.48 252.5 988.827 252.5C912.527 252.5 861.427 202.1 861.427 126.5ZM920.927 126.5C920.927 168.5 948.227 196.5 988.827 196.5C1029.43 196.5 1056.73 168.5 1056.73 126.5C1056.73 84.5 1029.43 56.5 988.827 56.5C948.227 56.5 920.927 84.5 920.927 126.5Z"
-              fill="white"
+              fill="black"
             />
             <path
               ref={setLetterRef}
               d="M1136.22 249V4H1195.72V147.15L1280.07 4H1346.57L1278.32 114.6L1363.72 249H1295.47L1244.37 169.9L1195.72 249H1136.22Z"
-              fill="white"
+              fill="black"
             />
           </svg>
         </div>
@@ -232,7 +263,7 @@ export default function HeroComponent() {
           >
             <svg width="16" height="16" fill="none" viewBox="0 0 12 12">
               <path
-                fill="white"
+                fill="black"
                 d="m5.796 9.246-2.97-2.97-.762.782 4.356 4.356 4.356-4.356-.782-.782-2.96 2.96V1.039H5.806z"
               />
             </svg>
