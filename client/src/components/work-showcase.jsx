@@ -102,7 +102,9 @@ const WorkShowcase = () => {
       {/* HERO SECTION */}
       <div
         ref={heroRef}
-        className="sm:min-h-[80vh] h-[90dvh] w-full bg-white z-40 relative flex flex-col items-end justify-between px-4 sm:px-8 md:px-10 py-8 sm:py-10"
+        className={`w-full bg-white z-40 relative flex flex-col items-end justify-between px-4 sm:px-8 md:px-10 py-8 sm:py-10 ${
+          isListView ? "min-h-auto" : "sm:min-h-[80vh] h-[90dvh]"
+        }`}
         data-theme="light"
       >
         <div className="w-full flex-1 flex items-end">
