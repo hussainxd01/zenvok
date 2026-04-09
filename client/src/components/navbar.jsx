@@ -153,7 +153,7 @@ function MobileMenu({ isOpen, onClose }) {
         onClick={onClose}
         className="mt-4 text-sm  hover:opacity-100 transition"
       >
-        Let&apos;s Talk ↗
+        Work with us ↗
       </button>
       <section className="flex flex-col w-full text-5xl">
         {navItems.map((item, index) => (
@@ -345,54 +345,60 @@ export default function Navbar({
         <div className="hidden md:flex items-center gap-2 font-semibold text-xs text-white">
           <Link
             href="/"
-            className={`hover:opacity-70 transition-opacity uppercase ${
+            className={`relative uppercase group ${
               pathname === "/" ? "opacity-70" : ""
             }`}
           >
             Home
+            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
           </Link>
           <Link
             href="/about"
-            className={`hover:opacity-70 transition-opacity uppercase ${
+            className={`relative uppercase group ${
               pathname === "/about" ? "opacity-70" : ""
             }`}
           >
             About
+            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
           </Link>
           <Link
             href="/works"
-            className={`hover:opacity-70 transition-opacity uppercase ${
+            className={`relative uppercase group ${
               pathname === "/works" ? "opacity-70" : ""
             }`}
           >
             Works
+            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
           </Link>
           <Link
             href="/service"
-            className={`hover:opacity-70 transition-opacity uppercase ${
+            className={`relative uppercase group ${
               pathname === "/service" ? "opacity-70" : ""
             }`}
           >
             Service
+            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
           </Link>
           <Link
             href="/pricing"
-            className={`hover:opacity-70 transition-opacity uppercase ${
+            className={`relative uppercase group ${
               pathname === "/service" ? "opacity-70" : ""
             }`}
           >
             Pricing
+            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
           </Link>
         </div>
 
         <div className="hidden md:flex items-center text-white font-semibold text-xs">
           <Link
             href="/contact"
-            className={`hover:opacity-70 transition-opacity uppercase ${
+            className={`relative uppercase group ${
               pathname === "/contact" ? "opacity-70" : ""
             }`}
           >
-            Let&apos;s Talk ↗
+            Work with us ↗
+            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
           </Link>
         </div>
 
