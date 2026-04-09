@@ -4,6 +4,7 @@ import Lenis from "lenis";
 import "./globals.css";
 import { usePathname } from "next/navigation";
 import Navbar from "@/components/navbar";
+import WhatsAppBadge from "@/components/whatsapp-badge";
 
 export default function RootLayout({ children }) {
   const pathname = usePathname();
@@ -36,6 +37,7 @@ export default function RootLayout({ children }) {
         {/* Only show loading screen on homepage */}
 
         {children}
+        <WhatsAppBadge />
       </body>
     </html>
   );
