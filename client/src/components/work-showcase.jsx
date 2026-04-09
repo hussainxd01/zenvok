@@ -102,12 +102,12 @@ const WorkShowcase = () => {
       {/* HERO SECTION */}
       <div
         ref={heroRef}
-        className={`w-full bg-white z-40 relative flex flex-col items-end justify-between px-4 sm:px-8 md:px-10 py-8 sm:py-10 ${
-          isListView ? "min-h-auto" : "sm:min-h-[80vh] h-[90dvh]"
+        className={`w-full bg-white z-40 relative px-4 sm:px-8 md:px-10 py-8 sm:py-10 ${
+          isListView ? "flex flex-col" : "flex flex-col items-end justify-between sm:min-h-[80vh] h-[90dvh]"
         }`}
         data-theme="light"
       >
-        <div className="w-full flex-1 flex items-end">
+        <div className={`w-full ${isListView ? "" : "flex-1 flex items-end"}`}>
           <div className="w-full max-w-6xl">
             <MaskedText
               text="Our work embodies innovation, quality, and a focus on building impactful digital experiences for every client."
