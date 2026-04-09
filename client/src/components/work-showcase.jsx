@@ -102,28 +102,30 @@ const WorkShowcase = () => {
       {/* HERO SECTION */}
       <div
         ref={heroRef}
-        className="sm:min-h-[80vh] h-[90dvh] w-full bg-white z-40 relative flex md:flex-row items-end justify-between px-2 md:px-10 py-10 overflow-hidden"
+        className="sm:min-h-[80vh] h-[90dvh] w-full bg-white z-40 relative flex flex-col items-end justify-between px-4 sm:px-8 md:px-10 py-8 sm:py-10"
         data-theme="light"
       >
-        <div className="w-full max-w-[720px] sm:max-w-[1400px] mx-auto px-4 sm:px-12">
-          <MaskedText
-            text="Our work embodies innovation, quality, and a focus on building impactful digital experiences for every client."
-            className="font-light text-[20px] sm:text-6xl text-left leading-[1.3] sm:leading-[0.9] tracking-tight sm:tracking-tighter"
-            indent={0}
-            positioning="w-full"
-          />
-
-          {/* Toggle Button */}
-          <button
-            onClick={() => setIsListView((prev) => !prev)}
-            className="mt-8 md:mt-0 md:absolute bottom-10 left-10 z-50 flex items-center gap-2 text-black/70 hover:text-black transition-colors text-sm md:text-base"
-          >
-            <span className="w-6 h-6 flex items-center justify-center border border-black/30 rounded-full">
-              :
-            </span>
-            <span>{isListView ? "Showcase view" : "List view"}</span>
-          </button>
+        <div className="w-full flex-1 flex items-end">
+          <div className="w-full max-w-6xl">
+            <MaskedText
+              text="Our work embodies innovation, quality, and a focus on building impactful digital experiences for every client."
+              className="font-light text-[20px] sm:text-6xl text-left leading-[1.3] sm:leading-[0.9] tracking-tight sm:tracking-tighter"
+              indent={0}
+              positioning="w-full"
+            />
+          </div>
         </div>
+
+        {/* Toggle Button */}
+        <button
+          onClick={() => setIsListView((prev) => !prev)}
+          className="mt-8 sm:mt-12 flex items-center gap-2 text-black/70 hover:text-black transition-colors text-sm md:text-base"
+        >
+          <span className="w-6 h-6 flex items-center justify-center border border-black/30 rounded-full">
+            :
+          </span>
+          <span>{isListView ? "Showcase view" : "List view"}</span>
+        </button>
       </div>
 
       {/* MAIN SECTION */}
