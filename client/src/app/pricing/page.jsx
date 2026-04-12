@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
+import MaskedText from "@/components/masked-text";
 
 export default function PricingPage() {
   return (
@@ -12,22 +13,26 @@ export default function PricingPage() {
       {/* Hero Section */}
       <section className="pt-20 pb-16 px-4 sm:pt-28 sm:pb-20 sm:px-6">
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-[clamp(3rem,12vw,8rem)] leading-[0.9] font-light tracking-tight mb-12">
-            Pricing.
-          </h1>
+          <MaskedText
+            text="Pricing."
+            className="text-[clamp(3rem,12vw,8rem)] leading-[0.9] font-light tracking-tight mb-12"
+            indent={false}
+          />
           <div className="h-px bg-gray-200 mb-12" />
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 sm:gap-16">
             <div>
-              <p className="text-lg leading-relaxed text-pretty">
-                Simple, transparent pricing.
-              </p>
+              <MaskedText
+                text="Simple, transparent pricing."
+                className="text-lg leading-relaxed text-pretty"
+                indent={false}
+              />
             </div>
             <div>
-              <p className="text-lg leading-relaxed text-pretty">
-                Every project is unique, crafted with precision and care. We
-                believe in quality over quantity, working with select clients to
-                deliver transformative results.
-              </p>
+              <MaskedText
+                text="Every project is unique, crafted with precision and care. We believe in quality over quantity, working with select clients to deliver transformative results."
+                className="text-lg leading-relaxed text-pretty"
+                indent={false}
+              />
             </div>
           </div>
         </div>
@@ -134,19 +139,23 @@ export default function PricingPage() {
           <div className="h-px bg-gray-200 mb-12" />
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-12 sm:gap-16">
             <div>
-              <h3 className="text-3xl font-light mb-6 text-pretty">
-                Performance & emotion. You need both.
-              </h3>
+              <MaskedText
+                text="Performance & emotion. You need both."
+                className="text-3xl font-light mb-6 text-pretty"
+                indent={false}
+              />
             </div>
             <div>
-              <p className="text-lg leading-relaxed mb-6 text-pretty">
-                We build brands that are fast, reliable, and designed for
-                people—combining clean code with growth-focused design.
-              </p>
-              <p className="text-lg leading-relaxed text-pretty">
-                Every engagement includes strategic thinking, technical
-                precision, and a commitment to measurable results.
-              </p>
+              <MaskedText
+                text="We build brands that are fast, reliable, and designed for people—combining clean code with growth-focused design."
+                className="text-lg leading-relaxed mb-6 text-pretty"
+                indent={false}
+              />
+              <MaskedText
+                text="Every engagement includes strategic thinking, technical precision, and a commitment to measurable results."
+                className="text-lg leading-relaxed text-pretty"
+                indent={false}
+              />
             </div>
           </div>
         </div>
