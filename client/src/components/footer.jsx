@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import emailjs from "@emailjs/browser";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -80,6 +81,8 @@ export default function Footer() {
     try {
       setStatus("loading");
 
+      // Backend API call commented out but preserved for future use
+      /*
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/newsletter`,
         {
@@ -93,12 +96,23 @@ export default function Footer() {
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);
+      */
+
+      // Send to email directly via EmailJS
+      await emailjs.send(
+        "service_ih9x22k",
+        "template_stuympf",
+        {
+          user_email: email,
+        },
+        "HVcHfFDNuxjrvtW-w"
+      );
 
       setFeedback("Subscribed! Thank you.");
       setStatus("success");
       setEmail("");
     } catch (err) {
-      setFeedback(err.message || "Something went wrong");
+      setFeedback(err.text || err.message || "Something went wrong");
       setStatus("error");
     }
   };

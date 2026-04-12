@@ -4,6 +4,7 @@ import { Suspense, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Navbar from "@/components/navbar";
 import MaskedText from "@/components/masked-text";
+import emailjs from "@emailjs/browser";
 
 export default function Page() {
   return (
@@ -72,6 +73,8 @@ function ContactPage() {
     setIsLoading(true);
 
     try {
+      // Backend API call commented out but preserved for future use
+      /*
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/contact`,
         {
@@ -82,6 +85,21 @@ function ContactPage() {
       );
 
       if (!res.ok) throw new Error("Failed submitting form");
+      */
+
+      // Send to email directly via EmailJS
+      await emailjs.send(
+        "service_ih9x22k",
+        "template_stuympf",
+        {
+          from_name: formData.name,
+          reply_to: formData.email,
+          company: formData.company,
+          message: formData.message,
+          selected_plan: selectedPlan,
+        },
+        "HVcHfFDNuxjrvtW-w"
+      );
 
       setIsSubmitted(true);
       setTimeout(() => {
@@ -89,7 +107,7 @@ function ContactPage() {
         setIsSubmitted(false);
       }, 3000);
     } catch (err) {
-      alert(err.message);
+      alert(err.text || err.message || "Failed submitting form");
     } finally {
       setIsLoading(false);
     }
