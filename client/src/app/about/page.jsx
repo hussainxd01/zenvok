@@ -2,6 +2,7 @@ import MaskedText from "@/components/masked-text";
 import MediaShowcase from "@/components/media-showcase";
 import Navbar from "@/components/navbar";
 import AwardSection from "@/components/award-section";
+import TestimonialSection from "@/components/testimonialSection";
 
 export default function About() {
   return (
@@ -78,8 +79,7 @@ export default function About() {
         </div>
       </section>
 
-      {/* Awards Section */}
-      <AwardSection />
+      <TestimonialSection />
 
       {/* Media Showcase */}
       <section className="w-full">
