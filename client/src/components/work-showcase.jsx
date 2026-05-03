@@ -18,9 +18,9 @@ const WorkShowcase = () => {
   const projects = [
     {
       id: 1,
-      name: "ELVN",
+      name: "BEYOND",
       image: "/elvn.jpg",
-      url: "https://ecomstoree.vercel.app/",
+      url: "https://demo-seven-tan-20.vercel.app/",
       number: "01",
     },
     {
